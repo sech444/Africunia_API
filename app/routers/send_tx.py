@@ -289,16 +289,4 @@ def _preparetx_dash(priv_key:str = Form(...),  addr_to:str = Form(...), value:st
     return{"data": data }
     
     
-def TetherToken_usdt():
-    #w3 = Web3(Web3.HTTPProvider('https://rpc-mainnet.maticvigil.com/'))
-    #address2 = TetherToken_addr
-    contract_instance = w3.eth.contract(TetherToken_addr,abi=usdt_abi)
-    print(contract_instance)
-    #_dir = dir(contract_instance.functions)
-    #print(_dir)
-    #addr = input('enter_addr: ')
-    token_supply = contract_instance.functions.balances('0xc6cde7c39eb2f0f0095f41570af89efc2c1ea828').call()
-    print(token_supply)
-    #gas_fee = contract_instance.fallback.estimateGas().transaction()
-    #print(gas_fee)
-    
+
