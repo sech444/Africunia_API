@@ -4,7 +4,6 @@ aiorpcX==0.18.5
 aiosignal==1.2.0
 aniso8601==7.0.0
 anyio==3.5.0
-apparmor==2.13.6
 arrow==1.2.2
 asgiref==3.5.0
 asn1crypto==1.5.1
