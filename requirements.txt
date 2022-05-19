@@ -127,7 +127,6 @@ lru-dict==1.1.7
 lxml==4.6.3
 Mako==1.1.5
 MarkupSafe==2.0.1
-mate-tweak==21.4.2
 mccabe==0.6.1
 mechanize==0.4.5
 mnemonic==0.18
