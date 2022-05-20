@@ -25,7 +25,7 @@ bitstring==3.1.7
 black==22.1.0
 blinker==1.4
 blockchain==1.4.4
-broadcaster==0.2.0
+broadcaster
 Brotli==1.0.9
 CacheControl==0.12.11
 cachy==0.3.0
