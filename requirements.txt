@@ -16,7 +16,6 @@ autobahn==22.2.2
 Automat==20.2.0
 autopep8==1.6.0
 base58==2.1.1
-beautifulsoup4==4.9.3
 bip-utils==2.3.0
 bit==0.8.0
 bitarray==1.2.2
