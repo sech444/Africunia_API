@@ -5,7 +5,7 @@ aiosignal==1.2.0
 aniso8601==7.0.0
 anyio==3.5.0
 arrow==1.2.2
-asgiref==3.5.0
+asgiref
 asn1crypto==1.5.1
 asttokens==2.0.5
 async-timeout==4.0.2
