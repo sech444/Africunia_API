@@ -269,7 +269,6 @@ txaio==22.2.1
 typing_extensions>=4.0.1
 tzdata
 tzlocal>=4.0.1
-ufw==0.36
 ujson==4.0.2
 urllib3==1.26.8
 uvicorn==0.17.6
