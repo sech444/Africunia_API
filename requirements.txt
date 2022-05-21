@@ -203,7 +203,7 @@ PyQt5-sip==12.8.1
 pyrsistent==0.18.1
 pysha3==1.0.2
 PySimpleSOAP==1.16.2
-pysmbc==1.0.23
+pysmbc==1.0.20
 PySocks==1.7.1
 pytest==6.2.5
 pytest-forked==1.4.0
