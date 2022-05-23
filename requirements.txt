@@ -184,7 +184,6 @@ pycountry==20.7.3
 pycparser==2.20
 pycryptodome==3.14.1
 pycryptodomex==3.9.7
-pycups==2.0.1
 pydantic==1.8.2
 pyflakes==2.4.0
 Pygments==2.11.2
