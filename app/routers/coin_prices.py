@@ -82,7 +82,7 @@ async def index_bch(background_tasks: BackgroundTasks):
     }
     
 
-def getethercoinPrice(crypto_ether):
+def get_ether_coin_Price(crypto_ether):
     URL = 'https://www.bitstamp.net/api/v2/ticker/ethusd/'
     try:
         r = requests.get(URL)
@@ -98,7 +98,7 @@ def main_ether():
     while True:
 
         crypto_ether = 'ether'
-        price = getethercoinPrice(crypto_ether)
+        price = get_ether_coin_Price(crypto_ether)
 
         if price != last_price:
            # print('Bitcoin price: ',price)
@@ -114,12 +114,12 @@ async def index_eth(background_tasks: BackgroundTasks):
     return {
         "coin": "eth",
         "name": "Ethereum",
-        "rate": getethercoinPrice("ether"),
+        "rate": get_ether_coin_Price("ether"),
         "coin_logo": "assets\/img\/ether.png"
     }
 
 
-def getXlmucoinPrice(crypto_xlmusd):
+def get_xlmu_Price(crypto_xlmusd):
     URL = 'https://www.bitstamp.net/api/v2/ticker/xlmusd/'
     try:
         r = requests.get(URL)
@@ -135,7 +135,7 @@ def main_Xlmusd():
     while True:
 
         crypto_xlmusd = 'Stellar'
-        price = getXlmucoinPrice(crypto_xlmusd)
+        price = get_xlmu_Price(crypto_xlmusd)
 
         if price != last_price:
            # print('Bitcoin price: ',price)
@@ -149,12 +149,12 @@ async def index_Stellar(background_tasks: BackgroundTasks):
     return {
         "coin": "xlm",
         "name": "Stellar",
-        "rate": getXlmucoinPrice("stellar"),
+        "rate": get_xlmu_Price("stellar"),
         "coin_logo": "assets\/img\/xlm.png"
         }
     
 
-def getLtccoinPrice(crypto_ltc):
+def get_Ltccoin_Price(crypto_ltc):
     URL = 'https://www.bitstamp.net/api/v2/ticker/ltcusd/'
     try:
         r = requests.get(URL)
@@ -170,7 +170,7 @@ def main_ltc():
     while True:
 
         crypto_ltc = 'litecoin'
-        price = getLtccoinPrice(crypto_ltc)
+        price = get_Ltccoin_Price(crypto_ltc)
 
         if price != last_price:
            # print('Bitcoin price: ',price)
@@ -184,12 +184,12 @@ async def index_ltc(background_tasks: BackgroundTasks):
     return {
         "coin": "ltc",
         "name": "Litecoin",
-        "rate": getLtccoinPrice('litercoin'),
+        "rate": get_Ltccoin_Price('litercoin'),
         "coin_logo": "assets\/img\/ltc.png"
     }
     
 
-def getxrpusprice(crypto_xrpusd):
+def get_xrp_price(crypto_xrpusd):
     URL = 'https://www.bitstamp.net/api/v2/ticker/xrpusd/'
     try:
         r = requests.get(URL)
@@ -205,7 +205,7 @@ def main_xrp():
     while True:
 
         crypto_xrpusd = 'Ripple'
-        price = getxrpusprice(crypto_xrpusd)
+        price = get_xrp_price(crypto_xrpusd)
         if price != last_price:
            # print('Bitcoin price: ',price)
             last_price = price
@@ -218,7 +218,7 @@ async def index_xrp(background_tasks: BackgroundTasks):
     return {
         "coin": "xrp",
         "name": "Proton",
-        "rate": getxrpusprice("Ripple"),
+        "rate": get_xrp_price("Ripple"),
         "coin_logo": "assets\/img\/xrp.png"
     }
    
@@ -267,7 +267,7 @@ async def index_dash(background_tasks: BackgroundTasks):
     
     
 @router.get('/api/v1/btcusdt',tags=["Coin_Price"])
-def getbnbusdtprice(Binance_Coin):
+def get_bnb_usdt_price(Binance_Coin):
     base_url = "https://api.binance.com"
     path = "/api/v3/ticker/price"
     params = '?symbol=BNBUSDT'
@@ -279,38 +279,10 @@ def getbnbusdtprice(Binance_Coin):
     except requests.ConnectionError:
         print("Error querying Bitstamp API")  
 
-@router.get('/api/v1/tronusdt',tags=["Coin_Price"])
-def gettrxusdtprice(tron_Coin):
-    base_url = "https://api.binance.com"
-    path = "/api/v3/ticker/price"
-    params = '?symbol=TRXUSDT'
-    try:
-        r = requests.get(base_url+path+params)
-        data = r.json()
-        priceFloat = float(data['price'])
-        return priceFloat
-    except requests.ConnectionError:
-        print("Error querying Bitstamp API")  
-
-
-
-@router.get('/api/v1/bnbusdt',tags=["Coin_Price"])
-def binance_BNBUSDT():
-    base_url = "https://api.binance.com"
-    path = "/api/v3/ticker/price"
-    params = '?symbol=BNBUSDT'
-    r = requests.get(base_url+path+params)
-    data = r.json()
-    return {
-        "coin": "BNB",
-        "name": "Binance Coin",
-        "rate_usdt": float(data['price']),
-        "coin_logo": "assets\/img\/bnb.png"
-    }
 
 
 @router.get('/api/v1/trxusdt',tags=["Coin_Price"])
-def binance_TRXUSDT():
+def binance_trxusdt(tron_Coin):
     base_url = "https://api.binance.com"
     path = "/api/v3/ticker/price"
     params = '?symbol=TRXUSDT'
@@ -320,12 +292,12 @@ def binance_TRXUSDT():
         "coin": "TRX",
         "name": "TRON Coin",
         "rate_usdt": float(data['price']),
-        "coin_logo": "assets\/img\/trx.png"
+        "coin_logo": "assets\/img\/trxusdt.png"
     }
     
     
 @router.get('/api/v1/btcusdt',tags=["Coin_Price"])
-def binance_BTCUSDT():
+def binance_btcusdt():
     base_url = "https://api.binance.com"
     path = "/api/v3/ticker/price"
     params = '?symbol=BTCUSDT'
@@ -376,13 +348,13 @@ listData = [
     {
         "coin": "ltc",
         "name": "Litecoin",
-        "rate": getLtccoinPrice('litercoin'),
+        "rate": get_Ltccoin_Price('litercoin'),
         "coin_logo": "assets\/img\/ltc.png"
     },
     {
         "coin": "xrp",
         "name": "Ripple",
-        "rate": getxrpusprice("Ripple"),
+        "rate": get_xrp_price("Ripple"),
         "coin_logo": "assets\/img\/xrp.png"
     },
     {
@@ -394,26 +366,26 @@ listData = [
     {
         "coin": "xlm",
         "name": "Stellar",
-        "rate": getXlmucoinPrice("stellar"),
+        "rate": get_xlmu_Price("stellar"),
         "coin_logo": "assets\/img\/xlm.png"
     },
     {
         "coin": "ether",
         "name": "Ethereum",
-        "rate": getethercoinPrice("ether"),
+        "rate": get_ether_coin_Price("ether"),
         "coin_logo": "assets\/img\/ether.png"
     },
     {
         "coin": "BNB",
         "name": "Binance Coin",
-        "rate": getbnbusdtprice("Binance_Coin"),
+        "rate": get_bnb_usdt_price("Binance_Coin"),
         "coin_logo": "assets\/img\/bnb.png"
     
     },
     {
         "coin": "TXR",
         "name": "TRON Coin",
-        "rate": gettrxusdtprice("tron_Coin"),
+        "rate": binance_trxusdt("tron_Coin"),
         "coin_logo": "assets\/img\/txr.png"
     
     }
