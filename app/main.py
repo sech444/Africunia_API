@@ -7,7 +7,15 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+origins = ["http://www.africuniabank.com"]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/coin_price", response_model=models.Item, tags=["Coin_Price"], deprecated=True)
 def coins(Coin_Price: models.Item):
