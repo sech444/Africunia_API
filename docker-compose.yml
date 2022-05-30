@@ -1,0 +1,7 @@
+service:
+  
+  backend:
+    build: ./
+    restart: always
+    ports:
+      - 80:80
