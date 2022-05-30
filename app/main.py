@@ -32,6 +32,9 @@ def coins(Coin_Price: models.Wallets):
 def coins(Coin_Price: models.Web_Hook):
     return
 
+@app.get("/Transaction", response_model=models.Web_Hook, tags=["Transaction"], deprecated=True)
+def coins(Coin_Price: models.Web_Hook):
+    return
     
 app.include_router(coin_prices.router)
 app.include_router(coin_wallets.router)
