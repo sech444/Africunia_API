@@ -263,26 +263,32 @@ async def index_dash(background_tasks: BackgroundTasks):
         "name": "Dash",
         "rate": float(getDashcoinPrice("crypto_dash")),
         "coin_logo": "assets\/img\/dash.png"
-    }
+    } 
     
     
-@router.get('/api/v1/btcusdt',tags=["Coin_Price"])
-def get_bnb_usdt_price(Binance_Coin):
+@router.get('/api/v1/bnb_usdt',tags=["Coin_Price"])
+def bnb_usdt():
     base_url = "https://api.binance.com"
-    path = "/api/v3/ticker/price"
+    path ="/api/v3/ticker/price"
     params = '?symbol=BNBUSDT'
     try:
         r = requests.get(base_url+path+params)
         data = r.json()
         priceFloat = float(data['price'])
-        return priceFloat
+        #return priceFloat
+        return {
+        "coin": "BNB",
+        "name": "Binance Coin",
+        "rate_usdt": priceFloat,
+        "coin_logo": "assets\/img\/bnb.png"
+    }
     except requests.ConnectionError:
         print("Error querying Bitstamp API")  
+   
 
 
-
-@router.get('/api/v1/trxusdt',tags=["Coin_Price"])
-def binance_trxusdt(tron_Coin):
+@router.get('/api/v1/trx_usdt',tags=["Coin_Price"])
+def trx_usdt():
     base_url = "https://api.binance.com"
     path = "/api/v3/ticker/price"
     params = '?symbol=TRXUSDT'
@@ -292,9 +298,8 @@ def binance_trxusdt(tron_Coin):
         "coin": "TRX",
         "name": "TRON Coin",
         "rate_usdt": float(data['price']),
-        "coin_logo": "assets\/img\/trxusdt.png"
+        "coin_logo": "assets\/img\/trx.png"
     }
-    
     
 @router.get('/api/v1/btcusdt',tags=["Coin_Price"])
 def binance_btcusdt():
@@ -376,17 +381,14 @@ listData = [
         "coin_logo": "assets\/img\/ether.png"
     },
     {
-        "coin": "BNB",
-        "name": "Binance Coin",
-        "rate": get_bnb_usdt_price("Binance_Coin"),
-        "coin_logo": "assets\/img\/bnb.png"
-    
+        
+       "rate":bnb_usdt(),
+        
     },
     {
-        "coin": "TXR",
-        "name": "TRON Coin",
-        "rate": binance_trxusdt("tron_Coin"),
-        "coin_logo": "assets\/img\/txr.png"
+        
+     "rate":trx_usdt(),
+      
     
     }
 ]
