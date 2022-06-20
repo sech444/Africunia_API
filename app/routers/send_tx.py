@@ -124,7 +124,7 @@ def create_Order(symbol: str = Form(...),buy_or_sell: str = Form(...),quantity: 
         return{"data" : json.dumps(data, indent=2)}
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid ETH wallet check the wallet and try again")
+                                detail=f"Not a valid tarnsation check the symbol and try again")
           
     
 
