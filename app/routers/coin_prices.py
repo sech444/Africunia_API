@@ -312,7 +312,7 @@ def binance_btcusdt():
         "coin": "BTC",
         "name": "Bitcoin",
         "rate_usdt": float(data['price']),
-        "coin_logo": "assets\/img\/btcusdt.png"
+        "coin_logo": "assets/img/btcusdt.png"
     }  
     
     
