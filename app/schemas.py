@@ -134,7 +134,7 @@ class Coin_addr(str, Enum):
 
 
 
-#print(df[0][0])
+print(df[0][0])
 class Coin_symbol(str, Enum):
     coin_smbol00 = "AFCASH"
     coin_smbol0 = df[1][0]['symbol']
