@@ -1,5 +1,5 @@
 from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
-from .routers import coin_prices, coin_wallets, send_tx, web_hook
+from .routers import coin_prices, coin_wallets, send_tx, web_hook, swap
 from . import models
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -40,4 +40,5 @@ app.include_router(coin_prices.router)
 app.include_router(coin_wallets.router)
 app.include_router(send_tx.router)
 app.include_router(web_hook.router)
+app.include_router(swap.router)
     
