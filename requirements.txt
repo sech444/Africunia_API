@@ -147,6 +147,7 @@ olefile==0.46
 orderedset==2.0.3
 orjson==3.6.6
 packaging==21.3
+pandas==1.4.3
 parsimonious==0.8.1
 parso==0.7.1
 pastel==0.2.1
