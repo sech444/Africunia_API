@@ -43,7 +43,7 @@ async def index(background_tasks: BackgroundTasks):
         "coin": "BTC",
         "name": "Bitcoin",
         "rate": get_price("bitcoin"),
-        "coin_logo": "assets/img/btc.png"
+        "coin_logo": "assets\/img\/btc.png"
     }
     
 
@@ -78,7 +78,7 @@ async def index_bch(background_tasks: BackgroundTasks):
         "coin": "BCH",
         "name": "Bitcoin Cash",
         "rate": get_price_bch("bitcoin_cash"),
-        "coin_logo": "assets/img/bch.png"
+        "coin_logo": "assets\/img\/bch.png"
     }
     
 
@@ -115,7 +115,7 @@ async def index_eth(background_tasks: BackgroundTasks):
         "coin": "eth",
         "name": "Ethereum",
         "rate": get_ether_coin_Price("ether"),
-        "coin_logo": "assets/img/ether.png"
+        "coin_logo": "assets\/img\/ether.png"
     }
 
 
@@ -150,7 +150,7 @@ async def index_Stellar(background_tasks: BackgroundTasks):
         "coin": "xlm",
         "name": "Stellar",
         "rate": get_xlmu_Price("stellar"),
-        "coin_logo": "assets/img/xlm.png"
+        "coin_logo": "assets\/img\/xlm.png"
         }
     
 
@@ -185,7 +185,7 @@ async def index_ltc(background_tasks: BackgroundTasks):
         "coin": "ltc",
         "name": "Litecoin",
         "rate": get_Ltccoin_Price('litercoin'),
-        "coin_logo": "assets/img/ltc.png"
+        "coin_logo": "assets\/img\/ltc.png"
     }
     
 
@@ -219,7 +219,7 @@ async def index_xrp(background_tasks: BackgroundTasks):
         "coin": "xrp",
         "name": "Proton",
         "rate": get_xrp_price("Ripple"),
-        "coin_logo": "assets/img/xrp.png"
+        "coin_logo": "assets\/img\/xrp.png"
     }
    
     
@@ -262,7 +262,7 @@ async def index_dash(background_tasks: BackgroundTasks):
         "coin": "dash",
         "name": "Dash",
         "rate": float(getDashcoinPrice("crypto_dash")),
-        "coin_logo": "assets/img/dash.png"
+        "coin_logo": "assets\/img\/dash.png"
     } 
     
     
@@ -275,17 +275,17 @@ def bnb_usdt():
         r = requests.get(base_url+path+params)
         data = r.json()
         priceFloat = float(data['price'])
+        print(priceFloat)
         #return priceFloat
         return {
         "coin": "BNB",
         "name": "Binance Coin",
-        "rate_usdt": priceFloat,
-        "coin_logo": "assets/img/bnb.png"
+        "rate": priceFloat,
+        "coin_logo": "assets\/img\/bnb.png"
     }
     except requests.ConnectionError:
         print("Error querying Bitstamp API")  
    
-
 
 @router.get('/api/v1/trx_usdt',tags=["Coin_Price"])
 def trx_usdt():
@@ -298,7 +298,7 @@ def trx_usdt():
         "coin": "TRX",
         "name": "TRON Coin",
         "rate_usdt": float(data['price']),
-        "coin_logo": "assets/img/trx.png"
+        "coin_logo": "assets\/img\/trx.png"
     }
     
 @router.get('/api/v1/btcusdt',tags=["Coin_Price"])
@@ -312,7 +312,7 @@ def binance_btcusdt():
         "coin": "BTC",
         "name": "Bitcoin",
         "rate_usdt": float(data['price']),
-        "coin_logo": "assets/img/btcusdt.png"
+        "coin_logo": "assets\/img\/btcusdt.png"
     }  
     
     
@@ -334,7 +334,22 @@ def all_coin():
                                 detail=f"Not a valid eth wallet check the wallet and try again")
     return{"coins" : json_formatted_str}
 
+base_url = "https://api.binance.com"
+path ="/api/v3/ticker/price"
+params = '?symbol=BNBUSDT'
+r = requests.get(base_url+path+params)
+data = r.json()
+priceFloat = float(data['price'])
+#print(priceFloat)
 
+
+base_url = "https://api.binance.com"
+path ="/api/v3/ticker/price"
+params = '?symbol=TRXUSDT'
+r = requests.get(base_url+path+params)
+data = r.json()
+priceFloat2 = float(data['price'])
+#print(priceFloat2)
 
 
 listData = [
@@ -380,16 +395,16 @@ listData = [
         "rate": get_ether_coin_Price("ether"),
         "coin_logo": "assets/img/ether.png"
     },
-    {
-        
-       "rate":bnb_usdt(),
-        
+     {
+        "coin": "BNB",
+        "name": "Binance Coin",
+        "rate": priceFloat,
+        "coin_logo": "assets/img/ether.png"
     },
     {
-        
-     "rate":trx_usdt(),
-      
-    
+        "coin": "TRX",
+        "name": "TRON Coin",
+        "rate": priceFloat2,
+        "coin_logo": "assets\\/img\\/trx.png"
     }
 ]
-
