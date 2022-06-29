@@ -56,9 +56,12 @@ df = pd.DataFrame(list(df2))
 print(df)
 
 @router.post("/api/v1/get_swap", tags=["Transaction"])
-async def get_model(model_name: Coin_symbol, Coun: Coin_symbol,):#account_to_swap:float = Form(...),account_from:str =Form(...),account_to:str = Form(...), private_key: str=Form(...)):
+async def get_model(model_name: Coin_symbol, Coun: Coin_symbol,account_to_swap:float = Form(...),account_from:str =Form(...),account_to:str = Form(...), private_key: str=Form(...)):
     TokenA = model_name.value
     TokenB = Coun.value
+    accountToswap = account_to_swap
+    accountFrom = account_from
+    privateKey = private_key
     if model_name.value != Coun.value :
         print(model_name.value, Coun.value)
         pass #return model_name.value, Coun.value
