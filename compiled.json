@@ -1,4 +1,4 @@
-[{
+{
     "USDT": {
         "name": "Tether USD",
         "addr": "0x55d398326f99059fF775485246999027B3197955",
@@ -84,466 +84,473 @@
         "price": "0.550016232791439513370036386581",
         "price_BNB": "0.002553828931797421995569512084903"
     },
-    "0x8bF9dC93b6f81A5FC70D0b451596fD2B09Fe92c3": {
+    "TAU" : {
         "name": "TAU Token",
-        "symbol": "TAU",
+        "addr": "0x8bF9dC93b6f81A5FC70D0b451596fD2B09Fe92c3",
         "price": "2.737755399163464996307852165273",
         "price_BNB": "0.01259466888261943114602408456185"
     },
-    "0x9a3321E1aCD3B9F6debEE5e042dD2411A1742002": {
+    "AFP": {
         "name": "PIGS Token",
-        "symbol": "AFP",
+        "addr": "0x9a3321E1aCD3B9F6debEE5e042dD2411A1742002",
         "price": "70.2693243035968125013694384733",
         "price_BNB": "0.326512201313266664374327925644"
     },
-    "0x7268B479eb7CE8D1B37Ef1FFc3b82d7383A1162d": {
+    "MEB" : {
         "name": "Meblox Protocol",
-        "symbol": "MEB",
+        "addr": "0x7268B479eb7CE8D1B37Ef1FFc3b82d7383A1162d",
         "price": "0.110968323220017915115822378626",
         "price_BNB": "0.0005152446463271450010944800394365"
     },
-    "0x85EAC5Ac2F758618dFa09bDbe0cf174e7d574D5B": {
+    "TRX": {
         "name": "TRON",
-        "symbol": "TRX",
+        "addr":"0x85EAC5Ac2F758618dFa09bDbe0cf174e7d574D5B",
         "price": "0.063284333797713721633299445867",
         "price_BNB": "0.0002940558677874949247660851387142"
     },
-    "0xE283D0e3B8c102BAdF5E8166B73E02D96d92F688": {
+    "ELEPHANT" : {
         "name": "Elephant Money",
-        "symbol": "ELEPHANT",
+        "addr":"0xE283D0e3B8c102BAdF5E8166B73E02D96d92F688",
         "price": "0.0000000644146630236073051055573044812",
         "price_BNB": "0.000000000297794576985850073147174848865"
     },
-    "0xD40bEDb44C081D2935eebA6eF5a3c8A31A1bBE13": {
+    "HERO": {
         "name": "Metahero",
-        "symbol": "HERO",
+        "addr": "0xD40bEDb44C081D2935eebA6eF5a3c8A31A1bBE13",
         "price": "0.00869211371051536479963537537789",
         "price_BNB": "0.0000403527752218456776531211251341"
     },
-    "0xDBdC73B95cC0D5e7E99dC95523045Fc8d075Fb9e": {
+    "DOGS": {
         "name": "DOGS",
-        "symbol": "DOGS",
+        "addr": "0xDBdC73B95cC0D5e7E99dC95523045Fc8d075Fb9e",
         "price": "24.23845788445591191904679481556",
         "price_BNB": "0.1134340522705555096945052328607"
     },
-    "0xE9c7a827a4bA133b338b844C19241c864E95d75f": {
+    "FSV": {
         "name": "FileSystemVideo",
-        "symbol": "FSV",
+        "addr": "0xE9c7a827a4bA133b338b844C19241c864E95d75f",
         "price": "4.585893385753586594886848525604",
         "price_BNB": "0.02108913014215913334170316398056"
     },
-    "0x51E6Ac1533032E72e92094867fD5921e3ea1bfa0": {
+    "LUCA": {
         "name": "LUCA",
-        "symbol": "LUCA",
+        "addr": "0x51E6Ac1533032E72e92094867fD5921e3ea1bfa0",
         "price": "5.07076100649667398157168195229",
         "price_BNB": "0.02354068518280271751628211514736"
     },
-    "0x64619f611248256F7F4b72fE83872F89d5d60d64": {
+    "QUINT": {
         "name": "QUINT",
-        "symbol": "QUINT",
+        "addr": "0x64619f611248256F7F4b72fE83872F89d5d60d64",
         "price": "1.367900186869782252174646256282",
         "price_BNB": "0.00632091571931787362352837721167"
     },
-    "0x26619FA1d4c957C58096bBbeCa6588dCFB12E109": {
+    "TIME" : {
         "name": "TIME",
-        "symbol": "TIME",
+        "addr": "0x26619FA1d4c957C58096bBbeCa6588dCFB12E109",
         "price": "0.2391337630496741309759746725275",
         "price_BNB": "0.001103991889042663391547605284104"
     },
-    "0x486eB84e0C8469197A2f392B633C51b401abf757": {
+    "TIGER" : {
         "name": "TIGER",
-        "symbol": "TIGER",
+        "addr": "0x486eB84e0C8469197A2f392B633C51b401abf757",
         "price": "68.2766801613336218268101683785",
         "price_BNB": "0.316982251107894463520118905289"
     },
-    "0x9131066022B909C65eDD1aaf7fF213dACF4E86d0": {
+    "LAND": {
         "name": "META-UTOPIA LAND",
-        "symbol": "LAND",
+        "addr": "0x9131066022B909C65eDD1aaf7fF213dACF4E86d0",
         "price": "28.8380990896562011377978196807",
         "price_BNB": "0.1339877538995440117870971313646"
     },
-    "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3": {
+    "DAI": {
         "name": "Dai Token",
-        "symbol": "DAI",
+        "addr": "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3",
         "price": "1.002595443319722663636634969383",
         "price_BNB": "0.004657603012811749251148379137096"
     },
-    "0x3b248CEfA87F836a4e6f6d6c9b42991b88Dc1d58": {
+    "EMP": {
         "name": "emp.money",
-        "symbol": "EMP",
+        "addr": "0x3b248CEfA87F836a4e6f6d6c9b42991b88Dc1d58",
         "price": "0.219152770497188011220984955632",
         "price_BNB": "0.001018142632807051326574225731609"
     },
-    "0xb78B7E82B074C267Dd487db293A8Faf831aE2D71": {
+    "ELV " : {
         "name": "ELVES",
-        "symbol": "ELV ",
+        "addr": "0xb78B7E82B074C267Dd487db293A8Faf831aE2D71",
         "price": "1.32707105498027198104564689656",
         "price_BNB": "0.00610957859812100830757006341685"
     },
-    "0x09BB6042A19BB3A6981e9a47EC0f006dBd28a8d1": {
+    "DEX" : {
         "name": "WEDEX TOKEN V2",
-        "symbol": "DEX",
+        "addr":"0x09BB6042A19BB3A6981e9a47EC0f006dBd28a8d1",
         "price": "0.510581270560279244900067709759",
         "price_BNB": "0.002349432251357416342097086747082"
     },
-    "0xaE21BFe30aFf40A66Bc9a950D61C1a6B1c82Ad2A": {
+    "FUT" : {
         "name": "FUT",
-        "symbol": "FUT",
+        "addr": "0xaE21BFe30aFf40A66Bc9a950D61C1a6B1c82Ad2A",
         "price": "1874.323900832389470444713070315",
         "price_BNB": "8.61532664127811651226213139681"
     },
-    "0xdd325C38b12903B727D16961e61333f4871A70E0": {
+    "TRUNK" : {
         "name": "Elephant Money Stable",
-        "symbol": "TRUNK",
+        "addr":"0xdd325C38b12903B727D16961e61333f4871A70E0" ,
         "price": "0.3551926384307178728961046282887",
         "price_BNB": "0.001648965794572017564296257567157"
     },
-    "0xB2F53069E1555793481aAfe639F8E274f4Ec8435": {
+    "BSC-ZEED" : {
         "name": "Binance-Peg BSC-ZEED",
-        "symbol": "BSC-ZEED",
+        "addr": "0xB2F53069E1555793481aAfe639F8E274f4Ec8435",
         "price": "6.93821750728781653836844412876",
         "price_BNB": "0.0319238309315412420021448746878"
     },
-    "0x20f663CEa80FaCE82ACDFA3aAE6862d246cE0333": {
+    "DRIP" : {
         "name": "DRIP Token",
-        "symbol": "DRIP",
+        "addr": "0x20f663CEa80FaCE82ACDFA3aAE6862d246cE0333",
         "price": "8.31585827444015343764684932008",
         "price_BNB": "0.03864008222340195772803990786516"
     },
-    "0xD41FDb03Ba84762dD66a0af1a6C8540FF1ba5dfb": {
+    "SFP": {
         "name": "SafePal Token",
-        "symbol": "SFP",
+        "addr": "0xD41FDb03Ba84762dD66a0af1a6C8540FF1ba5dfb",
         "price": "0.36886426979672473600695750501",
         "price_BNB": "0.001709931990773016322512081074568"
     },
-    "0x3019BF2a2eF8040C242C9a4c5c4BD4C81678b2A1": {
+    "GMT" : {
         "name": "Green Metaverse Token",
-        "symbol": "GMT",
+        "addr": "0x3019BF2a2eF8040C242C9a4c5c4BD4C81678b2A1",
         "price": "0.768350314407299031862365002959",
         "price_BNB": "0.003569508278033831574340705327835"
     },
-    "0xE5bA47fD94CB645ba4119222e34fB33F59C7CD90": {
+    "SAFUU" : {
         "name": "Safuu",
-        "symbol": "SAFUU",
+        "addr": "0xE5bA47fD94CB645ba4119222e34fB33F59C7CD90",
         "price": "9.74380075267750915710558845843",
         "price_BNB": "0.0452755694918232114266333540225"
     },
-    "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402": {
+    "DOT" : {
         "name": "Polkadot Token",
-        "symbol": "DOT",
+        "addr": "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402",
         "price": "7.55182824484833103087362853252",
         "price_BNB": "0.03488899679790081221982020635204"
     },
-    "0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD": {
+    "LINK" : {
         "name": "ChainLink Token",
-        "symbol": "LINK",
+        "addr": "0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD",
         "price": "6.59543513487990435205800677137",
         "price_BNB": "0.03045108870604440641070314921362"
     },
-    "0x477bC8d23c634C154061869478bce96BE6045D12": {
+    "SFUND" : {
         "name": "SeedifyFund",
-        "symbol": "SFUND",
+        "addr": "0x477bC8d23c634C154061869478bce96BE6045D12",
         "price": "1.067397159206998692957379470442",
         "price_BNB": "0.004948517315110004702403665931937"
     },
-    "0x5CA42204cDaa70d5c773946e69dE942b85CA6706": {
+    "POSI": {
         "name": "Position Token",
-        "symbol": "POSI",
+        "addr": "0x5CA42204cDaa70d5c773946e69dE942b85CA6706",
         "price": "0.1780731877351861946822444863956",
         "price_BNB": "0.0008272026336260434763915470459245"
     },
-    "0x0B165eD2633E08FE5e778E085e95C1C9b52e300D": {
+    "FLS" : {
         "name": "Flames",
-        "symbol": "FLS",
+        "addr": "0x0B165eD2633E08FE5e778E085e95C1C9b52e300D",
         "price": "35.83267069170262465161609034887",
         "price_BNB": "0.1647250450585196845786342678563"
     },
-    "0x1AE369A6AB222aFF166325B7b87Eb9aF06C86E57": {
+    "10SET" : {
         "name": "10Set Token",
-        "symbol": "10SET",
+        "addr":  "0x1AE369A6AB222aFF166325B7b87Eb9aF06C86E57",
         "price": "3.26918828044805619026666700725",
         "price_BNB": "0.01518767954025969760740462388963"
     },
-    "0xeacAd6c99965cDE0f31513dd72DE79FA24610767": {
+    "MSC" : {
         "name": "MetaSwap",
-        "symbol": "MSC",
+        "addr":"0xeacAd6c99965cDE0f31513dd72DE79FA24610767",
         "price": "107.7544691304775419872089557866",
         "price_BNB": "0.4973411081827414415635159094107"
     },
-    "0xbA552586eA573Eaa3436f04027ff4effd0c0abbb": {
+    "MEER" : {
         "name": "Meer (bsc)",
-        "symbol": "MEER",
+        "addr": "0xbA552586eA573Eaa3436f04027ff4effd0c0abbb",
         "price": "17.11391543444867417265372070805",
         "price_BNB": "0.0787839938655017995424386815143"
     },
-    "0xC9EF9C76b2df7b544D6c0A4ca0fe92C0EC66c3c5": {
+    "STONE": {
         "name": "Stone DAO Token",
-        "symbol": "STONE",
+        "addr": "0xC9EF9C76b2df7b544D6c0A4ca0fe92C0EC66c3c5",
         "price": "0.01335698546397197582522802810269",
         "price_BNB": "0.0000617380530712937949510054352778"
     },
-    "0x4a2c860cEC6471b9F5F5a336eB4F38bb21683c98": {
+    "GST" : {
         "name": "GreenSatoshiToken",
-        "symbol": "GST",
+        "addr": "0x4a2c860cEC6471b9F5F5a336eB4F38bb21683c98",
         "price": "0.3971415464245306498158316547764",
         "price_BNB": "0.001845350895872937961700499484585"
     },
-    "0xc212D39E35F22F259457bE79Fc2D822FA7122e6e": {
+    "CBET" : {
         "name": "CBET",
-        "symbol": "CBET",
+        "addr": "0xc212D39E35F22F259457bE79Fc2D822FA7122e6e",
         "price": "0.0000001008439263045407644324138546692",
         "price_BNB": "0.000000000519139480279188088698530653611"
     },
-    "0x5Ad04Ad0fDB383fe0e939690D8ce9fCbBE0E3CA8": {
+    "FA": {
         "name": "FA.CASH",
-        "symbol": "FA",
+        "addr": "0x5Ad04Ad0fDB383fe0e939690D8ce9fCbBE0E3CA8",
         "price": "0.0478507993885653312974093978441",
         "price_BNB": "0.0002206316584151807009094007016764"
     },
-    "0xBA96731324dE188ebC1eD87ca74544dDEbC07D7f": {
+    "TITANO" : {
         "name": "Titano",
-        "symbol": "TITANO",
+        "addr": "0xBA96731324dE188ebC1eD87ca74544dDEbC07D7f",
         "price": "0.04115207297660468485848603431186",
         "price_BNB": "0.0001899981348233376137147167845963"
     },
-    "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47": {
+    "ADA" : {
         "name": "Cardano Token",
-        "symbol": "ADA",
+        "addr":"0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
         "price": "0.4643702043245251224993207903163",
         "price_BNB": "0.002155819558798240626303893792013"
     },
-    "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE": {
+    "XRP" : {
         "name": "XRP Token",
-        "symbol": "XRP",
+        "addr": "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
         "price": "0.3205199966195286486661347091447",
         "price_BNB": "0.001489313389231475040720700173405"
     },
-    "0x78F5d389F5CDCcFc41594aBaB4B0Ed02F31398b3": {
+    "APX" : {
         "name": "ApolloX Token",
-        "symbol": "APX",
+        "addr":"0x78F5d389F5CDCcFc41594aBaB4B0Ed02F31398b3" ,
         "price": "0.04034606302350186948086420249105",
         "price_BNB": "0.0001872292812060764288272292039646"
     },
-    "0xC001BBe2B87079294C63EcE98BdD0a88D761434e": {
+    "EGC": {
         "name": "EverGrow Coin",
-        "symbol": "EGC",
+        "addr": "0xC001BBe2B87079294C63EcE98BdD0a88D761434e",
         "price": "0.0000001233243656103198647359892353056",
         "price_BNB": "0.0000000005698303038602932549833577136535"
     },
-    "0x12BB890508c125661E03b09EC06E404bc9289040": {
+    "RACA" : {
         "name": "Radio Caca V2",
-        "symbol": "RACA",
+        "addr": "0x12BB890508c125661E03b09EC06E404bc9289040",
         "price": "0.0003677858246899237023289384150488",
         "price_BNB": "0.0000017088086077634729321824329331"
     },
-    "0xF0b9ED3C1EA27f00902438b73c8B40FF273dA1d8": {
+    "BHP" : {
         "name": "Black Hole Prince",
-        "symbol": "BHP",
+        "addr": "0xF0b9ED3C1EA27f00902438b73c8B40FF273dA1d8",
         "price": "805.489072515127555822455596565",
         "price_BNB": "3.714200448873989890391141644535"
     },
-    "0x9B1188e01B45a283CdE53888ED1558FB6f9ae692": {
+    "FFF": {
         "name": "First Free Finance",
-        "symbol": "FFF",
+        "addr":"0x9B1188e01B45a283CdE53888ED1558FB6f9ae692",
         "price": "1.212563932406299086968197391028",
         "price_BNB": "0.00557446033574086561499611625841"
     },
-    "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F": {
+    "ALPACA" : {
         "name": "AlpacaToken",
-        "symbol": "ALPACA",
+        "addr":"0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F", 
         "price": "0.2053476778666351707875244421438",
         "price_BNB": "0.000953033707783553634691986883691"
     },
-    "0x02fF5065692783374947393723dbA9599e59F591": {
+    "YOOSHI" : {
         "name": "YOOSHI",
-        "symbol": "YOOSHI",
+        "addr": "0x02fF5065692783374947393723dbA9599e59F591",
         "price": "0.0000000860529270725990912562518053759",
         "price_BNB": "0.000000000399786315695280884037050804309"
     },
-    "0xBf5140A22578168FD562DCcF235E5D43A02ce9B1": {
+    "UNI" : {
         "name": "Uniswap",
-        "symbol": "UNI",
+        "addr":"0xBf5140A22578168FD562DCcF235E5D43A02ce9B1",
         "price": "5.09152798530940059990671117172",
         "price_BNB": "0.02362904957293793456134616472477"
     },
-    "0xF02188236708F2461E4ea726F9229fE4596be698": {
+    "inSF" : {
         "name": "inSF",
-        "symbol": "inSF",
+        "addr": "0xF02188236708F2461E4ea726F9229fE4596be698",
         "price": "0.627061608712993943271267182984",
         "price_BNB": "0.00288270802122709929715759297379"
     },
-    "0xc9C8050639c4cC0DF159E0e47020d6e392191407": {
+    "MOS" : {
         "name": "MOS Token",
-        "symbol": "MOS",
+        "addr": "0xc9C8050639c4cC0DF159E0e47020d6e392191407",
         "price": "11.20947293116923032360617894449",
         "price_BNB": "0.05239398841894998746118963281667"
     },
-    "0xD6c7fbd02752E41D9B6000193668c16470FeFd7D": {
+    "DOXY": {
         "name": "Doxy Finance",
-        "symbol": "DOXY",
+        "addr": "0xD6c7fbd02752E41D9B6000193668c16470FeFd7D" ,
         "price": "3.206983012515940491458529602668",
         "price_BNB": "0.01479003623946484250734511949156"
     },
-    "0xBfACD29427fF376FF3BC22dfFB29866277cA5Fb4": {
+    "PSTN" : {
         "name": "PISTON",
-        "symbol": "PSTN",
+        "addr": "0xBfACD29427fF376FF3BC22dfFB29866277cA5Fb4",
         "price": "7.716540511165902167812200726555",
         "price_BNB": "0.0357697205075333401476441812387"
     },
-    "0xE0e514c71282b6f4e823703a39374Cf58dc3eA4f": {
+    "BELT" : {
         "name": "BELT Token",
-        "symbol": "BELT",
+        "addr": "0xE0e514c71282b6f4e823703a39374Cf58dc3eA4f",
         "price": "0.389594127251597587552936280848",
         "price_BNB": "0.00179384233580292886143348746687"
     },
-    "0x8AC9DC3358A2dB19fDd57f433ff45d1fc357aFb3": {
+    "NMS" : {
         "name": "Nemesis DAO",
-        "symbol": "NMS",
+        "addr": "0x8AC9DC3358A2dB19fDd57f433ff45d1fc357aFb3",
         "price": "7.72958213441445183353850562872",
         "price_BNB": "0.0359132321985714705060150706993"
     },
-    "0xbA2aE424d960c26247Dd6c32edC70B295c744C43": {
+    "DOGE" : {
         "name": "Dogecoin",
-        "symbol": "DOGE",
+        "addr": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
         "price": "0.06186924024625462929104496060744",
         "price_BNB": "0.0002874538813854403530856367403577"
     },
-    "0x697bd938e7E572E787ecd7bC74a31f1814C21264": {
+    "DIFX" : {
         "name": "DigitalFinancialExch",
-        "symbol": "DIFX",
+        "addr": "0x697bd938e7E572E787ecd7bC74a31f1814C21264",
         "price": "0.2996452722906894222009466318822",
         "price_BNB": "0.001392015824822428412389276873498"
     },
-    "0xf3Bef262E70D200080AE795f41261756058d289A": {
+    "Olink" : {
         "name": "Olink",
-        "symbol": "Olink",
+        "addr": "0xf3Bef262E70D200080AE795f41261756058d289A",
         "price": "17.53309421716079328060855497015",
         "price_BNB": "0.0807237136481937347400648285809"
     },
-    "0x85973C97919c999E5D3d8832290152a3ACdf8a6E": {
+    "peace" : {
         "name": "peace",
-        "symbol": "peace",
+        "addr": "0x85973C97919c999E5D3d8832290152a3ACdf8a6E",
         "price": "3.450231291699120544539706396313",
         "price_BNB": "0.01587755747742194403169811237443"
     },
-    "0xFdc7a089CD7463dd6be155A7f3f21CF10338B888": {
+    "CF" : {
         "name": "CF Token",
-        "symbol": "CF",
+        "addr": "0xFdc7a089CD7463dd6be155A7f3f21CF10338B888",
         "price": "2.296448101939731419559263709174",
         "price_BNB": "0.01057360102072991777575109746046"
     },
-    "0x2cD96e8C3FF6b5E01169F6E3b61D28204E7810Bb": {
+    "LBlock" : {
         "name": "LuckyBlock",
-        "symbol": "LBlock",
+        "addr": "0x2cD96e8C3FF6b5E01169F6E3b61D28204E7810Bb",
         "price": "0.000978566581050141823254208869434",
         "price_BNB": "0.00000454597583352728431068596224085"
     },
-    "0xB82BEb6Ee0063Abd5fC8E544c852237aA62CBb14": {
+    "SQUA" : {
         "name": "Square Token",
-        "symbol": "SQUA",
+        "addr":"0xB82BEb6Ee0063Abd5fC8E544c852237aA62CBb14",
         "price": "15.23170474756026584628534814427",
         "price_BNB": "0.0707753277660780720477667873358"
     },
-    "0x6d349929aFFB41Ba0b542a5981b24B426badF0a2": {
+    "AKW" : {
         "name": "ARK WORLD",
-        "symbol": "AKW",
+        "addr": "0x6d349929aFFB41Ba0b542a5981b24B426badF0a2",
         "price": "0.849804965713332731372523556263",
         "price_BNB": "0.003920401765979392103966498022905"
     },
-    "0x2BC238ac402D54c18e6542D83D6456777CE0e04a": {
+    "YFNT" : {
         "name": "YFNT",
-        "symbol": "YFNT",
+        "addr":"0x2BC238ac402D54c18e6542D83D6456777CE0e04a",
         "price": "139.9126632075857188425463260955",
         "price_BNB": "0.6515931702124560854168696170994"
     },
-    "0xEE6cacDDd3A9370d87dB581EE6728226883578e5": {
+    "JST": {
         "name": "Jump Satoshi Token",
-        "symbol": "JST",
+        "addr": "0xEE6cacDDd3A9370d87dB581EE6728226883578e5",
         "price": "5.068717287528841064277164419306",
         "price_BNB": "0.0235522122318307109836064809831"
     },
-    "0x0801bC05E73Fa618084eD9e2BC39B62E596CDA24": {
+    "UNG" : {
         "name": "Union God",
-        "symbol": "UNG",
+        "addr": "0x0801bC05E73Fa618084eD9e2BC39B62E596CDA24",
         "price": "1.357826523540748597060357495177",
         "price_BNB": "0.00624395872617537865582159978589"
     },
-    "0xcB1fB6DD943BFF519e2FF6F3C0B38E81ac381603": {
+    "MUK ": {
         "name": "Multi Union Kingdom",
-        "symbol": "MUK",
+        "addr": "0xcB1fB6DD943BFF519e2FF6F3C0B38E81ac381603 ",
         "price": "5.57845219079933829932630836942",
         "price_BNB": "0.02591470617654683375181351574616"
     },
-    "0xA2a26349448ddAfAe34949a6Cc2cEcF78c0497aC": {
+    "TSC": {
         "name": "TrusterCoin",
-        "symbol": "TSC",
+        "addr": "0xA2a26349448ddAfAe34949a6Cc2cEcF78c0497aC",
         "price": "0.0025272245586714354906329453072",
         "price_BNB": "0.0000116334145692973410791361788557"
     },
-    "0xB19463ad610ea472a886d77a8ca4b983E4fAf245": {
+    "YYDS" : {
         "name": "YYDS Token",
-        "symbol": "YYDS",
+        "addr": "0xB19463ad610ea472a886d77a8ca4b983E4fAf245",
         "price": "1556.63173865333338194611749352",
         "price_BNB": "7.182714978280314051693043421116"
     },
-    "0x2629C46C0700222A18194B5eDE91752FaB626631": {
+    "GXY" : {
         "name": "Galaxy Coin",
-        "symbol": "GXY",
+        "addr": "0x2629C46C0700222A18194B5eDE91752FaB626631",
         "price": "1.103468197595030956351717371477",
         "price_BNB": "0.005074615680437798011029795357515"
     },
-    "0x6f9F0c4ad9Af7EbD61Ac5A1D4e0F2227F7B0E5f9": {
+    "ERA" : {
         "name": "Era Token",
-        "symbol": "ERA",
+        "addr":"0x6f9F0c4ad9Af7EbD61Ac5A1D4e0F2227F7B0E5f9" ,
         "price": "0.1855639425874167051972808826",
         "price_BNB": "0.0008622370957518349793974717071455"
     },
-    "0x3a0d9d7764FAE860A659eb96A500F1323b411e68": {
+    "GYMNET" : {
         "name": "GYM NETWORK",
-        "symbol": "GYMNET",
+        "addr": "0x3a0d9d7764FAE860A659eb96A500F1323b411e68",
         "price": "0.0837378464834791544312481910933",
         "price_BNB": "0.00038902249480238681744528922602"
     },
-    "0xb3a6381070B1a15169DEA646166EC0699fDAeA79": {
+    "Gold": {
         "name": "CyberDragon Gold",
-        "symbol": "Gold",
+        "addr": "0xb3a6381070B1a15169DEA646166EC0699fDAeA79",
         "price": "0.01357051297852660724737496384444",
         "price_BNB": "0.0000630461127796574346955721793805"
     },
-    "0x8E9b87caD37610D60120A1f48AA1036e24a3831a": {
+    "XPS" : {
         "name": "X-PARALLEL SPACE",
-        "symbol": "XPS",
+        "addr":"0x8E9b87caD37610D60120A1f48AA1036e24a3831a",
         "price": "300.375411051440038955494600893",
         "price_BNB": "1.395525033951272689009603946739"
     },
-    "0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7": {
+    "VAI" : {
         "name": "VAI Stablecoin",
-        "symbol": "VAI",
+        "addr": "0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7",
         "price": "0.9619400214373958998967532422935",
         "price_BNB": "0.004469371243903290406549961134447"
     },
-    "0x041E714Aa0DcE7d4189441896486d361e98BAD5f": {
+    "RCH" : {
         "name": "RichToken",
-        "symbol": "RCH",
+        "addr": "0x041E714Aa0DcE7d4189441896486d361e98BAD5f",
         "price": "0.0426490778888153362978237702729",
         "price_BNB": "0.0001977218767502122519627721830327"
     },
-    "0x829c09fCc46D9fd31967272ABA245BEF9f727F93": {
+    "USDEX" : {
         "name": "USDEX",
-        "symbol": "USDEX",
+        "addr": "0x829c09fCc46D9fd31967272ABA245BEF9f727F93",
         "price": "1.438352760927362293132111360296",
         "price_BNB": "0.00667564766744834491698821595994"
     },
-    "0x2aDc3468fc4149932DD16d0244B7228aA8EEAd5c": {
+    "DIAOS"  : {
         "name": "DIAOS",
-        "symbol": "DIAOS",
+        "addr": "0x2aDc3468fc4149932DD16d0244B7228aA8EEAd5c",
         "price": "1.564712900809354098947332278463",
         "price_BNB": "0.00727056933529472185408947076941"
     },
-    "0xffA905bb70B6d43CE7a8b84F2bA8e0a334B9765D": {
+    "MAS" : {
         "name": "Mas",
-        "symbol": "MAS",
+        "addr": "0xffA905bb70B6d43CE7a8b84F2bA8e0a334B9765D",
         "price": "609.287384159570958512091562175",
         "price_BNB": "2.816610806951389372214642244366"
-    }}
-]
+},
+"AFCASH" : {
+    "name": "Mas",
+    "addr": "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b",
+    "price": "1.564712900809354098947332278463",
+    "price_BNB": "0.00667564766744834491698821595994"
+
+    }
+}

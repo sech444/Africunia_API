@@ -1,4 +1,5 @@
 from email.headerregistry import Address
+from importlib.machinery import DEBUG_BYTECODE_SUFFIXES
 import json
 from lib2to3.pygram import Symbols
 from locale import D_FMT
@@ -13,7 +14,8 @@ from decimal import Decimal
 import pandas as pd
 from pythonpancakes import PancakeSwapAPI
 import csv
-
+#import itertools
+import requests as r
 ps = PancakeSwapAPI()
 
 
@@ -23,60 +25,11 @@ tokens =  ps.tokens()
 
 #print(tokens)
 
-data =tokens["data"] 
 
 with open("compiled.json", "r") as file:
     swap_Afcash_file = file.read()
-    print(swap_Afcash_file)
-
-#data2 = dict(data)
-#print(data2)
-# Display all elements each repeated by their number of count
-ordered_dict = OrderedDict(data)
-print(data["0x2aDc3468fc4149932DD16d0244B7228aA8EEAd5c"]['name'])
- 
-#data3 = {}
-# JSON file
-f = open ('compiled_code.json', "r")
-  
-# Reading from file
-data = json.loads(f.read())
-  
-# Iterating through the json
-# list
-for i in data["0x2aDc3468fc4149932DD16d0244B7228aA8EEAd5c"]['symbol']:
-    print(i)
-  
+    #print(swap_Afcash_file)
 # Closing file
-f.close()
-
-with open('compiled_code.json', 'w') as outfile:
-    json.dump(data, outfile)
-    #compiled_code = outfile.read()
-    #print(compiled_code)
-    
-with open("compiled_code.json", "r") as file:
-    Compiled_code = file.read()
-    #print(Compiled_code)df = pd.DataFrame(numpy.random.randn(5,3),columns=list('ABC'))df = pd.DataFrame(numpy.random.randn(5,3),columns=list('ABC'))
-#DataFrame.to_numpy
- 
-
-df = pd.DataFrame(data)#.to_numpy()
-fieldnames = ['symbol', 'address']
-l2 = df.head(91)
-#print(l2)
-for v in l2 :
-    print(v)
-#with open('compiled.json', 'w') as outfile:
-#    json.dump(l2, outfile)
-#print(df)
-#sym = df[1]['symbol']
-#for vals in df.head():
-    #print(vals)
-
-pdObj = pd.read_json('compiled_code.json', orient='index')
-
-pdObj.to_csv('pancake.csv', index=True )
 
 
 
