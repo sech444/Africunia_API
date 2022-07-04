@@ -2,11 +2,13 @@ from ast import Not
 from cmath import e
 from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
 import json
+from binance.exceptions import BinanceAPIException
 from typing import List, Optional
 import requests
 from web3 import Web3, EthereumTesterProvider,HTTPProvider
 from uuid import uuid4
 from bitcoin import *
+from binance.client import Client
 import binascii
 import time
 import hmac
@@ -15,7 +17,7 @@ from urllib.parse import urljoin, urlencode
 from eth_account import Account
 from cryptos import *
 from dotenv import load_dotenv
-import os 
+import os
 import re
 
 
@@ -37,6 +39,8 @@ headers = {
     'X-MBX-APIKEY': API_KEY
 }
 
+
+client = Client(API_KEY,SECRET_KEY )
 
 
 @router.post("/api/v1/get_eth_bals", tags=["Transaction"])
@@ -101,32 +105,64 @@ async def eth_tarnsaction(background_tasks:BackgroundTasks,account_from:str = Fo
     return {"New_tarnsation": new_data , }
 
 
-@router.post("/api/v1/create_Order", tags=["Transaction"])
-def create_Order(symbol: str = Form(...),buy_or_sell: str = Form(...),quantity: float = Form(...)):
-    
-    PATH = '/api/v3/order'
-    timestamp = int(time.time() * 1000)
-    params = {
-            'symbol': symbol.upper(),
-            'side': buy_or_sell.upper(),
-            'type': 'MARKET',
-            'quantity': quantity,
-            'timestamp': timestamp
-    }
+@router.post("/api/v1/create_Order_buy", tags=["Transaction"])
+def create_Order(symbol: str = Form(...),quantity: float = Form(...)):
+    try:
+        order = client.order_market_buy(
+                    symbol=symbol.upper(),
+                    quantity=quantity)
 
-    query_string = urlencode(params)
-    params['signature'] = hmac.new(SECRET_KEY.encode('utf-8'), query_string.encode('utf-8'), hashlib.sha256).hexdigest()
 
-    url = urljoin(BASE_URL, PATH)
-    r = requests.post(url, headers=headers, params=params)
-    if r.status_code == 200:
-        data = r.json()
-        return{"data" : json.dumps(data, indent=2)}
-    else:
+        return{"data" : json.dumps(order, indent=2)}
+    except BinanceAPIException as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid tarnsation check the symbol and try again")
-          
-    
+                                detail=f"Not a valid tarnsation check the symbol eg. BNBUSDT then quantity >= 10.38USDT and try again")
+
+
+@router.post("/api/v1/create_Order_sell", tags=["Transaction"])
+def create_Order(symbol: str = Form(...),quantity: float = Form(...)):
+    try:
+        order = client.order_market_sell(
+                    symbol=symbol.upper(),
+                    quantity=quantity)
+
+
+        return{"data" : json.dumps(order, indent=2)}
+    except BinanceAPIException as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid tarnsation check the symbol eg. BNBUSDT then quantity >= 10.38USDT and try again")
+
+
+@router.post("/api/v1/Order_status", tags=["Transaction"])
+def create_Order(symbol: str = Form(...),order_Id: int = Form(...)):
+    try:
+        order = client.get_order(
+            symbol=symbol.upper(),
+            orderId=order_Id)#4136872022)
+        
+        return{"data" : order}
+    except BinanceAPIException as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid tarnsation check the symbol eg. BNBUSDT then orderid eg. 4136872022 and try again")
+            
+     
+@router.post("/api/v1/asset_balance", tags=["Transaction"])
+def create_Order(asset_symbol: str = Form(...)):
+    try:   
+        bals = client.get_asset_balance(asset=asset_symbol.upper())
+        return{"data" : bals}
+    except BinanceAPIException as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid tarnsation check the asset symbol eg. BNB , USDT ")
+
+@router.post("/api/v1/get_deposit_address", tags=["Transaction"])
+def get_deposit_address(asset_symbol: str = Form(...)):
+    try:   
+        bals = client.get_deposit_address(coin=asset_symbol.upper())
+        return{"data" : bals}
+    except BinanceAPIException as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid tarnsation check the asset symbol eg. BNB , USDT ")
 
 
 @router.post("/api/v1/bnb_bals", tags=["Transaction"])
@@ -276,6 +312,21 @@ def _prepare_tx_lit(priv_key:str = Form(...), addr_from:str = Form(...), addr_to
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                     detail=f"Transaction error")
 
+
+@router.post("/api/v1/binance_withdraw", tags=["Transaction"])
+async def binance_withdraw(background_tasks:BackgroundTasks,Coin:str = Form(...), account_to: str = Form(...),value_to_send: float=Form(...)):
+    try:
+        # name parameter will be set to the asset value by the client if not passed
+        result = client.withdraw(
+            coin= Coin,
+            address = account_to,
+            amount= value_to_send)
+        return{"data": result}
+    except BinanceAPIException as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                    detail=f"Transaction error")
+
+
 @router.post("/api/v1/dash_transaction", tags=["Transaction"])
 def _preparetx_dash(priv_key:str = Form(...),  addr_to:str = Form(...), value:str = Form(...)):  #create unsigned txobj with change output
     c = Dash()
@@ -289,4 +340,3 @@ def _preparetx_dash(priv_key:str = Form(...),  addr_to:str = Form(...), value:st
     return{"data": data }
     
     
-
