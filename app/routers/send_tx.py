@@ -19,6 +19,7 @@ from cryptos import *
 from dotenv import load_dotenv
 import os
 import re
+import asyncio
 
 
 router = APIRouter()
@@ -125,12 +126,15 @@ def create_Order(symbol: str = Form(...),quantity: float = Form(...)):
         order = client.order_market_sell(
                     symbol=symbol.upper(),
                     quantity=quantity)
+        
+        asyncio.sleep(5)
 
 
         return{"data" : json.dumps(order, indent=2)}
     except BinanceAPIException as e:
+        print(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid tarnsation check the symbol eg. BNBUSDT then quantity >= 10.38USDT and try again")
+                                detail=f"Not a valid tarnsation check the symbol eg. BNBUSDT then quantity >= 10.38USDT or Account has insufficient balance for requested action, symbol like this BTCUSDT")
 
 
 @router.post("/api/v1/Order_status", tags=["Transaction"])
@@ -233,7 +237,7 @@ def bnb_tarnsaction(account_from:str = Form(...), account_to: str = Form(...),va
                                 detail=f"Not a valid ETH wallet check the wallet and try again")
     
     value_2 = int(float(value)) 
-    trans = bsc_w3.eth.get_balance(value_2)
+    trans = bsc_w3.eth.get_balance(account_1)
     _bal2_ = bsc_w3.fromWei(trans, 'ether')    
     if float(value) > _bal2_:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -255,6 +259,52 @@ def bnb_tarnsaction(account_from:str = Form(...), account_to: str = Form(...),va
     signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
     tx_hash =  bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     new_data= (bsc_w3.toHex(tx_hash))
+    return {"New_tarnsation": new_data , }
+
+
+
+@router.post("/api/v1/exl_afcash_tarnsaction", tags=["Transaction"])
+def exl_afcash(account_from:str = Form(...), account_to: str = Form(...),value_to_send: float=Form(...), private_key: str=Form(...)):
+    exl_url = "https://rpc.exlscan.com/"
+    bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
+    account_1 = account_from 
+    account_2 = account_to 
+    value    = value_to_send  
+    
+    adr_verify = bsc_w3.isChecksumAddress(account_from)
+    if not adr_verify:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Invaild wallet")
+        
+   
+    if not bsc_w3.isChecksumAddress(account_2):
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid ETH wallet check the wallet and try again")
+    print("building .....tx...2")
+    value_2 = int(float(value)) 
+    print("building .....tx...3" , value_2 )
+    trans = bsc_w3.eth.get_balance(account_1)
+    _bal2_ = w3.fromWei(trans, 'ether') 
+      
+    if float(value) >= _bal2_:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Insufficient ETH Funds")  
+        
+    private_key = private_key  
+    addr = account_2
+     
+    nonce = bsc_w3.eth.getTransactionCount(account_1)
+    tx = {
+                    'nonce': nonce,
+                    'to': account_2,
+                    'value': bsc_w3.toWei(value, 'ether'),
+                    'gas': 200000,
+                    'chainId': 27082022,
+                    'gasPrice': bsc_w3.toWei('1', 'gwei'),
+                }   
+    signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
+    tx_hash =  bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+    new_data= bsc_w3.toHex(tx_hash)
     return {"New_tarnsation": new_data , }
 
 

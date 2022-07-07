@@ -4,7 +4,7 @@ from typing import List, Optional
 from web3 import Web3, EthereumTesterProvider,HTTPProvider
 from cryptos import *
 import requests
-
+#from app.schemas import web_hook
 
 router = APIRouter()
 
@@ -12,10 +12,12 @@ router = APIRouter()
 w3 = Web3(Web3.HTTPProvider('https://rinkeby.infura.io/v3/bde4e3babba54474844b65de59d0a039'))
 
 
+
+
 @router.post('/api/v1/api/eth_webhook', tags=["WebHook"])
 def eth_transaction_receipt(tx_hash:str = Form(...),webhook_url:str = Form(...)) -> dict():
     receipt_ = w3.eth.get_transaction(tx_hash)
-    w3.toJSON(receipt_ )
+    w3.toJSON(receipt_ ['hash'])
     data = {
         'acc': 'transaction',
         'details': w3.toJSON(receipt_ ),
@@ -23,6 +25,22 @@ def eth_transaction_receipt(tx_hash:str = Form(...),webhook_url:str = Form(...))
     r=requests.post(webhook_url,data=json.dumps(data))
 
     return {"data" : w3.toJSON(receipt_ )}
+
+
+@router.post('/api/v1/api/exl_webhook', tags=["WebHook"])
+def transaction_receipt(tx_hash:str = Form(...),webhook_url:str = Form(...)) -> dict():
+    exl_url = "https://rpc.exlscan.com/"
+    bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
+    receipt_ = bsc_w3.eth.get_transaction(tx_hash)
+    data = {
+        'acc': 'transaction',
+        'details': bsc_w3.toJSON(receipt_ ),
+    }
+    r=requests.post(webhook_url, data=json.dumps(data))
+
+    return {"data" : bsc_w3.toJSON(receipt_ )}
+
+
 
 @router.post('/api/v1/api/bnb_webhook', tags=["WebHook"])
 def transaction_receipt(tx_hash:str = Form(...),webhook_url:str = Form(...)) -> dict():

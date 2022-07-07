@@ -1,5 +1,6 @@
 from fastapi.params import Body
-from pydantic import BaseModel
+from pydantic import BaseModel , Field
+from typing import Optional
 from enum import Enum 
 import json
 import pandas as pd
@@ -134,7 +135,7 @@ class Coin_addr(str, Enum):
 
 
 
-print(df[0][0])
+#print(df[0][0])
 class Coin_symbol(str, Enum):
     coin_smbol00 = "AFCASH"
     coin_smbol0 = df[1][0]['symbol']
@@ -233,9 +234,10 @@ class Coin_symbol(str, Enum):
 
 
 
-
-
-
+"""
+class web_hook(BaseModel):
+    web_url: str = Field( None)
+"""
 
 class Tx_user(BaseModel):
     account_from: int = Body(None)
