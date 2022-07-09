@@ -6,11 +6,6 @@ from binance.client import Client
 import time
 from binance.enums import *
 
-#API_key = "2Q2WNELQ4Z9vnpHEpmjSjdxLj7q4LH8b7Ry78u71fCikRMZbLyRO2jWvxJFtx1Js"
-#Secret_Key  = "Sneu3beoG1YLp6QD5dkqQXBz7iRkFzEcEZ43UnQc1Hp9yvTMxMC1LsSkGWBcfuQP"
-API_key = "ibYu11dP3BPPoAAolp7tub82EnGQpurBGt73UnheU2lpZlu93V3r6jjJMDbV7giE"
-
-Secret_Key = "9dy5QSZCfTX54f4524Do5S0e79pwBn9DIR5MdKpFZd5csnKYFNeiZBTxYfVQbLCV"
 
 
 
