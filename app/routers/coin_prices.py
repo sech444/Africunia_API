@@ -3,6 +3,7 @@ import json
 from typing import List, Optional
 import requests
 import binance
+from web3 import Web3
 
 
 router = APIRouter()
@@ -408,3 +409,138 @@ listData = [
         "coin_logo": "assets\\/img\\/trx.png"
     }
 ]
+
+
+
+def exl_afcash():
+        
+    afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
+
+    #print(tokens)
+    exl_url = "https://rpc.exlscan.com/"
+    w3 = Web3(Web3.HTTPProvider(exl_url))
+
+    with open("pancake.json", "r") as file:
+        swap_Afcash_file = file.read()
+        #print(swap_Afcash_file)
+    # Closing file
+
+    AfcashSwap = w3.eth.contract(abi=swap_Afcash_file, address=afcash)
+
+    EXL = AfcashSwap.functions.totalSupply().call()
+
+    #print(EXL)
+    total = w3.fromWei(EXL, 'ether')
+
+    #print( total) 
+    return total 
+    
+    
+
+
+
+def TRC20_afcash():
+        
+    er20_afcash = "TR26H88jy3zhcLgUw5RxM4BAPozCoiWqHM"
+    #afcash_addr = Web3.isAddress(afcash)
+    #print(tokens)
+    #w3 = Web3(Web3.HTTPProvider('https://api.trongrid.io https://apilist.tronscan.org/api/contracts/code?contract= er20_afcash'))
+
+    base_url = "https://apilist.tronscan.org/api/account?address=TR26H88jy3zhcLgUw5RxM4BAPozCoiWqHM"#" https://apilist.tronscan.org/api/contract?contract=TR26H88jy3zhcLgUw5RxM4BAPozCoiWqHM"
+    url = r.get(base_url)
+    data = url.json()
+    #print(data)
+    with open("TRC20_ABI.json", "r") as file:
+        swap_Afcash = file.read()
+        #print(swap_Afcash_file)
+    # Closing file
+    
+    import requests
+
+    url = "https://api.shasta.trongrid.io/v1/contracts/{TR26H88jy3zhcLgUw5RxM4BAPozCoiWqHM}/tokens"
+
+    headers = {
+        'Content-Type': "application/json",
+        'TRON-PRO-API-KEY': "148ccca9-c9e0-4493-ad4a-8fe1476a5207"
+        }
+    response = requests.get( url, headers=headers)
+    #print(response.text)
+
+
+    #AfcashS = w3.eth.contract(address= er20_afcash, abi=swap_Afcash,)
+    #res = w3.isConnected()
+    #print(res)
+   # EXL = AfcashS.functions.totalSupply().call()
+
+    #print(EXL)
+    #total = w3.fromWei(EXL, 'ether')
+
+    #print('TRC20 ', total)
+    
+#TRC20_afcash()
+
+def bep20_afcash():
+        
+    afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
+
+    #print(tokens)
+    exl_url = "https://bsc-dataseed.binance.org/"
+    w3 = Web3(Web3.HTTPProvider(exl_url))
+
+    with open("erc20afcash.json", "r") as file:
+        swap_Afcash_file = file.read()
+        #print(swap_Afcash_file)
+    # Closing file
+
+    AfcashSwap = w3.eth.contract(abi=swap_Afcash_file, address=afcash)
+
+    EXL = AfcashSwap.functions.totalSupply().call()
+
+    #print(EXL)
+    total = w3.fromWei(EXL, 'ether')
+
+    #print(total)  
+    return total
+
+
+def er20_afcash():
+        
+    afcash = "0xb8a5dBa52FE8A0Dd737Bf15ea5043CEA30c7e30B"
+
+    #print(tokens)
+    exl_url = "https://mainnet.infura.io/v3/bde4e3babba54474844b65de59d0a039"
+    w3 = Web3(Web3.HTTPProvider(exl_url))
+
+    with open("erc20afcash.json", "r") as file:
+        swap_Afcash_file = file.read()
+        #print(swap_Afcash_file)
+    # Closing file
+
+    AfcashSwap = w3.eth.contract(abi=swap_Afcash_file, address=afcash)
+
+    EXL = AfcashSwap.functions.totalSupply().call()
+
+    #print(EXL)
+    total = w3.fromWei(EXL, 'ether')
+
+    #print(total)  
+    return total
+
+@router.get('/api/v1/total_coins',tags=["Coin_Price"])
+def total_coins():
+
+    TRC20 = exl_afcash()
+    EXL20 = exl_afcash()
+    BEP20 = bep20_afcash()
+    ERC20 = er20_afcash()
+    total = ERC20 + BEP20 + BEP20 + TRC20
+    return{
+        "TRC20": TRC20,
+        "EXL20" : EXL20,
+        "BEP20" : BEP20,
+        "ERC20" : ERC20,
+        "total" : total
+    }
+
+
+

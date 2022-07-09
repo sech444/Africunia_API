@@ -19,30 +19,7 @@ import requests as r
 ps = PancakeSwapAPI()
 
 
-afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
-
-tokens =  ps.tokens()
-
-#print(tokens)
-
-
-with open("compiled.json", "r") as file:
-    swap_Afcash_file = file.read()
-    #print(swap_Afcash_file)
-# Closing file
-
-
-
-"""
-for vals in data.head():
-    print(vals)
-
-with open('pancake.csv', newline='') as f:
-    reader = csv.reader(f)
-    data = [tuple(row) for row in reader]
-
-x = data.count("bnb")
-
+""""
 
 #print(json.dumps(data, indent=4))
 #print(data2["symbol"])    
@@ -67,7 +44,77 @@ compiled_sol = compile_standard(
 )
 
 # print(compiled_sol)
-# get bytecode
+# get bytecode76]
+    coin_addr79 = df[0][77]
+    coin_addr80 = df[0][78]
+    coin_addr81 = df[0][79]
+    coin_addr82 = df[0][80]
+    coin_addr83 = df[0][81]
+    coin_addr84 = df[0][82]
+    coin_addr85 = df[0][83]
+    coin_addr86 = df[0][84]
+    coin_addr87 = df[0][85]
+    coin_addr88 = df[0][86]
+    coin_addr89 = df[0][87]
+    coin_addr90 = df[0][89]
+    coin_addr91= df[0][90]
+
+
+
+
+#print(df[0][0])
+class Coin_symbol(str, Enum):
+    coin_smbol00 = "AFCASH"
+    coin_smbol0 = df[1][0]['symbol']
+    coin_smbol1 = df[1][1]['symbol']
+    coin_smbol2 = df[1][2]['symbol']
+    coin_smbol3 = df[1][3]['symbol']
+    coin_smbol4 = df[1][4]['symbol']
+    coin_smbol5 = df[1][5]['symbol']
+    coin_smbol6 = df[1][6]['symbol']
+    coin_smbol7 = df[1][7]['symbol']
+    coin_smbol8 = df[1][8]['symbol']
+    coin_smbol9 = df[1][9]['symbol']
+    coin_smbol10 = df[1][10]['symbol']
+    coin_smbol11 = df[1][11]['symbol']
+    coin_smbol12 = df[1][12]['symbol']
+    coin_smbol13 = df[1][13]['symbol']
+    coin_smbol14 = df[1][14]['symbol']
+    coin_smbol15 = df[1][15]['symbol']
+    coin_smbol16 = df[1][16]['symbol']
+    coin_smbol17 = df[1][17]['symbol']
+    coin_smbol18 = df[1][18]['symbol']
+    coin_smbol19 = df[1][19]['symbol']
+    coin_smbol20 = df[1][20]['symbol']
+    coin_smbol21 = df[1][21]['symbol']
+    coin_smbol22 = df[1][22]['symbol']
+    coin_smbol23 = df[1][23]['symbol']
+    coin_smbol24 = df[1][24]['symbol']
+    coin_smbol25 = df[1][25]['symbol']
+    coin_smbol26 = df[1][26]['symbol']
+    coin_smbol27 = df[1][27]['symbol']
+    coin_smbol28 = df[1][28]['symbol']
+    coin_smbol29 = df[1][29]['symbol']
+    coin_smbol30 = df[1][30]['symbol']
+    coin_smbol31 = df[1][31]['symbol']
+    coin_smbol32 = df[1][32]['symbol']
+    coin_smbol33 = df[1][33]['symbol']
+    coin_smbol34 = df[1][34]['symbol']
+    coin_smbol35 = df[1][35]['symbol']
+    coin_smbol36 = df[1][36]['symbol']
+    coin_smbol37 = df[1][37]['symbol']
+    coin_smbol38 = df[1][38]['symbol']
+    coin_smbol39 = df[1][39]['symbol']
+    coin_smbol40 = df[1][40]['symbol']
+    coin_smbol41 = df[1][41]['symbol']
+    coin_smbol42 = df[1][42]['symbol']
+    coin_smbol43 = df[1][43]['symbol']
+    coin_smbol44 = df[1][44]['symbol']
+    coin_smbol45 = df[1][45]['symbol']
+    coin_smbol46 = df[1][46]['symbol']
+    coin_smbol47 = df[1][47]['symbol']
+    coin_smbol48 = df[1][48]['symbol']
+    coin_smbol49 = df[1]
 bytecode = compiled_sol["contracts"]["AfcashSwap.sol"]["SimpleStorage"]["evm"]["bytecode"]["object"]
 
 abi = compiled_sol["contracts"]["AfcashSwap.sol"]["SimpleStorage"]["abi"]
