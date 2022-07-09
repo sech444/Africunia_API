@@ -123,10 +123,6 @@ abi = compiled_sol["contracts"]["AfcashSwap.sol"]["SimpleStorage"]["abi"]
 with open("compiled_code.json", "w") as file:
     json.dump(compiled_sol, file)
 
-w3 = Web3(Web3.HTTPProvider("HTTP://0.0.0.0:7545"))
-chain_id = 1337
-my_address = "0x8f18A038d1177E8Eb6A5F5804a60101e1B910bac"
-my_private_key = "0x2e72b9f6f4c507233d3f7cb1d18feaa35e704a8a1d16447cf514227954f2992c"
 
 # Create the contract in python 
 AfcashSwap = w3.eth.contract(abi=abi, bytecode=bytecode)
@@ -270,10 +266,7 @@ abi = compiled_sol["contracts"]["AfcashSwap.sol"]["SimpleStorage"]["abi"]
 with open("compiled_code.json", "w") as file:
     json.dump(compiled_sol, file)
 
-w3 = Web3(Web3.HTTPProvider("HTTP://0.0.0.0:7545"))
-chain_id = 1337
-my_address = "0x8f18A038d1177E8Eb6A5F5804a60101e1B910bac"
-my_private_key = "0x2e72b9f6f4c507233d3f7cb1d18feaa35e704a8a1d16447cf514227954f2992c"
+
 
 # Create the contract in python 
 AfcashSwap = w3.eth.contract(abi=abi, bytecode=bytecode)
@@ -404,13 +397,6 @@ out_2 = Web3.toWei(input_quantity_wei, 'ether')
 swap_path = [Afcash_addr, weth_token]
 out = AfcashSwap.functions.getAmountsOut(input_quantity_wei, swap_path).call()
 
-# print(out)
-# 0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b
-# private_key: 7dbec09e214cab2b4f77636cd082c65f85442d0ea65a59c28aa177158c4fe0c0
-#
-sender_address: 0xC9A61631F31E2FAaE0f79328A8e30F582C0F6F7d
-
-# 0x162fe933c42fc0521f6b5fe99927e05f1e38d930326f87a794c432a9af8754e4
 
 function swapExactTokensForTokens(
   uint amountIn,
@@ -510,10 +496,6 @@ abi = compiled_sol["contracts"]["AfcashSwap.sol"]["SimpleStorage"]["abi"]
 with open("compiled_code.json", "w") as file:
     json.dump(compiled_sol, file)
 
-w3 = Web3(Web3.HTTPProvider("HTTP://0.0.0.0:7545"))
-chain_id = 1337
-my_address = "0x8f18A038d1177E8Eb6A5F5804a60101e1B910bac"
-my_private_key = "0x2e72b9f6f4c507233d3f7cb1d18feaa35e704a8a1d16447cf514227954f2992c"
 
 # Create the contract in python 
 AfcashSwap = w3.eth.contract(abi=abi, bytecode=bytecode)
@@ -631,7 +613,7 @@ def Swap():
     print(new_data2)
 
 
-#Swap()
+
 
 
 sender_address = bsc_w3.toChecksumAddress(input("sender_address: "))
@@ -644,13 +626,7 @@ out_2 = Web3.toWei(input_quantity_wei, 'ether')
 swap_path = [Afcash_addr, weth_token]
 out = AfcashSwap.functions.getAmountsOut(input_quantity_wei, swap_path).call()
 
-# print(out)
-# 0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b
-# private_key: 7dbec09e214cab2b4f77636cd082c65f85442d0ea65a59c28aa177158c4fe0c0
-#
-sender_address: 0xC9A61631F31E2FAaE0f79328A8e30F582C0F6F7d
 
-# 0x162fe933c42fc0521f6b5fe99927e05f1e38d930326f87a794c432a9af8754e4
 
 function swapExactTokensForTokens(
   uint amountIn,
@@ -747,13 +723,6 @@ out_2 = Web3.toWei(input_quantity_wei, 'ether')
 swap_path = [Afcash_addr, weth_token]
 out = AfcashSwap.functions.getAmountsOut(input_quantity_wei, swap_path).call()
 
-# print(out)
-# 0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b
-# private_key: 7dbec09e214cab2b4f77636cd082c65f85442d0ea65a59c28aa177158c4fe0c0
-#
-sender_address: 0xC9A61631F31E2FAaE0f79328A8e30F582C0F6F7d
-
-# 0x162fe933c42fc0521f6b5fe99927e05f1e38d930326f87a794c432a9af8754e4
 
 function swapExactTokensForTokens(
   uint amountIn,
