@@ -3,6 +3,7 @@ from fastapi import  APIRouter, Depends, status, HTTPException, Form
 import json
 from typing import List, Optional
 import requests
+from eth_account import Account
 from hexbytes import HexBytes
 
 
