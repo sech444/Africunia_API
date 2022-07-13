@@ -10,6 +10,17 @@ router = APIRouter()
 
 
 
+@router.post("/api/v1/create_ exl_afcash_wallet",tags=["Coin_Wallets"])
+def  EXL_wallet():
+    Account.enable_unaudited_hdwallet_features()
+    acct, mnemonic = Account.create_with_mnemonic()
+    
+    return{"mnemonic": mnemonic,
+           "address" : acct.address,
+            "account_key": acct.key.hex()}
+
+
+
 @router.post("/api/v1/create_btc_wallet",tags=["Coin_Wallets"])
 def btc_wallet(wallet_name: str = Form(...)):
     # Create factory
