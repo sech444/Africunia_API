@@ -4,6 +4,8 @@ from typing import List, Optional
 import requests
 import binance
 from web3 import Web3
+from coinpaprika import client as Coinpaprika
+from bs4 import BeautifulSoup as BS
 
 
 router = APIRouter()
@@ -316,7 +318,7 @@ def binance_btcusdt():
         "coin_logo": "assets\/img\/btcusdt.png"
     }  
     
-    
+
 @router.get("/api/v1/all_coin_binance",tags=["Coin_Price"])
 def all_coin():
     PATH = '/api/v3/ticker/price'
@@ -334,6 +336,64 @@ def all_coin():
         raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"Not a valid eth wallet check the wallet and try again")
     return{"coins" : json_formatted_str}
+
+
+@router.get("/api/v1/all_afcash",tags=["Coin_Price"])
+def AFCASH_coin():
+    client = Coinpaprika.Client()
+    pair_list = client.ticker('afcash-africunia-bank')
+    quotes = pair_list['quotes']['USD']['price']
+    return{"rate": quotes }
+
+
+@router.get("/api/v1/exl_price",tags=["Coin_Price"])
+# method to get the price of bit coin
+def exl_price():
+  # getting the request from url 
+    import re
+    data = requests.get(url,headers=headers) 
+    # converting the text 
+    soup = BS(data.text, 'html.parser')
+    
+  
+    # finding metha info for the current price
+    ans = soup.find('span', {"class" :"price"}).text
+    listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
+    #print(float(listans[0]))
+    return{
+        "coin": "EXL",
+        "name": "Excoincial",
+        "rate" : float(listans[0]),
+        "coin_logo": "assets\\/img\\/exl.png"
+        }
+   
+# url of the exl coin price
+
+url = "https://www.livecoinwatch.com/price/Excoincial-EXL"
+headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"}
+
+def exl_price():
+  # getting the request from url 
+    import re
+    data = requests.get(url,headers=headers) 
+    # converting the text 
+    soup = BS(data.text, 'html.parser')
+    
+  
+    # finding metha info for the current price
+    ans = soup.find('span', {"class" :"price"}).text
+    listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
+    #print(float(listans[0]))
+    return float(listans[0])
+
+
+def main_dash():
+    client = Coinpaprika.Client()
+    pair_list = client.ticker('afcash-africunia-bank')
+    quotes = pair_list['quotes']['USD']['price']
+    
+    return quotes
+    
 
 base_url = "https://api.binance.com"
 path ="/api/v3/ticker/price"
@@ -400,14 +460,27 @@ listData = [
         "coin": "BNB",
         "name": "Binance Coin",
         "rate": priceFloat,
-        "coin_logo": "assets/img/ether.png"
+        "coin_logo": "assets/img/bnb.png"
     },
     {
         "coin": "TRX",
         "name": "TRON Coin",
         "rate": priceFloat2,
         "coin_logo": "assets\\/img\\/trx.png"
+    },
+     {
+        "coin": "AFCASH",
+        "name": "AFCASH (EXL20)",
+        "rate": main_dash(),
+        "coin_logo": "assets\\/img\\/afcash.png"
+    },
+     {
+        "coin": "EXL",
+        "name": "Excoincial",
+        "rate": exl_price(),
+        "coin_logo": "assets\\/img\\/exl.png"
     }
+
 ]
 
 

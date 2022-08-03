@@ -1,10 +1,38 @@
+from coinpaprika import client as Coinpaprika
 import json
 from web3 import Web3
 from time import sleep
 import requests
+from bs4 import BeautifulSoup as BS
 from requests.adapters import HTTPAdapter
 #from requests.packages.urllib3.util.retry import Retry
 w3 = Web3(Web3.HTTPProvider('https://rpc.exlscan.com/'))
+
+
+# method to get the price of bit coin
+def get_price(url):
+  # getting the request from url 
+    data = requests.get(url,headers=headers) 
+    # converting the text 
+    soup = BS(data.text, 'html.parser')
+    
+  
+    # finding metha info for the current price
+    ans = soup.find('span', {"class" :"price"}).text
+    return ans
+   
+# url of the bit coin price
+import re
+url = "https://www.livecoinwatch.com/price/Excoincial-EXL"
+headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"}
+webpage = requests.get(url,headers=headers) 
+# calling the get_price method
+ans = get_price(url)
+ans2 =  [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
+# printing the ans
+print(float(ans2[0]))
+
+
 """
 from eth_account import Account
 import secrets
@@ -12,7 +40,7 @@ priv = secrets.token_hex(32)
 private_key = "0x" + priv
 print ("SAVE BUT DO NOT SHARE THIS:", private_key)
 acct = Account.from_key(private_key)
-print("Address:", acct.address)"""
+print("Address:", acct.address)
 
 print("EXL Blockchain ...")
 # EXL wallet key ; 1bde61f40ef295485aaaac21d8e936a350a468440bdf088d029239b9e85fe411
@@ -131,4 +159,4 @@ print(account.privateKey)
 
 # get address
 print(account.address)
-print(account.privateKey.hex())
+print(account.privateKey.hex())"""

@@ -1,0 +1,33 @@
+{
+    "id": "afcash-africunia-bank",
+    "name": "AFRICUNIA BANK",
+    "symbol": "AFCASH",
+    "rank": 3131,
+    "circulating_supply": 0,
+    "total_supply": 0,
+    "max_supply": 0,
+    "beta_value": -0.447463,
+    "first_data_at": "2020-07-06T00:00:00Z",
+    "last_updated": "2022-08-02T19:43:30Z",
+    "quotes": {
+        "USD": {
+            "price": 1.3380573063448742,
+            "volume_24h": 144363.00278154848,
+            "volume_24h_change_24h": -37.28,
+            "market_cap": 0,
+            "market_cap_change_24h": 0,
+            "percent_change_15m": -59.97,
+            "percent_change_30m": 9.41,
+            "percent_change_1h": -15.3,
+            "percent_change_6h": -24.8,
+            "percent_change_12h": -20.52,
+            "percent_change_24h": -37.4,
+            "percent_change_7d": -50.8,
+            "percent_change_30d": 0,
+            "percent_change_1y": 0,
+            "ath_price": 1.95459136,
+            "ath_date": "2020-08-24T11:35:00Z",
+            "percent_from_price_ath": -31.54
+        }
+    }
+}

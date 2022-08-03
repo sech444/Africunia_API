@@ -57,10 +57,10 @@ def Get_eth_bals(user_adr: str = Form(...)):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"Not a valid eth wallet check the wallet and try again")
         
-            return {"balance": "Invaild wallet"}
+        return {"balance": _bal2_}
     except ValueError:
         raise e
-    return {"balance": _bal2_}
+   
 
 
 

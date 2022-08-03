@@ -1,0 +1,4 @@
+- name: Excoincial Chain Testnet
+    chainid: 27082017
+    id: Testnet
+    host: https://testnet-rpc.exlscan.com/

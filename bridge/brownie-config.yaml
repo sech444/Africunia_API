@@ -1,0 +1,28 @@
+dependencies:
+  # - <organization/repo>@<version>
+  - OpenZeppelin/openzeppelin-contracts@4.5.0 
+
+compiler:
+  solc:
+    remappings:
+      - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.5.0'
+
+dotenv: .env
+networks:
+  Excoincial:
+    Afcash: '0x8FE8e405b39af360352aF0be74eAD40F430038fA'
+  Binance Smart Chain:
+    Testnet: bsc-test
+
+wallets:
+  from_key: ${PRIVATE_KEY}
+
+
+project_structure:
+    build: build
+    contracts: contracts
+    interfaces: interfaces
+    reports: reports
+    scripts: scripts
+    tests: tests
+     

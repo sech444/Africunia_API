@@ -1,0 +1,9 @@
+from ssl import ALERT_DESCRIPTION_CERTIFICATE_UNKNOWN
+from brownie import accounts, config ,network
+
+def get_account():
+    if network.show_active == "development":
+        return accounts[0]
+    else:
+        #return accounts.add(config["wallets"]["from_key"])
+        return accounts.load('Excoincial_Chain_Testnet')
