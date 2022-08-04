@@ -337,15 +337,15 @@ def all_coin():
                                 detail=f"Not a valid eth wallet check the wallet and try again")
     return{"coins" : json_formatted_str}
 
-
+'''
 @router.get("/api/v1/all_afcash",tags=["Coin_Price"])
 def AFCASH_coin():
     client = Coinpaprika.Client()
     pair_list = client.ticker('afcash-africunia-bank')
     quotes = pair_list['quotes']['USD']['price']
     return{"rate": quotes }
-
-
+'''
+"""
 @router.get("/api/v1/exl_price",tags=["Coin_Price"])
 # method to get the price of bit coin
 def exl_price():
@@ -355,7 +355,7 @@ def exl_price():
     # converting the text 
     soup = BS(data.text, 'html.parser')
     
-  
+    print(soup)
     # finding metha info for the current price
     ans = soup.find('span', {"class" :"price"}).text
     listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
@@ -382,18 +382,19 @@ def exl_price():
   
     # finding metha info for the current price
     ans = soup.find('span', {"class" :"price"}).text
+    print(ans)
     listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
     #print(float(listans[0]))
     return float(listans[0])
-
-
+"""
+'''
 def main_dash():
     client = Coinpaprika.Client()
     pair_list = client.ticker('afcash-africunia-bank')
     quotes = pair_list['quotes']['USD']['price']
     
     return quotes
-    
+'''
 
 base_url = "https://api.binance.com"
 path ="/api/v3/ticker/price"
@@ -471,13 +472,13 @@ listData = [
      {
         "coin": "AFCASH",
         "name": "AFCASH (EXL20)",
-        "rate": main_dash(),
+        "rate": "main_dash()",
         "coin_logo": "assets\\/img\\/afcash.png"
     },
      {
         "coin": "EXL",
         "name": "Excoincial",
-        "rate": exl_price(),
+        "rate": "exl_price()",
         "coin_logo": "assets\\/img\\/exl.png"
     }
 
