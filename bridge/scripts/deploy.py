@@ -1,21 +1,18 @@
-from brownie import BridgeBase, network, config, accounts
+from brownie import BridgeBase, TokenExl, config, accounts
 from scripts.helper_scripts import get_account
 
 print(BridgeBase)
 def BridgeBase_test():
-   #account = get_account()
-    account = accounts[0]
+    account = get_account()
+    #account = accounts[0]
     print(account)
-  
-    # pass the address of Afcash bridge contract
-    # otherwise , deploy mocks
-    '''if network.show_active() != "development":
-        Afcash_bridge = config["network"][network.show_active()]["Afcash"]'''
-    data = BridgeBase.deploy({'from': account})
+    data = TokenExl.deploy({'from': account})#, publish_source=True)
     print('deploy ............................')
-    bata2 = data.accounts()
-    print(data)
+    data2 = data.address
+    print(data2)
     return 
   
 def main():
     BridgeBase_test()
+    
+    

@@ -8,12 +8,13 @@ compiler:
       - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.5.0'
 
 dotenv: .env
-networks:
+network:
   Excoincial:
-    Afcash: '0x8FE8e405b39af360352aF0be74eAD40F430038fA'
-  Binance Smart Chain:
-    Testnet: bsc-test
-
+    - name: Excoincial Chain Testnet
+      chainid: 27082017
+      id: Testnet
+      host: https://testnet-rpc.exlscan.com/
+   
 wallets:
   from_key: ${PRIVATE_KEY}
 
