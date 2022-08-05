@@ -86,7 +86,7 @@ async def index_bch(background_tasks: BackgroundTasks):
     
 
 def get_ether_coin_Price(crypto_ether):
-    URL = 'https://www.bitstamp.net/api/v2/ticker/ethusd/'
+    URL = 'https://www.bitstamp.net/api/v2/ticker/ethusd/'#usdtusd
     try:
         r = requests.get(URL)
         priceFloat = float(json.loads(r.text)['last'])
@@ -109,7 +109,6 @@ def main_ether():
     return
 
 
-    
 
 @router.get('/api/v1/ethusd',tags=["Coin_Price"])
 async def index_eth(background_tasks: BackgroundTasks):
@@ -120,6 +119,44 @@ async def index_eth(background_tasks: BackgroundTasks):
         "rate": get_ether_coin_Price("ether"),
         "coin_logo": "assets\/img\/ether.png"
     }
+
+
+
+def get_usdt_coin_Price(crypto_ether):
+    URL = 'https://www.bitstamp.net/api/v2/ticker/usdtusd/'#usdtusd
+    try:
+        r = requests.get(URL)
+        priceFloat = float(json.loads(r.text)['last'])
+        return priceFloat
+    except requests.ConnectionError:
+        print("Error querying Bitstamp API")
+
+
+def main_usdt():
+    last_price = -1
+
+    while True:
+
+        crypto_ether = 'usdtusd'
+        price = get_usdt_coin_Price(crypto_ether)
+
+        if price != last_price:
+           # print('Bitcoin price: ',price)
+            last_price = price
+    return
+
+
+@router.get('/api/v1/usdtusd',tags=["Coin_Price"])
+async def index_usdt(background_tasks: BackgroundTasks):
+    background_tasks.add_task(main_ether)
+    return {
+        "coin": "usdt",
+        "name": "Tether",
+        "rate": get_usdt_coin_Price("usdtusd"),
+        "coin_logo": "assets\/img\/usdt.png"
+    }
+
+
 
 
 def get_xlmu_Price(crypto_xlmusd):
@@ -304,6 +341,22 @@ def trx_usdt():
         "coin_logo": "assets\/img\/trx.png"
     }
     
+    
+@router.get('/api/v1/busd',tags=["Coin_Price"])
+def trx_usdt():
+    base_url = "https://api.binance.com"
+    path = "/api/v3/ticker/price"
+    params = '?symbol=BUSDUSDT'
+    r = requests.get(base_url+path+params)
+    data = r.json()
+    return {
+        "coin": "BUSD",
+        "name": "Binance USD",
+        "rate_usdt": float(data['price']),
+        "coin_logo": "assets\/img\/busd.png"}
+    
+    
+    
 @router.get('/api/v1/btcusdt',tags=["Coin_Price"])
 def binance_btcusdt():
     base_url = "https://api.binance.com"
@@ -337,15 +390,15 @@ def all_coin():
                                 detail=f"Not a valid eth wallet check the wallet and try again")
     return{"coins" : json_formatted_str}
 
-'''
+
 @router.get("/api/v1/all_afcash",tags=["Coin_Price"])
 def AFCASH_coin():
     client = Coinpaprika.Client()
     pair_list = client.ticker('afcash-africunia-bank')
     quotes = pair_list['quotes']['USD']['price']
     return{"rate": quotes }
-'''
-"""
+
+
 @router.get("/api/v1/exl_price",tags=["Coin_Price"])
 # method to get the price of bit coin
 def exl_price():
@@ -355,7 +408,6 @@ def exl_price():
     # converting the text 
     soup = BS(data.text, 'html.parser')
     
-    print(soup)
     # finding metha info for the current price
     ans = soup.find('span', {"class" :"price"}).text
     listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
@@ -372,7 +424,7 @@ def exl_price():
 url = "https://www.livecoinwatch.com/price/Excoincial-EXL"
 headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"}
 
-def exl_price():
+def exl_price2():
   # getting the request from url 
     import re
     data = requests.get(url,headers=headers) 
@@ -381,20 +433,19 @@ def exl_price():
     
   
     # finding metha info for the current price
-    ans = soup.find('span', {"class" :"price"}).text
-    print(ans)
+    ans = soup.find('div', {"class" :"cion-item text-center text-lg-left second-row-col"}).text
     listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
     #print(float(listans[0]))
     return float(listans[0])
-"""
-'''
-def main_dash():
+
+
+def main_dash2():
     client = Coinpaprika.Client()
     pair_list = client.ticker('afcash-africunia-bank')
     quotes = pair_list['quotes']['USD']['price']
     
     return quotes
-'''
+
 
 base_url = "https://api.binance.com"
 path ="/api/v3/ticker/price"
@@ -411,6 +462,14 @@ params = '?symbol=TRXUSDT'
 r = requests.get(base_url+path+params)
 data = r.json()
 priceFloat2 = float(data['price'])
+#print(priceFloat2)
+
+base_url = "https://api.binance.com"
+path ="/api/v3/ticker/price"
+params = '?symbol=BUSDUSDT'
+r = requests.get(base_url+path+params)
+data = r.json()
+priceFloat12 = float(data['price'])
 #print(priceFloat2)
 
 
@@ -469,17 +528,29 @@ listData = [
         "rate": priceFloat2,
         "coin_logo": "assets\\/img\\/trx.png"
     },
+    {
+        "coin": "BUSD",
+        "name": "Binance USD",
+        "rate": priceFloat12,
+        "coin_logo": "assets\\/img\\/busd.png"
+    },
      {
         "coin": "AFCASH",
         "name": "AFCASH (EXL20)",
-        "rate": "main_dash()",
+        "rate": main_dash2(),
         "coin_logo": "assets\\/img\\/afcash.png"
     },
      {
         "coin": "EXL",
         "name": "Excoincial",
-        "rate": "exl_price()",
+        "rate": exl_price2(),
         "coin_logo": "assets\\/img\\/exl.png"
+    },
+     {
+        "coin": "usdt",
+        "name": "Tether",
+        "rate": get_usdt_coin_Price("usdtusd"),
+        "coin_logo": "assets\/img\/usdt.png"
     }
 
 ]

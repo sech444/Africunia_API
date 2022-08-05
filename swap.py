@@ -16,21 +16,24 @@ def get_price(url):
     # converting the text 
     soup = BS(data.text, 'html.parser')
     
-  
+    #print(soup)
     # finding metha info for the current price
-    ans = soup.find('span', {"class" :"price"}).text
+    #ans = soup.find('span', {"class" :"price"}).text
+    ans = soup.find('div', {"class" :"css-ex4xl9"})
+    print(soup.div['class'])
+    print(ans)
     return ans
    
 # url of the bit coin price
 import re
-url = "https://www.livecoinwatch.com/price/Excoincial-EXL"
+url = "https://www.binance.com/en/markets"
 headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"}
 webpage = requests.get(url,headers=headers) 
 # calling the get_price method
 ans = get_price(url)
-ans2 =  [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
+#ans2 =  [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
 # printing the ans
-print(float(ans2[0]))
+print(ans)
 
 
 """
