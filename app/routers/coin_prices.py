@@ -1,3 +1,5 @@
+from ast import Try
+from cmath import e
 from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
 import json
 from typing import List, Optional
@@ -393,10 +395,16 @@ def all_coin():
 
 @router.get("/api/v1/all_afcash",tags=["Coin_Price"])
 def AFCASH_coin():
-    client = Coinpaprika.Client()
-    pair_list = client.ticker('afcash-africunia-bank')
-    quotes = pair_list['quotes']['USD']['price']
-    return{"rate": quotes }
+    try:
+        client = Coinpaprika.Client()
+        pair_list = client.ticker('afcash-africunia-bank')
+        quotes = pair_list['quotes']['USD']['price']
+        return{"rate": quotes }
+    except:
+        raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"price updating soon")
+    return{"coins" : json_formatted_str}
+
 
 
 @router.get("/api/v1/exl_price",tags=["Coin_Price"])
@@ -440,38 +448,51 @@ def exl_price2():
 
 
 def main_dash2():
-    client = Coinpaprika.Client()
-    pair_list = client.ticker('afcash-africunia-bank')
-    quotes = pair_list['quotes']['USD']['price']
+    if  main_dash2 in quotes:
+        client = Coinpaprika.Client()
+        pair_list = client.ticker('afcash-africunia-bank')
+        quotes = pair_list['quotes']['USD']['price']
+        
+        return quotes
+    else:
+          raise HTTPException(status_code = 404, detail=  "Id not found")
+
+try:
+    base_url = "https://api.binance.com"
+    path ="/api/v3/ticker/price"
+    params = '?symbol=BNBUSDT'
+    r = requests.get(base_url+path+params)
+    data = r.json()
+    priceFloat = float(data['price'])
+    #print(priceFloat)
+except:
+    raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"price update soon")
     
-    return quotes
 
-
-base_url = "https://api.binance.com"
-path ="/api/v3/ticker/price"
-params = '?symbol=BNBUSDT'
-r = requests.get(base_url+path+params)
-data = r.json()
-priceFloat = float(data['price'])
-#print(priceFloat)
-
-
-base_url = "https://api.binance.com"
-path ="/api/v3/ticker/price"
-params = '?symbol=TRXUSDT'
-r = requests.get(base_url+path+params)
-data = r.json()
-priceFloat2 = float(data['price'])
-#print(priceFloat2)
-
-base_url = "https://api.binance.com"
-path ="/api/v3/ticker/price"
-params = '?symbol=BUSDUSDT'
-r = requests.get(base_url+path+params)
-data = r.json()
-priceFloat12 = float(data['price'])
-#print(priceFloat2)
-
+try:
+    base_url = "https://api.binance.com"
+    path ="/api/v3/ticker/price"
+    params = '?symbol=TRXUSDT'
+    r = requests.get(base_url+path+params)
+    data = r.json()
+    priceFloat2 = float(data['price'])
+    #print(priceFloat2)
+except:
+    raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"price update soon")
+    
+try:
+    base_url = "https://api.binance.com"
+    path ="/api/v3/ticker/price"
+    params = '?symbol=BUSDUSDT'
+    r = requests.get(base_url+path+params)
+    data = r.json()
+    priceFloat12 = float(data['price'])
+    #print(priceFloat2)
+except:
+    raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"price update soon")
 
 listData = [
     {
@@ -537,7 +558,7 @@ listData = [
      {
         "coin": "AFCASH",
         "name": "AFCASH (EXL20)",
-        "rate": main_dash2(),
+        "rate": "main_dash2()",
         "coin_logo": "assets\\/img\\/afcash.png"
     },
      {

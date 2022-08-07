@@ -132,7 +132,7 @@ def create_Order(symbol: str = Form(...),quantity: float = Form(...)):
 
         return{"data" : json.dumps(order, indent=2)}
     except BinanceAPIException as e:
-        print(e)
+        #print(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"Not a valid tarnsation check the symbol eg. BNBUSDT then quantity >= 10.38USDT or Account has insufficient balance for requested action, symbol like this BTCUSDT")
 
