@@ -448,14 +448,15 @@ def exl_price2():
 
 
 def main_dash2():
-    if  main_dash2 in quotes:
+    try:
         client = Coinpaprika.Client()
         pair_list = client.ticker('afcash-africunia-bank')
         quotes = pair_list['quotes']['USD']['price']
         
         return quotes
-    else:
+    except:
           raise HTTPException(status_code = 404, detail=  "Id not found")
+
 
 try:
     base_url = "https://api.binance.com"
@@ -558,7 +559,7 @@ listData = [
      {
         "coin": "AFCASH",
         "name": "AFCASH (EXL20)",
-        "rate": "main_dash2()",
+        "rate": main_dash2(),
         "coin_logo": "assets\\/img\\/afcash.png"
     },
      {
