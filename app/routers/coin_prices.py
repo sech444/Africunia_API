@@ -433,18 +433,22 @@ url = "https://www.livecoinwatch.com/price/Excoincial-EXL"
 headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"}
 
 def exl_price2():
-  # getting the request from url 
-    import re
-    data = requests.get(url,headers=headers) 
-    # converting the text 
-    soup = BS(data.text, 'html.parser')
+    try:
+    # getting the request from url 
+        import re
+        data = requests.get(url,headers=headers) 
+        # converting the text 
+        soup = BS(data.text, 'html.parser')
+        
     
-  
-    # finding metha info for the current price
-    ans = soup.find('div', {"class" :"cion-item text-center text-lg-left second-row-col"}).text
-    listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
-    #print(float(listans[0]))
-    return float(listans[0])
+        # finding metha info for the current price
+        ans = soup.find('div', {"class" :"cion-item text-center text-lg-left second-row-col"}).text
+        listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
+        #print(float(listans[0]))
+        return float(listans[0])
+    except:
+        return  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"price update soon")
 
 
 def main_dash2():
@@ -455,7 +459,7 @@ def main_dash2():
         
         return quotes
     except:
-          raise HTTPException(status_code = 404, detail=  "Id not found")
+        return  HTTPException(status_code = 404, detail=  "Id not found")
 
 
 try:
