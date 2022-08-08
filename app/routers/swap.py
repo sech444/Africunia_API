@@ -106,9 +106,6 @@ async def get_swap(swap_tokenA: Coin_symbol, swap_tokenB: Coin_symbol,account_to
         #out = input_contract.functions.getAmountOut(input_quantity_wei, swap_path).call()
         #print(out)
 
-        human_input_balance = web3.fromWei(input_balance, 'ether')
-        #print(f"Input balance: {human_input_balance}")
-
         bnb_balance = web3.eth.get_balance(my_address)
         human_bnb_balance = web3.fromWei(bnb_balance, 'ether')
         #print(f"BNB balance: {human_bnb_balance}")
