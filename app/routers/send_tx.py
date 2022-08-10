@@ -24,11 +24,7 @@ import asyncio
 
 router = APIRouter()
 
-w3 = Web3(Web3.HTTPProvider('https://rinkeby.infura.io/v3/bde4e3babba54474844b65de59d0a039'))
-
-usdt_abi = '[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_upgradedAddress","type":"address"}],"name":"deprecate","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"deprecated","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_evilUser","type":"address"}],"name":"addBlackList","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"upgradedAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balances","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"maximumFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"_totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"unpause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_maker","type":"address"}],"name":"getBlackListStatus","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowed","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"paused","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"who","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"pause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"newBasisPoints","type":"uint256"},{"name":"newMaxFee","type":"uint256"}],"name":"setParams","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"issue","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"redeem","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"remaining","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"basisPointsRate","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"isBlackListed","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_clearedUser","type":"address"}],"name":"removeBlackList","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"MAX_UINT","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_blackListedUser","type":"address"}],"name":"destroyBlackFunds","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_initialSupply","type":"uint256"},{"name":"_name","type":"string"},{"name":"_symbol","type":"string"},{"name":"_decimals","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"amount","type":"uint256"}],"name":"Issue","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"amount","type":"uint256"}],"name":"Redeem","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"newAddress","type":"address"}],"name":"Deprecate","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"feeBasisPoints","type":"uint256"},{"indexed":false,"name":"maxFee","type":"uint256"}],"name":"Params","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_blackListedUser","type":"address"},{"indexed":false,"name":"_balance","type":"uint256"}],"name":"DestroyedBlackFunds","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_user","type":"address"}],"name":"AddedBlackList","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_user","type":"address"}],"name":"RemovedBlackList","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[],"name":"Pause","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpause","type":"event"}]'
-
-TetherToken_addr = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/bde4e3babba54474844b65de59d0a039'))
 
 load_dotenv()
 #w3 = os.getenv("w3")
@@ -47,7 +43,7 @@ client = Client(API_KEY,SECRET_KEY )
 
 @router.post("/api/v1/get_eth_bals", tags=["Transaction"])
 def Get_eth_bals(user_adr: str = Form(...)):
-    adr_verify = Web3.isAddress(user_adr)
+    adr_verify = Web3.isAddress(user_adr.upper())
     if not adr_verify:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Invaild wallet")
@@ -59,8 +55,9 @@ def Get_eth_bals(user_adr: str = Form(...)):
                                 detail=f"Not a valid eth wallet check the wallet and try again")
         
         return {"balance": _bal2_}
-    except ValueError:
-        raise e
+    except:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid eth wallet check the wallet and try again")
    
 
 
@@ -213,34 +210,63 @@ def usdt_bals(wallet_id: str=Form(...) ):
     try:
         if not float(total_balance):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid BNB wallet check the wallet and try again")
-        
+                                detail=f"Not a valid wallet check the wallet and try again")
+        total_bal = w3.fromWei(total_balance, 'ether')
         return {"balance": total_balance}
     except ValueError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"Not a valid BNB wallet check the wallet and try again")
         
         
-@router.post("/api/v1/usdt_erc20_tar", tags=["Transaction"])
-def usdt_tarnsaction(wallet_id: str=Form(...) ): 
-    usdt_erc20 = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+@router.post("/api/v1/usdt_erc20_tarnsaction", tags=["Transaction"])
+def usdt_tarnsaction(account_from:str = Form(...), account_to: str = Form(...),value_to_send: float=Form(...), private_key: str=Form(...)):
+    usdt_ = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    account_1 = account_from 
+    account_2 = account_to 
+    value    = value_to_send  
+    
+    adr_verify = w3.isAddress(account_from)
+    if not adr_verify:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Invaild wallet")
+        
+   
+    if not Web3.isChecksumAddress(account_2):
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid USDT wallet check the wallet and try again")
+    
+    value_2 = int(float(value)) 
+    trans = w3.eth.get_balance(account_1)
+    _bal2_ = w3.fromWei(trans, 'ether')    
+    if float(value) > _bal2_:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Insufficient USDT Funds")  
+   
     
 
     with open("usdt_abi.json", "r") as file:
         usdt_erc20 = file.read()
        
-    USDT_ERC20 = w3.eth.contract(abi=usdt_erc20, address=usdt_erc20)
-    input_balance = USDT_ERC20.functions.balanceOf(wallet_id).call()
-   
-    USDT =  input_balance
-    total = w3.fromWei(USDT, 'ether')
+    USDT_ERC20 = w3.eth.contract(abi=usdt_erc20, address=usdt_)
+    try:
+        input_balance = USDT_ERC20.functions.transfer(account_2, value).buildTransaction({
+                'from': adr_verify,
+                'gas': 250000,
+                'gasPrice': w3.toWei('50', 'gwei'),
+                'to' : account_2,
+                'value': w3.toWei(value, 'ether'),
+                'nonce': w3.eth.get_transaction_count(adr_verify),
+            })
+        signed = w3.eth.account.sign_transaction(input_balance, private_key=private_key)
+        tx = w3.eth.send_raw_transaction(signed.rawTransaction)
+        #print(f"Swap tx: {web3.toHex(tx)}")
+        return {"Swap tx": w3.toHex(tx)}      
+    except ValueError:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                    detail=f"Transaction error, most have BNB for gas fee")
 
-    #print( total) 
-    return {"total": total}
 
-
-
-@router.post("/api/v1/bnb_tarnsaction", tags=["Transaction"])
+@router.post("/api/v1/bnb_", tags=["Transaction"])
 def bnb_tarnsaction(account_from:str = Form(...), account_to: str = Form(...),value_to_send: float=Form(...), private_key: str=Form(...)):
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))

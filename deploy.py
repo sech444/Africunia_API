@@ -19,130 +19,29 @@ acct_info = api(
 response = api.request(acct_info)
 result = response.result
 import json
-print(json.dumps(result["account_data"], indent=4, sort_keys=True))'''
+print(json.dumps(result["account_data"], indent=4, sort_keys=True))
 
+'''
+from cmath import e
+from web3 import Web3, EthereumTesterProvider,HTTPProvider
+w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/bde4e3babba54474844b65de59d0a039'))
+import json
+usdt = '0xdAC17F958D2ee523a2206206994597C13D831ec7' 
+usdt_test = '0xbA6879d0Df4b09fC678Ca065c00dd345AdF0365e'
 
-from tronpy import Tron
-from tronpy.exceptions import AddressNotFound
-from pprint import pprint
+with open("usdt_abi.json", "r") as file:
+    usdt_erc20 = file.read()
+    
+#value_to = input('value_to_send')
+#wallet_id = input("addr from: ")  
+#addr_id = input("addr to: ")  
+'''adr_verify = Web3.isAddress(wallet_id)
+if not adr_verify:
+    raise e '''
+usdt_abi= w3.eth.contract(abi=usdt_erc20, address=usdt_test)
+_name = usdt_abi.functions.name().call()
+_symbol = usdt_abi.functions.symbol().call()
 
-client = Tron()
-
-import requests
-import base58
-import base64
-from pprint import pprint
-
-
-ADDRESS = "TRRNL6w3Fm5rSpxYa5577FuP5HSJT8NoK8"
-PRIV_KEY = '0x6dbefdb03ee56b3d14f0a3114f041519d25a9948cba2525d9f4e925d4a6a6c80' # for testing
-
-CONTRACT = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"  # USDT
-CONTRACT = "T,,,,,,,,,,,,,,,,,,,,,,ia"
-
-API_URL_BASE = 'https://api.trongrid.io/'
-# API_URL_BASE = 'https://api.shasta.trongrid.io/'
-# API_URL_BASE = 'https://api.nileex.io/'
-
-# 70a08231: balanceOf(address)
-METHOD_BALANCE_OF = 'balanceOf(address)'
-
-# a9059cbb: transfer(address,uint256)
-METHOD_TRANSFER = 'transfer(address,uint256)'
-
-
-DEFAULT_FEE_LIMIT = 1_000_000  # 1 TRX
-
-
-def address_to_parameter(addr):
-    return "0" * 24 + base58.b58decode_check(addr)[1:].hex()
-
-
-def amount_to_parameter(amount):
-    return '%064x' % amount
-
-
-def get_balance(address=ADDRESS):
-    url = API_URL_BASE + 'wallet/triggerconstantcontract'
-    payload = {
-        'owner_address': base58.b58decode_check(ADDRESS).hex(),
-        'contract_address': base58.b58decode_check(CONTRACT).hex(),
-        'function_selector': METHOD_BALANCE_OF,
-        'parameter': address_to_parameter(address),
-    }
-    resp = requests.post(url, json=payload)
-    data = resp.json()
-
-    if data['result'].get('result', None):
-        print(data['constant_result'])
-        val = data['constant_result'][0]
-        print('balance =', int(val, 16))
-    else:
-        print('error:', bytes.fromhex(data['result']['message']).decode())
-
-
-def get_trc20_transaction(to, amount, memo=''):
-    url = API_URL_BASE + 'wallet/triggersmartcontract'
-    payload = {
-        'owner_address': base58.b58decode_check(ADDRESS).hex(),
-        'contract_address': base58.b58decode_check(CONTRACT).hex(),
-        'function_selector': METHOD_TRANSFER,
-        'parameter': address_to_parameter(to) + amount_to_parameter(amount),
-        "fee_limit": DEFAULT_FEE_LIMIT,
-        'extra_data': base64.b64encode(memo.encode()).decode(),  # TODO: not supported yet
-    }
-    resp = requests.post(url, json=payload)
-    data = resp.json()
-
-    if data['result'].get('result', None):
-        transaction = data['transaction']
-        return transaction
-
-    else:
-        print('error:', bytes.fromhex(data['result']['message']).decode())
-        raise RuntimeError
-
-
-def sign_transaction(transaction, private_key=PRIV_KEY):
-    url = API_URL_BASE + 'wallet/addtransactionsign'
-    payload = {'transaction': transaction, 'privateKey': private_key}
-    resp = requests.post(url, json=payload)
-
-    data = resp.json()
-
-    if 'Error' in data:
-        print('error:', data)
-        raise RuntimeError
-    return data
-
-
-def broadcast_transaction(transaction):
-    url = API_URL_BASE + 'wallet/broadcasttransaction'
-    resp = requests.post(url, json=transaction)
-
-    data = resp.json()
-    print(data)
-
-
-def transfer(to, amount, memo=''):
-    transaction = get_trc20_transaction(to, amount, memo)
-    pprint(transaction)
-    transaction = sign_transaction(transaction)
-    broadcast_transaction(transaction)
-
-
-get_balance()
-
-#transfer('T..............q', 5_000, 'test from python')
-
-def check_balance(address):
-    try:
-        balance=client.get_account_balance(address)
-        return balance
-    except AddressNotFound:
-        return 'Adress not found..!'
-
-
-print(check_balance(ADDRESS))
-
-
+print(_name) 
+print(_symbol)
+#return {"total": total}
