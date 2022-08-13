@@ -11,7 +11,6 @@ from app.schemas import Coin_addr, Coin_symbol
 from pythonpancakes import PancakeSwapAPI
 import ast
 ps = PancakeSwapAPI()
-import csv
 import asyncio
 
 
