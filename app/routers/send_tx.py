@@ -64,29 +64,28 @@ def Get_eth_bals(user_adr: str = Form(...)):
 
 @router.post("/api/v1/eth_tarnsaction", tags=["Transaction"])
 async def eth_tarnsaction(background_tasks:BackgroundTasks,account_from:str = Form(...), account_to: str = Form(...),value_to_send: float=Form(...), private_key: str=Form(...)):
-    account_1 = account_from 
+    #checking the wallet if the are eth wallets
     adr_verify = w3.isAddress(account_from)
     if not adr_verify:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Invaild wallet")
+                            detail=f"account_from Not a valid ETH wallet check the wallet and try again")
     account_2 = account_to 
-    if not Web3.isChecksumAddress(account_2):
+    if not Web3.isChecksumAddress(account_to):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid ETH wallet check the wallet and try again")
+                                detail=f"account_to Not a valid ETH wallet check the wallet and try again")
             
     value    = value_to_send 
-    
-    value_2 = int(float(value)) 
+    # check if not sending more the this bals
+    value_2 = int(float(value_to_send)) 
     trans = w3.eth.get_balance(value_2)
     _bal2_ = w3.fromWei(trans, 'ether')    
     if float(value) > _bal2_:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"Insufficient ETH Funds")          
-    private_key = private_key  
-    addr = account_2
-     
-    nonce = w3.eth.getTransactionCount(account_1)
-
+    
+    # getting the transaction count of the send (nonce) 
+    nonce = w3.eth.getTransactionCount(account_from)
+    # building the transaction
     tx = {
                     'nonce': nonce,
                     'to': account_2,
@@ -96,7 +95,7 @@ async def eth_tarnsaction(background_tasks:BackgroundTasks,account_from:str = Fo
                 }
         
         
-
+    # sign the transaction and waiting for tx_hash
 
     signed_tx = w3.eth.account.signTransaction(tx, private_key)
     tx_hash =  w3.eth.send_raw_transaction(signed_tx.rawTransaction)
@@ -125,7 +124,7 @@ def create_Order(symbol: str = Form(...),quantity: float = Form(...)):
                     symbol=symbol.upper(),
                     quantity=quantity)
         
-        asyncio.sleep(5)
+        asyncio.sleep(3)
 
 
         return{"data" : json.dumps(order, indent=2)}
