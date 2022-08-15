@@ -20,6 +20,8 @@ from dotenv import load_dotenv
 import os
 import re
 import asyncio
+import decimal 
+from blockcypher import get_address_overview
 
 
 router = APIRouter()
@@ -480,6 +482,21 @@ def _prepare_tx_btc(priv_key:str = Form(...), addr_from:str = Form(...), addr_to
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                     detail=f"Transaction error")
 
+@router.post("/api/v1/bitcoin_unspent", tags=["Transaction"])
+def bitcoin_bals(bitcoin_addr: str=Form(...)):
+    try:
+        c = Bitcoin()
+        addr = bitcoin_addr
+        utxo_set = c.unspent(addr)
+        utxo = utxo_set#("%s:%d - %ld Satoshis" % (utxo_set['tx_hash'], utxo_set['tx_output_n'], utxo_set['value']), ('btc', utxo_set['value']/10.0**8 ))
+        #print(utxo)
+        return {'unspent': utxo } #{"bitcoin_bals": utxo }#("%s:%d - %ld Satoshis" % (utxo['tx_hash'], utxo['tx_output_n'], utxo['value']), ('btc', utxo['value']/10.0**8 ))}
+        #print(bitcoin_bals())
+    except:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid bitcoin address")
+
+
 
 @router.post("/api/v1/bitcoincash_transaction", tags=["Transaction"])
 def _prepare_tx_bch(priv_key:str = Form(...), addr_from:str = Form(...), addr_to:str = Form(...), value:str = Form(...), fee:str = Form(...), change_addr:str = Form(...),segwit=False):  #create unsigned txobj with change output
@@ -497,6 +514,22 @@ def _prepare_tx_bch(priv_key:str = Form(...), addr_from:str = Form(...), addr_to
     except ValueError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"Transaction error")
+
+@router.post("/api/v1/bitcash_unspent", tags=["Transaction"])
+def bitcash_bals(bitcash_addr: str=Form(...)):
+    try:
+        c = BitcoinCash()
+        addr = bitcash_addr
+        utxo_set = c.unspent(addr, 'tbcc')
+        utxo = utxo_set#("%s:%d - %ld Satoshis" % (utxo_set['tx_hash'], utxo_set['tx_output_n'], utxo_set['value']), ('btc', utxo_set['value']/10.0**8 ))
+        #print(utxo)
+        return {'unspent': utxo } #{"bitcoin_bals": utxo }#("%s:%d - %ld Satoshis" % (utxo['tx_hash'], utxo['tx_output_n'], utxo['value']), ('btc', utxo['value']/10.0**8 ))}
+        #print(bitcoin_bals())
+    except:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid bitcoin address")
+
+
 
 @router.post("/api/v1/litecoin_transaction", tags=["Transaction"])
 def _prepare_tx_lit(priv_key:str = Form(...), addr_from:str = Form(...), addr_to:str = Form(...), value:str = Form(...), fee:str = Form(...), change_addr:str = Form(...),segwit=False):  #create unsigned txobj with change output
@@ -541,5 +574,17 @@ def _preparetx_dash(priv_key:str = Form(...),  addr_to:str = Form(...), value:st
     tx = c.preparesignedtx(priv_key, addr_to, value)
     data = c.pushtx(tx)
     return{"data": data }
+    
+    
+@router.post("/api/v1/get_dash_bals", tags=["Transaction"])   
+def dash_bals(user_adr: str = Form(...)):
+    try:
+        bals = get_address_overview(user_adr, 'dash')#1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
+        print(bals)
+        return {'DASH':bals['final_balance']/10 **8,
+                'full details': bals}
+    except:
+       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid dash address") 
     
     
