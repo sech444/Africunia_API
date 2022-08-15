@@ -547,6 +547,18 @@ def _prepare_tx_lit(priv_key:str = Form(...), addr_from:str = Form(...), addr_to
     except ValueError:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                     detail=f"Transaction error")
+            
+@router.post("/api/v1/get_ltc_bals", tags=["Transaction"])   
+def ltc_bals(user_addr: str = Form(...)):
+    try:
+        bals = get_address_overview(user_addr, 'ltc')#1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
+        print(bals)
+        return {'LTC':bals['final_balance']/10 **8,
+                'full details': bals}
+    except:
+       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid ltc address") 
+    
 
 
 @router.post("/api/v1/binance_withdraw", tags=["Transaction"])
@@ -577,9 +589,9 @@ def _preparetx_dash(priv_key:str = Form(...),  addr_to:str = Form(...), value:st
     
     
 @router.post("/api/v1/get_dash_bals", tags=["Transaction"])   
-def dash_bals(user_adr: str = Form(...)):
+def dash_bals(user_addr: str = Form(...)):
     try:
-        bals = get_address_overview(user_adr, 'dash')#1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
+        bals = get_address_overview(user_addr, 'dash')#1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
         print(bals)
         return {'DASH':bals['final_balance']/10 **8,
                 'full details': bals}
