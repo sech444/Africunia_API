@@ -519,7 +519,7 @@ def _prepare_tx_bch(priv_key:str = Form(...), addr_from:str = Form(...), addr_to
 def btc_bals(user_addr: str = Form(...)):
     try:
         bals = get_address_overview(user_addr, 'btc')#1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
-        print(bals)
+        #print(bals)
         return {'BTC':bals['final_balance']/10 **8,
                 'full details': bals}
     except:
@@ -563,7 +563,7 @@ def _prepare_tx_lit(priv_key:str = Form(...), addr_from:str = Form(...), addr_to
 def ltc_bals(user_addr: str = Form(...)):
     try:
         bals = get_address_overview(user_addr, 'ltc')#1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
-        print(bals)
+        #print(bals)
         return {'LTC':bals['final_balance']/10 **8,
                 'full details': bals}
     except:
@@ -603,7 +603,7 @@ def _preparetx_dash(priv_key:str = Form(...),  addr_to:str = Form(...), value:st
 def dash_bals(user_addr: str = Form(...)):
     try:
         bals = get_address_overview(user_addr, 'dash')#1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
-        print(bals)
+        #print(bals)
         return {'DASH':bals['final_balance']/10 **8,
                 'full details': bals}
     except:

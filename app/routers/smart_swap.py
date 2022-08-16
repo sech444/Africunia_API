@@ -89,11 +89,7 @@ def xrp_transaction(account_Secret = Form(...), account_to = Form(...),value_to_
 @router.post("/api/v1/get_xrp_bals", tags=["Transaction"])
 def Get_xrp_bals(user_adr: str = Form(...)):
     adr_verify = user_adr
-    p = str(adr_verify)
-    print(len(p))
-    if len(adr_verify) == 34:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Invaild wallet")
+    
     try:
         test_account = adr_verify #  "r9D7zkVzi1ja1yqwvB1iLFZsxioWP2oVtK"
 
@@ -104,12 +100,12 @@ def Get_xrp_bals(user_adr: str = Form(...)):
         )
         response2 = client.request(acct_info)
         result = response2.result["account_data"]
-        print(result['Balance'])
-        print("response.status: ", response2.status)
-        print('Look up info about your account ')
+        #print(result['Balance'])
+        #print("response.status: ", response2.status)
+        #print('Look up info about your account ')
 
-        print(json.dumps(response2.result, indent=4, sort_keys=True))
-        return{"balances": result['Balance']}
+        #print(json.dumps(response2.result, indent=4, sort_keys=True))
+        return{"balances": float(result['Balance'])/10 **6}
     except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"Not a valid xrp wallet check the wallet and try again")
@@ -148,7 +144,7 @@ print(amount)'''
 # send some 'amount' of Tron to the 'wallet' address
 @router.post("/api/v1/tron_transaction", tags=["Transaction"])
 async def send_tron(sender_address =  Form(...), recipient_address = Form(...), account_to_send = Form(...),PRIVATE_KEY = Form(...)):
-    client = Tron(network='nile')
+    client = Tron()
     WALLET_ADDRESS = sender_address
     if client.is_address(sender_address) != True:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -163,7 +159,7 @@ async def send_tron(sender_address =  Form(...), recipient_address = Form(...), 
         priv_key = PrivateKey(bytes.fromhex(PRIVATE_KEY))
         
         # create transaction and broadcast it
-        print("building txn")
+        #print("building txn")
         txn = (client.transfer(str(WALLET_ADDRESS), str(recipient_address), int(account_to_send))
             .memo("test memo")#"Transaction Description") # (
             .build()
@@ -172,10 +168,10 @@ async def send_tron(sender_address =  Form(...), recipient_address = Form(...), 
             .broadcast()
             )
         # wait until the transaction is sent through and then return the details 
-        print("waiting for transaction is sent through and then return the details ")
-        print(txn)
+        #print("waiting for transaction is sent through and then return the details ")
+        #print(txn)
         details=txn.wait()
-        print(details["transaction"]["transaction"]["txID"])
+        #print(details["transaction"]["transaction"]["txID"])
 
         return {"transaction hash" : details}
  
