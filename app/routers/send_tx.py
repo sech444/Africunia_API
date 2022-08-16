@@ -514,6 +514,17 @@ def _prepare_tx_bch(priv_key:str = Form(...), addr_from:str = Form(...), addr_to
     except ValueError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"Transaction error")
+        
+@router.post("/api/v1/get_btc_bals", tags=["Transaction"])   
+def btc_bals(user_addr: str = Form(...)):
+    try:
+        bals = get_address_overview(user_addr, 'btc')#1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
+        print(bals)
+        return {'BTC':bals['final_balance']/10 **8,
+                'full details': bals}
+    except:
+       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid ltc address") 
 
 @router.post("/api/v1/bitcash_unspent", tags=["Transaction"])
 def bitcash_bals(bitcash_addr: str=Form(...)):

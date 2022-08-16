@@ -27,7 +27,7 @@ from tronpy.exceptions import (
 
 
 # connect to the Tron blockchain
-client_trx = Tron(network='nile') #network='nile'
+client_trx = Tron() #network='nile'
 
 # connect to the XRP blockchain
 # Define the network client
@@ -203,7 +203,7 @@ def account_balance(user_adr: str = Form(...)):
 #transaction_hash  = '76375d0b706ad5271e86ae49499e534cb1e0e7ae2cd1088b149ad35ebd2ee9e7'
 @router.post('/api/v1/api/tron_webhook', tags=["WebHook"])
 def transation_detail(transaction_hash:str = Form(...),webhook_url:str = Form(...)) -> dict():
-    client = Tron(network='nile')
+    client = Tron()
     try:
         info = client.get_transaction(str(transaction_hash))
         tx_xrp = json.dumps(info, default=vars)
