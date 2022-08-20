@@ -317,7 +317,7 @@ def bnb_usdt():
         r = requests.get(base_url+path+params)
         data = r.json()
         priceFloat = float(data['price'])
-        print(priceFloat)
+        #print(priceFloat)
         #return priceFloat
         return {
         "coin": "BNB",
