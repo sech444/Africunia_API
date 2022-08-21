@@ -1,4 +1,4 @@
-from coinpaprika import client as Coinpaprika
+from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
 import json
 from web3 import Web3
 from time import sleep
@@ -9,77 +9,34 @@ from requests.adapters import HTTPAdapter
 w3 = Web3(Web3.HTTPProvider('https://rpc.exlscan.com/'))
 
 
-# method to get the price of bit coin
-def get_price(url):
-  # getting the request from url 
-    data = requests.get(url,headers=headers) 
-    # converting the text 
-    soup = BS(data.text, 'html.parser')
-    
-    #print(soup)
-    # finding metha info for the current price
-    #ans = soup.find('span', {"class" :"price"}).text
-    ans = soup.find('div', {"class" :"css-ex4xl9"})
-    print(soup.div['class'])
-    print(ans)
-    return ans
-   
-# url of the bit coin price
-import re
-url = "https://www.binance.com/en/markets"
-headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"}
-webpage = requests.get(url,headers=headers) 
-# calling the get_price method
-ans = get_price(url)
-#ans2 =  [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
-# printing the ans
-print(ans)
-
-
-"""
-from eth_account import Account
-import secrets
-priv = secrets.token_hex(32)
-private_key = "0x" + priv
-print ("SAVE BUT DO NOT SHARE THIS:", private_key)
-acct = Account.from_key(private_key)
-print("Address:", acct.address)
-
-print("EXL Blockchain ...")
-# EXL wallet key ; 1bde61f40ef295485aaaac21d8e936a350a468440bdf088d029239b9e85fe411
-
-# EXL wallet addr ; 0xB1E6c654Cd79265865b07611CAB04E80d245e92e
-
-#EXL wallet for token . 0xd010284A0C34717dd9ddF71b49a4B143261486cd
-
-con = w3.isConnected()
-new_acct = w3.eth.account.create()
-#print(w3.eth.get_block('latest'))
-#print(con)
+router = APIRouter()
 
 contract_addr ='0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b'
 dbAddress = w3.toChecksumAddress(contract_addr).lower()
-print(dbAddress )
+#print(dbAddress )
 with open("pancake.json", "r") as file:
     Compiled_code = file.read()
     #print(Compiled_code)
 
 Afcash = w3.eth.contract(address= contract_addr, abi=Compiled_code)
 
-print(Afcash.functions.name().call())
+#print(Afcash.functions.name().call())
 
-alice = input('addr to reciver: ')#'0x9875adb3f2ab35cb2328c9974292e5711eced73b' 0xB1E6c654Cd79265865b07611CAB04E80d245e92e
+'''alice = input('addr to reciver: ')#'0x9875adb3f2ab35cb2328c9974292e5711eced73b' 0xB1E6c654Cd79265865b07611CAB04E80d245e92e
 Address = w3.toChecksumAddress(alice)
 bals = Afcash.functions.balanceOf(Address).call()
-bals2 = w3.eth.get_balance(Address)
-bals_ = w3.fromWei(bals2, 'ether'),
-print(bals2)
-print(bals_)
-acct_from = input("acct_from: ")
+#bals2 = w3.eth.get_balance(Address)
+bals_ = w3.fromWei(bals, 'ether'),
+#print(bals2)
+print(bals_)'''
+
+
+
+'''acct_from = input("acct_from: ")
 value_to_send = input("value: ")
 my_private_key = input("private_key: ")
 tx_hash = Afcash.functions.transferFrom(acct_from, alice, value_to_send).call()
-
+'''
 
 # 2. Sign a transaction
 
@@ -94,7 +51,7 @@ tx_hash = Afcash.functions.transferFrom(acct_from, alice, value_to_send).call()
 
 # Intitial value of favorite number
 
-
+"""
 send_transaction = Afcash.functions.store(15).buildTransaction(
     {
     "gasPrice": w3.eth.gas_price, 
@@ -111,8 +68,7 @@ print(store_tx_receipt)
 new_data2 = (w3.toHex(store_tx_hash))
 print(new_data2 )
 
-"""
-"""#this program queries for all of the uniswap pair addresses and their token supply
+#this program queries for all of the uniswap pair addresses and their token supply
 
 infura_url = 'https://rinkeby.infura.io/v3/bde4e3babba54474844b65de59d0a039'
 
@@ -136,9 +92,7 @@ for i in range(1, 58494):
     supply = contract.functions.totalSupply().call()
     print(allPairs_address, supply)
 
-"""
 
-"""
 Account.enable_unaudited_hdwallet_features()
 acct, mnemonic = Account.create_with_mnemonic()
 
@@ -162,4 +116,5 @@ print(account.privateKey)
 
 # get address
 print(account.address)
-print(account.privateKey.hex())"""
+print(account.privateKey.hex())
+"""

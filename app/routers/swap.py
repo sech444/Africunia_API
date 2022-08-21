@@ -18,11 +18,6 @@ router = APIRouter()
 
 web3 = Web3(Web3.HTTPProvider("https://bsc-dataseed.binance.org/"))
 
-#input_address = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
-#output_address =  "0x55d398326f99059fF775485246999027B3197955"
-
-#privatekey = input("PRIVATE KEY: ")
-#my_address = input("YOUR WALLET: ")
 
 afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
 

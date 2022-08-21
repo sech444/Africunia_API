@@ -19,12 +19,29 @@ import ast
 import pandas as pd
 import asyncio
 from tronpy import AsyncTron
+from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
+import json
+from web3 import Web3
 from tronpy.exceptions import (
    
     AddressNotFound,
 
 )
+w3 = Web3(Web3.HTTPProvider('https://rpc.exlscan.com/'))
 
+
+router = APIRouter()
+
+contract_addr ='0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b'
+dbAddress = w3.toChecksumAddress(contract_addr).lower()
+#print(dbAddress )
+with open("pancake.json", "r") as file:
+    Compiled_code = file.read()
+    #print(Compiled_code)
+
+Afcash = w3.eth.contract(address= contract_addr, abi=Compiled_code)
+
+#print(Afcash.functions.name().call())
 
 # connect to the Tron blockchain
 client_trx = Tron() #network='nile'
@@ -33,9 +50,6 @@ client_trx = Tron() #network='nile'
 # Define the network client
 JSON_RPC_URL = "https://xrplcluster.com"
 client = JsonRpcClient(JSON_RPC_URL)
-
-router = APIRouter()
-
 
 #"sssU6icMrRgxgcv5hhgd4xXCBUK7X"
 @router.post("/api/v1/xrp_transaction", tags=["Transaction"])
@@ -236,3 +250,63 @@ def create_wallet_on_xrp_network():
     return {"classic_address":my_wallet.classic_address,
             "seed": my_wallet.seed}
     
+    
+@router.post("/api/v1/get_exl20_afcash_bals", tags=["Transaction"])
+def get_exl20_afcash_bals(user_adr: str = Form(...)):
+    adr_verify = Web3.isAddress(user_adr.upper())
+    if not adr_verify:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Invaild wallet")
+    _trans =Afcash.functions.balanceOf(user_adr).call()
+    _bal2_ = w3.fromWei(_trans, 'ether')
+    try:
+        if not _bal2_:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid exl20_afcash wallet check the wallet and try again")
+
+        return {"balance": _bal2_}
+    except:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Not a valid exl20_afcash wallet check the wallet and try again")
+
+
+
+
+@router.post("/api/v1/get_exl20_afcash_tarnsaction", tags=["Transaction"])
+def get_exl20_afcash_tarnsaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+    account_1 = account_from
+    account_2 = account_to
+    value = value_to_send
+
+    adr_verify = w3.isAddress(account_from)
+    if not adr_verify:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Invaild exl20_afcash wallet")
+
+    if not Web3.isChecksumAddress(account_2):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Not a valid exl20_afcash wallet check the wallet and try again")
+
+    value_2 = int(float(value))
+    trans = w3.eth.get_balance(account_1)
+    _bal2_ = w3.fromWei(trans, 'ether')
+    if float(value) > _bal2_:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Insufficient exl20_afcash Funds")
+    try:
+        input_balance =Afcash.functions.transfer(account_2, value).buildTransaction({
+            'from': adr_verify,
+            'gas': 250000,
+            'gasPrice': w3.toWei('50', 'gwei'),
+            'to': account_2,
+            'value': w3.toWei(value, 'ether'),
+            'nonce': w3.eth.get_transaction_count(adr_verify),
+        })
+        signed = w3.eth.account.sign_transaction(
+            input_balance, private_key=private_key)
+        tx = w3.eth.send_raw_transaction(signed.rawTransaction)
+        #print(f"Swap tx: {web3.toHex(tx)}")
+        return {"Swap tx": w3.toHex(tx)}
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Transaction error, most have exl20 for gas fee")

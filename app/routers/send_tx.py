@@ -406,7 +406,7 @@ def busd_bals(wallet_id: str = Form(...)):
                             detail=f"Not a valid BNB wallet check the wallet and try again")
 
 
-@router.post("/api/v1/exl_afcash_tarnsaction", tags=["Transaction"])
+@router.post("/api/v1/exl20_tarnsaction", tags=["Transaction"])
 def exl_afcash(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
@@ -417,11 +417,11 @@ def exl_afcash(account_from: str = Form(...), account_to: str = Form(...), value
     adr_verify = bsc_w3.isChecksumAddress(account_from)
     if not adr_verify:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Invaild wallet")
+                            detail=f"Invaild exl20 wallet")
 
     if not bsc_w3.isChecksumAddress(account_2):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Not a valid ETH wallet check the wallet and try again")
+                            detail=f"Not a valid exl20 wallet check the wallet and try again")
     #print("building .....tx...2")
     value_2 = int(float(value))
     #print("building .....tx...3", value_2)
@@ -430,7 +430,7 @@ def exl_afcash(account_from: str = Form(...), account_to: str = Form(...), value
 
     if float(value) >= _bal2_:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Insufficient ETH Funds")
+                            detail=f"Insufficient exl20 Funds")
 
     private_key = private_key
     addr = account_2
@@ -450,8 +450,8 @@ def exl_afcash(account_from: str = Form(...), account_to: str = Form(...), value
     return {"New_tarnsation": new_data, }
 
 
-@router.post("/api/v1/exl_afcash_bals", tags=["Transaction"])
-def exl_afcash_bals(wallet_id: str = Form(...)):
+@router.post("/api/v1/exl20_bals", tags=["Transaction"])
+def exl20_bals(wallet_id: str = Form(...)):
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
     adr_verify = bsc_w3.isAddress(wallet_id)
@@ -463,7 +463,7 @@ def exl_afcash_bals(wallet_id: str = Form(...)):
     try:
         if not float(_bal2_):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid BNB wallet check the wallet and try again")
+                                detail=f"Not a valid exl wallet check the wallet and try again")
 
         return {"balance": _bal2_}
     except ValueError:
