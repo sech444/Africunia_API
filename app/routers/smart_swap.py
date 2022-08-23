@@ -22,6 +22,8 @@ from tronpy import AsyncTron
 from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
 import json
 from web3 import Web3
+from dotenv import load_dotenv
+import os
 from tronpy.exceptions import (
    
     AddressNotFound,
@@ -35,9 +37,20 @@ router = APIRouter()
 contract_addr ='0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b'
 dbAddress = w3.toChecksumAddress(contract_addr).lower()
 #print(dbAddress )
+
+load_dotenv()
+#w3 = os.getenv("w3")
+
+
+address_key = os.getenv("address_key")
+
+
+
+
 with open("pancake.json", "r") as file:
     Compiled_code = file.read()
     #print(Compiled_code)
+
 
 Afcash = w3.eth.contract(address= contract_addr, abi=Compiled_code)
 
@@ -251,19 +264,15 @@ def create_wallet_on_xrp_network():
             "seed": my_wallet.seed}
     
     
-@router.post("/api/v1/get_exl20_afcash_bals", tags=["Transaction"])
+@router.post("/api/v1/exl20_afcash_bals", tags=["Transaction"])
 def get_exl20_afcash_bals(user_adr: str = Form(...)):
     adr_verify = Web3.isAddress(user_adr.upper())
     if not adr_verify:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Invaild wallet")
-    _trans =Afcash.functions.balanceOf(user_adr).call()
-    _bal2_ = w3.fromWei(_trans, 'ether')
     try:
-        if not _bal2_:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid exl20_afcash wallet check the wallet and try again")
-
+        _trans =Afcash.functions.balanceOf(user_adr).call()
+        _bal2_ = w3.fromWei(_trans, 'ether')
         return {"balance": _bal2_}
     except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -272,12 +281,12 @@ def get_exl20_afcash_bals(user_adr: str = Form(...)):
 
 
 
-@router.post("/api/v1/get_exl20_afcash_tarnsaction", tags=["Transaction"])
-def get_exl20_afcash_tarnsaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+@router.post("/api/v1/exl20_afcash_tarnsaction", tags=["Transaction"])
+def get_exl20_afcash(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     account_1 = account_from
     account_2 = account_to
     value = value_to_send
-
+    #print("sending234")
     adr_verify = w3.isAddress(account_from)
     if not adr_verify:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -286,27 +295,77 @@ def get_exl20_afcash_tarnsaction(account_from: str = Form(...), account_to: str 
     if not Web3.isChecksumAddress(account_2):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Not a valid exl20_afcash wallet check the wallet and try again")
-
-    value_2 = int(float(value))
-    trans = w3.eth.get_balance(account_1)
+    #print("sending567")
+    #value_2 = int(float(value))
+    trans = Afcash.functions.balanceOf(account_1).call()
     _bal2_ = w3.fromWei(trans, 'ether')
     if float(value) > _bal2_:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient exl20_afcash Funds")
+    #print("sending890")
+    value_to = w3.toWei(value, 'ether')
     try:
-        input_balance =Afcash.functions.transfer(account_2, value).buildTransaction({
-            'from': adr_verify,
-            'gas': 250000,
-            'gasPrice': w3.toWei('50', 'gwei'),
-            'to': account_2,
-            'value': w3.toWei(value, 'ether'),
-            'nonce': w3.eth.get_transaction_count(adr_verify),
-        })
+        input_balance = Afcash.functions.transfer(account_2, value_to).buildTransaction(
+            {
+                'from': account_1,
+                'nonce': w3.eth.get_transaction_count(account_1),
+                'gas': 250000,
+                'gasPrice': w3.toWei('50', 'gwei'),
+            }
+        )
+
         signed = w3.eth.account.sign_transaction(
             input_balance, private_key=private_key)
         tx = w3.eth.send_raw_transaction(signed.rawTransaction)
-        #print(f"Swap tx: {web3.toHex(tx)}")
-        return {"Swap tx": w3.toHex(tx)}
+        print(tx)
+        print(f"Swap tx: {w3.toHex(tx)}")
+        return {"hash_tx": w3.toHex(tx)}
     except ValueError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Transaction error, most have exl20 for gas fee")
+
+
+
+@router.post("/api/v1/exl20_afcash_tarnfar", tags=["Transaction"])
+def exl20_afcash_token( account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...)):
+    account_1 = address_key
+    account_2 = account_to
+    value = value_to_send
+    #print("sending234")
+    adr_verify = w3.isAddress(address_key)
+    if not adr_verify:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Invaild exl20_afcash wallet")
+
+    if not Web3.isChecksumAddress(account_2):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Not a valid exl20_afcash wallet check the wallet and try again")
+    #print("sending567")
+    #value_2 = int(float(value))
+    trans = Afcash.functions.balanceOf(account_1).call()
+    _bal2_ = w3.fromWei(trans, 'ether')
+    if float(value) > _bal2_:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Insufficient exl20_afcash Funds")
+    #print("sending890")
+    value_to = w3.toWei(value, 'ether')
+    try:
+        input_balance = Afcash.functions.transfer(account_2, value_to).buildTransaction(
+            {
+                'from': account_1,
+                'nonce': w3.eth.get_transaction_count(account_1),
+                'gas': 250000,
+                'gasPrice': w3.toWei('50', 'gwei'),
+            }
+        )
+
+        signed = w3.eth.account.sign_transaction(
+            input_balance, private_key=PRIVATE_KEY)
+        tx = w3.eth.send_raw_transaction(signed.rawTransaction)
+    
+    
+        receipt_ = w3.eth.get_transaction(tx)
+        return {"New_tarnsation": w3.toJSON(receipt_ ) }
+    except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Transaction error, most have exl20 for gas fee")

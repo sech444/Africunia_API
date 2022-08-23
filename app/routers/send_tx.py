@@ -13,10 +13,6 @@ from web3 import Web3, EthereumTesterProvider, HTTPProvider
 from uuid import uuid4
 from bitcoin import *
 from binance.client import Client
-import binascii
-import time
-import hmac
-import hashlib
 from urllib.parse import urljoin, urlencode
 from eth_account import Account
 from cryptos import *
@@ -40,6 +36,7 @@ load_dotenv()
 API_KEY = os.getenv("API_KEY")
 SECRET_KEY = os.getenv("SECRET_KEY")
 etherscan_API = os.getenv("etherscan_API")
+address_key = os.getenv("address_key")
 BASE_URL = 'https://api.binance.com'
 
 headers = {
@@ -406,8 +403,8 @@ def busd_bals(wallet_id: str = Form(...)):
                             detail=f"Not a valid BNB wallet check the wallet and try again")
 
 
-@router.post("/api/v1/exl20_tarnsaction", tags=["Transaction"])
-def exl_afcash(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+@router.post("/api/v1/exl_tarnsaction", tags=["Transaction"])
+def exl_tarnsaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
     account_1 = account_from
@@ -433,7 +430,6 @@ def exl_afcash(account_from: str = Form(...), account_to: str = Form(...), value
                             detail=f"Insufficient exl20 Funds")
 
     private_key = private_key
-    addr = account_2
 
     nonce = bsc_w3.eth.getTransactionCount(account_1)
     tx = {
@@ -450,8 +446,8 @@ def exl_afcash(account_from: str = Form(...), account_to: str = Form(...), value
     return {"New_tarnsation": new_data, }
 
 
-@router.post("/api/v1/exl20_bals", tags=["Transaction"])
-def exl20_bals(wallet_id: str = Form(...)):
+@router.post("/api/v1/exl_bals", tags=["Transaction"])
+def exl_bals(wallet_id: str = Form(...)):
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
     adr_verify = bsc_w3.isAddress(wallet_id)
@@ -627,3 +623,48 @@ def dash_bals(user_addr: str = Form(...)):
     except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Not a valid dash address")
+        
+        
+@router.post("/api/v1/exl20_tarnfar", tags=["Transaction"])
+def exl20_afcash( account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...)):
+    exl_url = "https://rpc.exlscan.com/"
+    bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
+    account_1 = address_key
+    account_2 = account_to
+    value = value_to_send
+    adr_verify = bsc_w3.isChecksumAddress(address_key)
+    if not adr_verify:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Invaild exl20 wallet")
+
+    if not bsc_w3.isChecksumAddress(account_2):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Not a valid exl20 wallet check the wallet and try again")
+    #print("building .....tx...2")
+    value_2 = int(float(value))
+    #print("building .....tx...3", value_2)
+    trans = bsc_w3.eth.get_balance(account_1)
+    _bal2_ = w3.fromWei(trans, 'ether')
+
+    if float(value) >= _bal2_:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Insufficient exl20 Funds")
+    try:
+        private_key = PRIVATE_KEY
+        nonce = bsc_w3.eth.getTransactionCount(account_1)
+        tx = {
+            'nonce': nonce,
+            'to': account_2,
+            'value': bsc_w3.toWei(value, 'ether'),
+            'gas': 200000,
+            'chainId': 27082022,
+            'gasPrice': bsc_w3.toWei('1', 'gwei'),
+        }
+        signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
+        tx_hash = bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+        new_data = bsc_w3.toHex(tx_hash)
+        receipt_ = bsc_w3.eth.get_transaction(tx_hash)
+        return {"New_tarnsation": bsc_w3.toJSON(receipt_ ) }
+    except:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                 detail=f"Transaction error, most have exl20 for gas fee")

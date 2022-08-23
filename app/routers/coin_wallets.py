@@ -5,6 +5,7 @@ from typing import List, Optional
 import requests
 from eth_account import Account
 from hexbytes import HexBytes
+from web3 import Web3
 
 
 
@@ -279,3 +280,12 @@ def BINANCE_SMART_CHAIN_wallet(wallet_name: str = Form(...)):
             "purpose_key" : wallet_data["purpose_key"],
             "coin_key"  : wallet_data["coin_key"]
             }
+
+"""w3 = Web3()
+my_mnemonic=""
+w3.eth.account.enable_unaudited_hdwallet_features()
+account = w3.eth.account.from_mnemonic(my_mnemonic, account_path="m/44'/60'/0'/0/0")
+
+print(account.address)
+print(account.key.hex()) # Private key for that address"""
+
