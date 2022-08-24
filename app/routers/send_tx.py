@@ -42,7 +42,8 @@ BASE_URL = 'https://api.binance.com'
 headers = {
     'X-MBX-APIKEY': API_KEY
 }
-
+IP = ({'52.54.159.237, 52.73.143.252'})
+print(IP)
 
 client = Client(API_KEY, SECRET_KEY)
 
@@ -103,7 +104,7 @@ async def eth_tarnsaction(background_tasks: BackgroundTasks, account_from: str =
     signed_tx = w3.eth.account.signTransaction(tx, private_key)
     tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     new_data = (w3.toHex(tx_hash))
-    return {"New_tarnsation": new_data, }
+    return {"New_transaction": new_data, }
 
 
 @router.post("/api/v1/create_Order_buy", tags=["Transaction"])
@@ -119,7 +120,7 @@ def create_Order(symbol: str = Form(...), quantity: float = Form(...)):
     except BinanceAPIException as e:
         #print(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Not a valid tarnsation check the symbol eg. BNBUSDT then quantity >= 10.38USDT or Account has insufficient balance for requested action, symbol like this BTCUSDT")
+                            detail=f"Not a valid transaction check the symbol eg. BNBUSDT then quantity >= 10.38USDT or Account has insufficient balance for requested action, symbol like this BTCUSDT")
 
 
 @router.post("/api/v1/create_Order_sell", tags=["Transaction"])
@@ -134,9 +135,9 @@ def create_Order(symbol: str = Form(...), quantity: float = Form(...)):
 
         return{"data": json.dumps(order, indent=2)}
     except BinanceAPIException as e:
-        #print(e)
+        print(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Not a valid tarnsation check the symbol eg. BNBUSDT then quantity >= 10.38USDT or Account has insufficient balance for requested action, symbol like this BTCUSDT")
+                            detail=f"Not a valid transaction check the symbol eg. BNBUSDT then quantity >= 10.38USDT or Account has insufficient balance for requested action, symbol like this BTCUSDT")
 
 
 @router.post("/api/v1/Order_status", tags=["Transaction"])
@@ -148,9 +149,11 @@ def create_Order(symbol: str = Form(...), order_Id: int = Form(...)):
 
         return{"data": order}
     except BinanceAPIException as e:
-        #print(e)
+        print(e)
+        print (e.status_code)
+        print (e.message)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Not a valid tarnsation check the symbol eg. BNBUSDT then orderid eg. 4136872022 and try again")
+                            detail=f"Not a valid transaction check the symbol eg. BNBUSDT then orderid eg. 4136872022 and try again")
 
 def convert_scientific_to_decimal(num):
     if 'e' in str(num):
@@ -164,9 +167,11 @@ def create_Order(asset_symbol: str = Form(...)):
         bals = client.get_asset_balance(asset=asset_symbol.upper())
         return{"data": bals}
     except BinanceAPIException as e:
-        #print(e)
+        print(e)
+        print (e.status_code)
+        print (e.message)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Not a valid tarnsation check the asset symbol eg. BNB , USDT ")
+                            detail=f"Not a valid transaction check the asset symbol eg. BNB , USDT ")
 
 
 @router.post("/api/v1/get_deposit_address", tags=["Transaction"])
@@ -176,7 +181,7 @@ def get_deposit_address(asset_symbol: str = Form(...)):
         return{"data": bals}
     except BinanceAPIException as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Not a valid tarnsation check the asset symbol eg. BNB , USDT ")
+                            detail=f"Not a valid transaction check the asset symbol eg. BNB , USDT ")
 
 
 # using web3py to Transfer usdt tether bep20 from one account to other  account with binance
@@ -205,7 +210,7 @@ def usdt_tarnsaction(account_from: str = Form(...), account_to: str = Form(...),
     signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
     tx_hash = bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     new_data = (bsc_w3.toHex(tx_hash))
-    return {"New_tarnsation": new_data, }
+    return {"New_transaction": new_data, }
 
 
 @router.post("/api/v1/usdt_erc20_bals", tags=["Transaction"])
@@ -317,7 +322,7 @@ def bnb_tarnsaction(account_from: str = Form(...), account_to: str = Form(...), 
     signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
     tx_hash = bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     new_data = (bsc_w3.toHex(tx_hash))
-    return {"New_tarnsation": new_data, }
+    return {"New_transaction": new_data, }
 
 
 @router.post("/api/v1/bnb_bals", tags=["Transaction"])
@@ -380,7 +385,7 @@ def busd_tarnsaction(account_from: str = Form(...), account_to: str = Form(...),
     signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
     tx_hash = bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     new_data = (bsc_w3.toHex(tx_hash))
-    return {"New_tarnsation": new_data, }
+    return {"New_transaction": new_data, }
 
 
 @router.post("/api/v1/busd_bals", tags=["Transaction"])
@@ -443,7 +448,7 @@ def exl_tarnsaction(account_from: str = Form(...), account_to: str = Form(...), 
     signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
     tx_hash = bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     new_data = bsc_w3.toHex(tx_hash)
-    return {"New_tarnsation": new_data, }
+    return {"New_transaction": new_data, }
 
 
 @router.post("/api/v1/exl_bals", tags=["Transaction"])
@@ -594,6 +599,7 @@ async def binance_withdraw(background_tasks: BackgroundTasks, Coin: str = Form(.
             amount=value_to_send)
         return{"data": result}
     except BinanceAPIException as e:
+        print(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Transaction error")
 
@@ -664,7 +670,7 @@ def exl20_afcash( account_to: str = Form(...), value_to_send: float = Form(...),
         tx_hash = bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
         new_data = bsc_w3.toHex(tx_hash)
         receipt_ = bsc_w3.eth.get_transaction(tx_hash)
-        return {"New_tarnsation": bsc_w3.toJSON(receipt_ ) }
+        return {"New_transaction": bsc_w3.toJSON(receipt_ ) }
     except:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                  detail=f"Transaction error, most have exl20 for gas fee")

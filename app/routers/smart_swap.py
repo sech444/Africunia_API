@@ -105,7 +105,7 @@ def xrp_transaction(account_Secret = Form(...), account_to = Form(...),value_to_
         metadata = tx_response.result.get("meta", {})
         if metadata.get("TransactionResult"):
             #print("Result code:", metadata["TransactionResult"])
-            return {"tarnsation": tx_response.result}
+            return {"transaction": tx_response.result}
     except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"Invalid details; could not determine encoding algorithm")
@@ -365,7 +365,7 @@ def exl20_afcash_token( account_to: str = Form(...), value_to_send: float = Form
     
     
         receipt_ = w3.eth.get_transaction(tx)
-        return {"New_tarnsation": w3.toJSON(receipt_ ) }
+        return {"New_transaction": w3.toJSON(receipt_ ) }
     except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Transaction error, most have exl20 for gas fee")
