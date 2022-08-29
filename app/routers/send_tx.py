@@ -42,8 +42,7 @@ BASE_URL = 'https://api.binance.com'
 headers = {
     'X-MBX-APIKEY': API_KEY
 }
-IP = ({'52.54.159.237, 52.73.143.252'})
-print(IP)
+
 
 client = Client(API_KEY, SECRET_KEY)
 

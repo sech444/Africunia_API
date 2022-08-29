@@ -1,5 +1,5 @@
 from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
-from .routers import coin_prices, coin_wallets, send_tx, web_hook, swap, smart_swap
+from .routers import coin_prices, coin_wallets, send_tx, web_hook, swap, smart_swap, Oracle_feeds
 from . import models
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -42,5 +42,6 @@ app.include_router(send_tx.router)
 app.include_router(web_hook.router)
 app.include_router(swap.router)
 app.include_router(smart_swap.router)
+app.include_router(Oracle_feeds.router)
 
     
