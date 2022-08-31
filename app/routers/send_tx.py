@@ -46,28 +46,27 @@ headers = {
 
 client = Client(API_KEY, SECRET_KEY)
 
+# 
+
 
 @router.post("/api/v1/get_eth_bals", tags=["Transaction"])
 def Get_eth_bals(user_adr: str = Form(...)):
     adr_verify = Web3.isAddress(user_adr.upper())
-    if not adr_verify:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Invaild wallet")
-    _trans = w3.eth.get_balance(user_adr)
-    _bal2_ = w3.fromWei(_trans, 'ether')
+   
     try:
-        if not _bal2_:
+        if not adr_verify:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid eth wallet check the wallet and try again")
-
+                            detail=f"Invaild wallet")
+        _trans = w3.eth.get_balance(user_adr)
+        _bal2_ = w3.fromWei(_trans, 'ether')
         return {"balance": _bal2_}
     except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Not a valid eth wallet check the wallet and try again")
 
 
-@router.post("/api/v1/eth_tarnsaction", tags=["Transaction"])
-async def eth_tarnsaction(background_tasks: BackgroundTasks, account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+@router.post("/api/v1/eth_transaction", tags=["Transaction"])
+async def eth_transaction(background_tasks: BackgroundTasks, account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     # checking the wallet if the are eth wallets
     adr_verify = w3.isAddress(account_from)
     if not adr_verify:
@@ -184,32 +183,86 @@ def get_deposit_address(asset_symbol: str = Form(...)):
 
 
 # using web3py to Transfer usdt tether bep20 from one account to other  account with binance
+contract_addr=w3.toChecksumAddress('0x55d398326f99059fF775485246999027B3197955')
 
-@router.post("/api/v1/usdt_bep20_tarnsaction", tags=["Transaction"])
-def usdt_tarnsaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+with open("usdt_abi.json", "r") as file:
+    usdt_erc20 = file.read()
+    
+
+@router.post("/api/v1/usdt_bep20_bals", tags=["Transaction"])
+async def usdt_bals(wallet_id: str = Form(...)):
+    
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
+        
+    
+    usdt_bep=bsc_w3.eth.contract(address=contract_addr, abi=usdt_erc20)
+    adr_verify = Web3.isAddress(wallet_id.upper())
+   
+    if not adr_verify:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Invaild wallet")
+    try:
+        _trans = usdt_bep.functions.balanceOf(wallet_id).call()
+        _bal2_ = w3.fromWei(_trans, 'ether')
+        return {"balance": _bal2_}
+    except:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Not a valid usdt_bep20 wallet check the wallet and try again")
+
+
+
+
+# using web3py to Transfer usdt tether bep20 from one account to other  account with binance
+    
+@router.post("/api/v1/usdt_bep20_transaction", tags=["Transaction"])
+def usdt_transaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+    bsc = "https://bsc-dataseed.binance.org/"
+    bsc_w3 = Web3(Web3.HTTPProvider(bsc))
+    
+    usdt_bep=bsc_w3.eth.contract(address=contract_addr, abi=usdt_erc20)
     account_1 = account_from
-    account_2 = account_to
+    account_2 = account_to.upper()
     value = value_to_send
+    #print("sending567 ...................................................")
+    adr_verify = bsc_w3.isAddress(account_1)
+    if not adr_verify:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Invaild usdt_bep20_wallet")
+    #print("sending567 isChecksumAddress")
+    if not bsc_w3.isAddress(account_2):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Not a valid usdt_bep20 wallet check the wallet and try again")
+    #print("sending567")
+    #value_2 = int(float(value))
+    trans = usdt_bep.functions.balanceOf(account_1).call()
+    _bal2_ = bsc_w3.fromWei(trans, 'ether')
+    #print(_bal2_)
+    if float(value) > _bal2_:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Insufficient usdt_bep20 Funds")
+        
+    #print("sending890 .....................................")
+    value_to = bsc_w3.toWei(value, 'ether')
+    try:
+        input_balance = usdt_bep.functions.transfer(bsc_w3.toChecksumAddress(account_2), value_to).buildTransaction(
+            {
+                'from': account_1,
+                'nonce': w3.eth.get_transaction_count(account_1),
+                'gas': 250000,
+                'gasPrice': w3.toWei('50', 'gwei'),
+            }
+        )
 
-    private_key = private_key
-    addr = account_2
-
-    nonce = w3.eth.getTransactionCount(account_1)
-
-    tx = {
-        'nonce': nonce,
-        'to': account_2,
-        'value': bsc_w3.toWei(value, 'ether'),
-        'gas': 200000,
-        'gasPrice': bsc_w3.toWei('50', 'gwei'),
-    }
-
-    signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
-    tx_hash = bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    new_data = (bsc_w3.toHex(tx_hash))
-    return {"New_transaction": new_data, }
+        signed = bsc_w3.eth.account.sign_transaction(
+            input_balance, private_key=private_key)
+        tx = bsc_w3.eth.send_raw_transaction(signed.rawTransaction)
+        
+        return {"hash_tx": bsc_w3.toHex(tx)}
+    except ValueError as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Transaction error, most have BNB for gas fee")
 
 
 @router.post("/api/v1/usdt_erc20_bals", tags=["Transaction"])
@@ -217,26 +270,22 @@ def usdt_bals(wallet_id: str = Form(...)):
     url = "https://api.etherscan.io/api"
     apikey = etherscan_API
     adr_verify = Web3.isAddress(wallet_id)
-    if not adr_verify:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Invaild wallet")
-    params = {"module": "account", "action": "balance",
-              "address": wallet_id, "tag": "latest", "apikey": apikey}
-    response = requests.get(url, params=params).json()
-    total_balance = int(response["result"]) / (10**18)
     try:
-        if not float(total_balance):
+        if not adr_verify:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid wallet check the wallet and try again")
-        total_bal = w3.fromWei(total_balance, 'ether')
-        return {"balance": total_balance}
-    except ValueError:
+                            detail=f"Invaild wallet")
+        _trans = w3.eth.get_balance(adr_verify)
+        _bal2_ = w3.fromWei(_trans, 'ether')
+        return {"balance": _bal2_}
+    except :
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Not a valid BNB wallet check the wallet and try again")
+                            detail=f"Not a valid usdt_erc20 wallet check the wallet and try again")
 
 
-@router.post("/api/v1/usdt_erc20_tarnsaction", tags=["Transaction"])
-def usdt_tarnsaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+
+
+@router.post("/api/v1/usdt_erc20_transaction", tags=["Transaction"])
+def usdt_transaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     usdt_ = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
     account_1 = account_from
     account_2 = account_to
@@ -282,7 +331,7 @@ def usdt_tarnsaction(account_from: str = Form(...), account_to: str = Form(...),
 
 
 @router.post("/api/v1/bnb_", tags=["Transaction"])
-def bnb_tarnsaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def bnb_transaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
     account_1 = account_from
@@ -327,88 +376,98 @@ def bnb_tarnsaction(account_from: str = Form(...), account_to: str = Form(...), 
 @router.post("/api/v1/bnb_bals", tags=["Transaction"])
 def bnb_bals(wallet_id: str = Form(...)):
     bsc = "https://bsc-dataseed.binance.org/"
+    bsc_w3 = Web3(Web3.HTTPProvider(bsc))
     adr_verify = Web3.isAddress(wallet_id)
-    if not adr_verify:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Invaild wallet")
-    _trans = w3.eth.get_balance(wallet_id)
-    _bal2_ = w3.fromWei(_trans, 'ether')
     try:
-        if not float(_bal2_):
+        if not adr_verify:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid BNB wallet check the wallet and try again")
-
+                                detail=f"Invaild wallet")
+        _trans = bsc_w3.eth.get_balance(bsc_w3.toChecksumAddress(wallet_id))
+        _bal2_ = bsc_w3.fromWei(_trans, 'ether')
         return {"balance": _bal2_}
     except ValueError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Not a valid BNB wallet check the wallet and try again")
 
 
-@router.post("/api/v1/busd_tarnsaction", tags=["Transaction"])
-def busd_tarnsaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+@router.post("/api/v1/busd_transaction", tags=["Transaction"])
+def busd_transaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
+    busd_addr =bsc_w3.toChecksumAddress('0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56')
     account_1 = account_from
     account_2 = account_to
     value = value_to_send
 
-    adr_verify = w3.isAddress(account_from)
+    usdt_bep=bsc_w3.eth.contract(address=busd_addr, abi=usdt_erc20)
+    account_1 = account_from
+    account_2 = account_to.upper()
+    value = value_to_send
+    #print("sending567 ...................................................")
+    adr_verify = bsc_w3.isAddress(account_1)
     if not adr_verify:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Invaild wallet")
-
-    if not Web3.isChecksumAddress(account_2):
+                            detail=f"Invaild busd_bep20_wallet")
+    #print("sending567 isChecksumAddress")
+    if not bsc_w3.isAddress(account_2):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Not a valid ETH wallet check the wallet and try again")
-
-    value_2 = int(float(value))
-    trans = bsc_w3.eth.get_balance(account_1)
+                            detail=f"Not a valid busd_bep20 wallet check the wallet and try again")
+    #print("sending567")
+    #value_2 = int(float(value))
+    trans = usdt_bep.functions.balanceOf(bsc_w3.toChecksumAddress(account_1)).call()
     _bal2_ = bsc_w3.fromWei(trans, 'ether')
+    print(_bal2_)
     if float(value) > _bal2_:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Insufficient ETH Funds")
+                            detail=f"Insufficient usdt_bep20 Funds")
+        
+    #print("sending890 .....................................")
+    nonce = w3.eth.get_transaction_count(account_1)
+    value_to = bsc_w3.toWei(value, 'ether')
+    try:
+        input_balance = usdt_bep.functions.transfer(bsc_w3.toChecksumAddress(account_2), value_to).buildTransaction(
+            {
+                'from': bsc_w3.toChecksumAddress(account_1),
+                'nonce': nonce,
+                'gas': 250000,
+                'gasPrice': w3.toWei('50', 'gwei'),
+            }
+        )
 
-    private_key = private_key
-    addr = account_2
-
-    nonce = w3.eth.getTransactionCount(account_1)
-
-    tx = {
-        'nonce': nonce,
-        'to': account_2,
-        'value': bsc_w3.toWei(value, 'ether'),
-        'gas': 200000,
-        'gasPrice': bsc_w3.toWei('50', 'gwei'),
-    }
-
-    signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
-    tx_hash = bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    new_data = (bsc_w3.toHex(tx_hash))
-    return {"New_transaction": new_data, }
+        signed = bsc_w3.eth.account.sign_transaction(
+            input_balance, private_key=private_key)
+        tx = bsc_w3.eth.send_raw_transaction(signed.rawTransaction)
+        
+        return {"hash_tx": bsc_w3.toHex(tx)}
+    except ValueError as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Transaction error, most have BNB for gas fee")
 
 
 @router.post("/api/v1/busd_bals", tags=["Transaction"])
 def busd_bals(wallet_id: str = Form(...)):
     bsc = "https://bsc-dataseed.binance.org/"
-    adr_verify = Web3.isAddress(wallet_id)
+    bsc_w3 = Web3(Web3.HTTPProvider(bsc))
+        
+    busd_addr =bsc_w3.toChecksumAddress('0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56')
+
+    usdt_bep=bsc_w3.eth.contract(address=busd_addr, abi=usdt_erc20)
+    adr_verify = Web3.isAddress(wallet_id.upper())
+   
     if not adr_verify:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Invaild wallet")
-    _trans = w3.eth.get_balance(wallet_id)
-    _bal2_ = w3.fromWei(_trans, 'ether')
+                            detail=f"Invaild wallet valid busd_bep20")
     try:
-        if not float(_bal2_):
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid BNB wallet check the wallet and try again")
-
+        _trans = usdt_bep.functions.balanceOf(bsc_w3.toChecksumAddress(wallet_id)).call()
+        _bal2_ = w3.fromWei(_trans, 'ether')
         return {"balance": _bal2_}
-    except ValueError:
+    except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Not a valid BNB wallet check the wallet and try again")
+                            detail=f"Not a valid busd_bep20 wallet check the wallet and try again")
 
-
-@router.post("/api/v1/exl_tarnsaction", tags=["Transaction"])
-def exl_tarnsaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+@router.post("/api/v1/exl_transaction", tags=["Transaction"])
+def exl_transaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
     account_1 = account_from
@@ -455,20 +514,18 @@ def exl_bals(wallet_id: str = Form(...)):
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
     adr_verify = bsc_w3.isAddress(wallet_id)
-    if not adr_verify:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Invaild wallet")
-    _trans = bsc_w3.eth.get_balance(wallet_id)
-    _bal2_ = bsc_w3.fromWei(_trans, 'ether')
+    
     try:
-        if not float(_bal2_):
+        if not adr_verify:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid exl wallet check the wallet and try again")
-
+                            detail=f"Invaild wallet")
+        _trans = bsc_w3.eth.get_balance(wallet_id)
+        _bal2_ = bsc_w3.fromWei(_trans, 'ether')
+       
         return {"balance": _bal2_}
     except ValueError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Not a valid BNB wallet check the wallet and try again")
+                            detail=f"Not a valid exl wallet check the wallet and try again")
 
 
 @router.post("/api/v1/bitcoin_transaction", tags=["Transaction"])

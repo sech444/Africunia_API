@@ -461,19 +461,19 @@ def main_dash2():
     except:
         return  HTTPException(status_code = 404, detail=  "Id not found")
 
-
-try:
-    base_url = "https://api.binance.com"
-    path ="/api/v3/ticker/price"
-    params = '?symbol=BNBUSDT'
-    r = requests.get(base_url+path+params)
-    data = r.json()
-    priceFloat = float(data['price'])
-    #print(priceFloat)
-except:
-    raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"price update soon")
-    
+def bnbusdt():
+    try:
+        base_url = "https://api.binance.com"
+        path ="/api/v3/ticker/price"
+        params = '?symbol=BNBUSDT'
+        r = requests.get(base_url+path+params)
+        data = r.json()
+        priceFloat = float(data['price'])
+        #print(priceFloat)
+    except:
+        raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                    detail=f"price update soon")
+        
 
 try:
     base_url = "https://api.binance.com"
@@ -545,7 +545,7 @@ listData = [
      {
         "coin": "BNB",
         "name": "Binance Coin",
-        "rate": priceFloat,
+        "rate": bnbusdt(),
         "coin_logo": "assets/img/bnb.png"
     },
     {
