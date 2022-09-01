@@ -416,13 +416,13 @@ def busd_transaction(account_from: str = Form(...), account_to: str = Form(...),
     #value_2 = int(float(value))
     trans = usdt_bep.functions.balanceOf(bsc_w3.toChecksumAddress(account_1)).call()
     _bal2_ = bsc_w3.fromWei(trans, 'ether')
-    print(_bal2_)
+    #print(_bal2_)
     if float(value) > _bal2_:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient usdt_bep20 Funds")
         
     #print("sending890 .....................................")
-    nonce = w3.eth.get_transaction_count(account_1)
+    nonce = bsc_w3.eth.get_transaction_count(account_1)
     value_to = bsc_w3.toWei(value, 'ether')
     try:
         input_balance = usdt_bep.functions.transfer(bsc_w3.toChecksumAddress(account_2), value_to).buildTransaction(
