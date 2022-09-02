@@ -2,7 +2,7 @@ from ast import Not, Return
 from cgi import print_arguments
 from cmath import e
 from distutils.log import error
-from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
+from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form,Response
 import json
 from binance.exceptions import BinanceAPIException
 from decimal import Decimal as D, ROUND_DOWN, ROUND_UP
@@ -24,6 +24,13 @@ import decimal
 from blockcypher import get_address_overview
 from binance.enums import *
 from pprint import pformat
+from app.utils import VerifyToken
+from fastapi.security import HTTPBearer
+
+
+# Scheme for the Authorization header
+token_auth_scheme = HTTPBearer()
+
 
 
 router = APIRouter()
@@ -46,11 +53,24 @@ headers = {
 
 client = Client(API_KEY, SECRET_KEY)
 
-# 
+@router.get("/api/private")
+def private(response: Response, token: str = Depends(token_auth_scheme)):  # 👈 updated code
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    # 👆 new code
+
+    return result
+
 
 
 @router.post("/api/v1/get_eth_bals", tags=["Transaction"])
-def Get_eth_bals(user_adr: str = Form(...)):
+def Get_eth_bals(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
     adr_verify = Web3.isAddress(user_adr.upper())
    
     try:
@@ -66,7 +86,7 @@ def Get_eth_bals(user_adr: str = Form(...)):
 
 
 @router.post("/api/v1/eth_transaction", tags=["Transaction"])
-async def eth_transaction(background_tasks: BackgroundTasks, account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+async def eth_transaction(background_tasks: BackgroundTasks,response: Response, token: str = Depends(token_auth_scheme), account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     # checking the wallet if the are eth wallets
     adr_verify = w3.isAddress(account_from)
     if not adr_verify:
@@ -105,8 +125,8 @@ async def eth_transaction(background_tasks: BackgroundTasks, account_from: str =
     return {"New_transaction": new_data, }
 
 
-@router.post("/api/v1/create_Order_buy", tags=["Transaction"])
-def create_Order(symbol: str = Form(...), quantity: float = Form(...)):
+@router.post("/api/v1/create_order_buy", tags=["Transaction"])
+def create_Order(response: Response, token: str = Depends(token_auth_scheme),symbol: str = Form(...), quantity: float = Form(...)):
     quantity = '{:.8f}'.format(float(quantity))
 
     try:
@@ -121,8 +141,8 @@ def create_Order(symbol: str = Form(...), quantity: float = Form(...)):
                             detail=f"Not a valid transaction check the symbol eg. BNBUSDT then quantity >= 10.38USDT or Account has insufficient balance for requested action, symbol like this BTCUSDT")
 
 
-@router.post("/api/v1/create_Order_sell", tags=["Transaction"])
-def create_Order(symbol: str = Form(...), quantity: float = Form(...)):
+@router.post("/api/v1/create_order_sell", tags=["Transaction"])
+def create_Order(response: Response, token: str = Depends(token_auth_scheme),symbol: str = Form(...), quantity: float = Form(...)):
     quantity = '{:.8f}'.format(float(quantity))
     try:
         order = client.order_market_sell(
@@ -138,8 +158,8 @@ def create_Order(symbol: str = Form(...), quantity: float = Form(...)):
                             detail=f"Not a valid transaction check the symbol eg. BNBUSDT then quantity >= 10.38USDT or Account has insufficient balance for requested action, symbol like this BTCUSDT")
 
 
-@router.post("/api/v1/Order_status", tags=["Transaction"])
-def create_Order(symbol: str = Form(...), order_Id: int = Form(...)):
+@router.post("/api/v1/order_status", tags=["Transaction"])
+def create_Order(response: Response, token: str = Depends(token_auth_scheme),symbol: str = Form(...), order_Id: int = Form(...)):
     try:
         order = client.get_order(
             symbol=symbol.upper(),
@@ -160,7 +180,7 @@ def convert_scientific_to_decimal(num):
         return str(num)
 
 @router.post("/api/v1/asset_balance", tags=["Transaction"])
-def create_Order(asset_symbol: str = Form(...)):
+def create_Order(response: Response, token: str = Depends(token_auth_scheme),asset_symbol: str = Form(...)):
     try:
         bals = client.get_asset_balance(asset=asset_symbol.upper())
         return{"data": bals}
@@ -173,7 +193,7 @@ def create_Order(asset_symbol: str = Form(...)):
 
 
 @router.post("/api/v1/get_deposit_address", tags=["Transaction"])
-def get_deposit_address(asset_symbol: str = Form(...)):
+def get_deposit_address(response: Response, token: str = Depends(token_auth_scheme),asset_symbol: str = Form(...)):
     try:
         bals = client.get_deposit_address(coin=asset_symbol.upper())
         return{"data": bals}
@@ -190,7 +210,7 @@ with open("usdt_abi.json", "r") as file:
     
 
 @router.post("/api/v1/usdt_bep20_bals", tags=["Transaction"])
-async def usdt_bals(wallet_id: str = Form(...)):
+async def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
     
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
@@ -216,7 +236,7 @@ async def usdt_bals(wallet_id: str = Form(...)):
 # using web3py to Transfer usdt tether bep20 from one account to other  account with binance
     
 @router.post("/api/v1/usdt_bep20_transaction", tags=["Transaction"])
-def usdt_transaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
     
@@ -266,7 +286,7 @@ def usdt_transaction(account_from: str = Form(...), account_to: str = Form(...),
 
 
 @router.post("/api/v1/usdt_erc20_bals", tags=["Transaction"])
-def usdt_bals(wallet_id: str = Form(...)):
+def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
     url = "https://api.etherscan.io/api"
     apikey = etherscan_API
     adr_verify = Web3.isAddress(wallet_id)
@@ -285,7 +305,7 @@ def usdt_bals(wallet_id: str = Form(...)):
 
 
 @router.post("/api/v1/usdt_erc20_transaction", tags=["Transaction"])
-def usdt_transaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     usdt_ = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
     account_1 = account_from
     account_2 = account_to
@@ -331,7 +351,7 @@ def usdt_transaction(account_from: str = Form(...), account_to: str = Form(...),
 
 
 @router.post("/api/v1/bnb_", tags=["Transaction"])
-def bnb_transaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def bnb_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
     account_1 = account_from
@@ -374,7 +394,7 @@ def bnb_transaction(account_from: str = Form(...), account_to: str = Form(...), 
 
 
 @router.post("/api/v1/bnb_bals", tags=["Transaction"])
-def bnb_bals(wallet_id: str = Form(...)):
+def bnb_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
     adr_verify = Web3.isAddress(wallet_id)
@@ -391,7 +411,7 @@ def bnb_bals(wallet_id: str = Form(...)):
 
 
 @router.post("/api/v1/busd_transaction", tags=["Transaction"])
-def busd_transaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def busd_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
     busd_addr =bsc_w3.toChecksumAddress('0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56')
@@ -446,7 +466,7 @@ def busd_transaction(account_from: str = Form(...), account_to: str = Form(...),
 
 
 @router.post("/api/v1/busd_bals", tags=["Transaction"])
-def busd_bals(wallet_id: str = Form(...)):
+def busd_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
         
@@ -467,7 +487,7 @@ def busd_bals(wallet_id: str = Form(...)):
                             detail=f"Not a valid busd_bep20 wallet check the wallet and try again")
 
 @router.post("/api/v1/exl_transaction", tags=["Transaction"])
-def exl_transaction(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def exl_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
     account_1 = account_from
@@ -510,7 +530,7 @@ def exl_transaction(account_from: str = Form(...), account_to: str = Form(...), 
 
 
 @router.post("/api/v1/exl_bals", tags=["Transaction"])
-def exl_bals(wallet_id: str = Form(...)):
+def exl_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
     adr_verify = bsc_w3.isAddress(wallet_id)
@@ -529,7 +549,7 @@ def exl_bals(wallet_id: str = Form(...)):
 
 
 @router.post("/api/v1/bitcoin_transaction", tags=["Transaction"])
-def _prepare_tx_btc(priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
+def _prepare_tx_btc(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
     c = Bitcoin
     try:
         addr_from = addr_from
@@ -548,7 +568,7 @@ def _prepare_tx_btc(priv_key: str = Form(...), addr_from: str = Form(...), addr_
 
 
 @router.post("/api/v1/bitcoin_unspent", tags=["Transaction"])
-def bitcoin_bals(bitcoin_addr: str = Form(...)):
+def bitcoin_bals(response: Response, token: str = Depends(token_auth_scheme),bitcoin_addr: str = Form(...)):
     try:
         c = Bitcoin()
         addr = bitcoin_addr
@@ -565,7 +585,7 @@ def bitcoin_bals(bitcoin_addr: str = Form(...)):
 
 
 @router.post("/api/v1/bitcoincash_transaction", tags=["Transaction"])
-def _prepare_tx_bch(priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
+def _prepare_tx_bch(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
     c = BitcoinCash()
     try:
         addr_from = addr_from
@@ -584,7 +604,7 @@ def _prepare_tx_bch(priv_key: str = Form(...), addr_from: str = Form(...), addr_
 
 
 @router.post("/api/v1/get_btc_bals", tags=["Transaction"])
-def btc_bals(user_addr: str = Form(...)):
+def btc_bals(response: Response, token: str = Depends(token_auth_scheme),user_addr: str = Form(...)):
     try:
         # 1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
         bals = get_address_overview(user_addr, 'btc')
@@ -597,7 +617,7 @@ def btc_bals(user_addr: str = Form(...)):
 
 
 @router.post("/api/v1/bitcash_unspent", tags=["Transaction"])
-def bitcash_bals(bitcash_addr: str = Form(...)):
+def bitcash_bals(response: Response, token: str = Depends(token_auth_scheme),bitcash_addr: str = Form(...)):
     try:
         c = BitcoinCash()
         addr = bitcash_addr
@@ -614,7 +634,7 @@ def bitcash_bals(bitcash_addr: str = Form(...)):
 
 
 @router.post("/api/v1/litecoin_transaction", tags=["Transaction"])
-def _prepare_tx_lit(priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
+def _prepare_tx_lit(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
     c = Litecoin()
     try:
         addr_to = addr_to
@@ -633,7 +653,7 @@ def _prepare_tx_lit(priv_key: str = Form(...), addr_from: str = Form(...), addr_
 
 
 @router.post("/api/v1/get_ltc_bals", tags=["Transaction"])
-def ltc_bals(user_addr: str = Form(...)):
+def ltc_bals(response: Response, token: str = Depends(token_auth_scheme),user_addr: str = Form(...)):
     try:
         # 1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
         bals = get_address_overview(user_addr, 'ltc')
@@ -646,7 +666,7 @@ def ltc_bals(user_addr: str = Form(...)):
 
 
 @router.post("/api/v1/binance_withdraw", tags=["Transaction"])
-async def binance_withdraw(background_tasks: BackgroundTasks, Coin: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...)):
+async def binance_withdraw(background_tasks: BackgroundTasks, response: Response, token: str = Depends(token_auth_scheme),Coin: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...)):
     try:
         # name parameter will be set to the asset value by the client if not passed
         result = client.withdraw(
@@ -662,7 +682,7 @@ async def binance_withdraw(background_tasks: BackgroundTasks, Coin: str = Form(.
 
 @router.post("/api/v1/dash_transaction", tags=["Transaction"])
 # create unsigned txobj with change output
-def _preparetx_dash(priv_key: str = Form(...),  addr_to: str = Form(...), value: str = Form(...)):
+def _preparetx_dash(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...),  addr_to: str = Form(...), value: str = Form(...)):
     c = Dash()
     addr_to = addr_to
     value = value
@@ -675,7 +695,7 @@ def _preparetx_dash(priv_key: str = Form(...),  addr_to: str = Form(...), value:
 
 
 @router.post("/api/v1/get_dash_bals", tags=["Transaction"])
-def dash_bals(user_addr: str = Form(...)):
+def dash_bals(response: Response, token: str = Depends(token_auth_scheme),user_addr: str = Form(...)):
     try:
         # 1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
         bals = get_address_overview(user_addr, 'dash')
@@ -688,7 +708,7 @@ def dash_bals(user_addr: str = Form(...)):
         
         
 @router.post("/api/v1/exl20_tarnfar", tags=["Transaction"])
-def exl20_afcash( account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...)):
+def exl20_afcash(response: Response, token: str = Depends(token_auth_scheme), account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...)):
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
     account_1 = address_key
