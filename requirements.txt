@@ -209,7 +209,6 @@ PyJWT==2.4.0
 pylev==1.4.0
 PyNaCl==1.5.0
 pynvim==0.4.2
-pyOpenSSL==22.0.0
 pyorbital==1.7.1
 pyparsing==3.0.9
 PyQt5==5.15.2
