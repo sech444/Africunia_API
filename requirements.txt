@@ -258,6 +258,7 @@ service-identity==21.1.0
 setproctitle==1.2.1
 sha256==0.3
 shellingham==1.4.0
+shortuuid==1.0.9
 shrimpy-python==0.0.15
 simplejson==3.17.2
 six==1.16.0
