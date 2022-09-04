@@ -31,7 +31,6 @@ blockchain==1.4.4
 blockcypher==1.0.93
 broadcaster==0.2.0
 Brotli==1.0.9
-Brownie==0.5.1
 CacheControl==0.12.11
 cachy==0.3.0
 certifi==2022.6.15
