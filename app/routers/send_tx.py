@@ -26,8 +26,9 @@ from binance.enums import *
 from pprint import pformat
 from app.utils import VerifyToken
 from fastapi.security import HTTPBearer
-
-
+from cryptography.fernet import Fernet
+import jwt
+from app.utils import VerifyToken
 # Scheme for the Authorization header
 token_auth_scheme = HTTPBearer()
 
@@ -52,20 +53,6 @@ headers = {
 
 
 client = Client(API_KEY, SECRET_KEY)
-
-@router.get("/api/private")
-def private(response: Response, token: str = Depends(token_auth_scheme)):  # 👈 updated code
-    """A valid access token is required to access this route"""
-
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
-
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
-    # 👆 new code
-
-    return result
 
 
 
@@ -211,6 +198,14 @@ with open("usdt_abi.json", "r") as file:
 
 @router.post("/api/v1/usdt_bep20_bals", tags=["Transaction"])
 async def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
+    """A valid access token is required to access this route"""
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+  
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
@@ -236,7 +231,28 @@ async def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),
 # using web3py to Transfer usdt tether bep20 from one account to other  account with binance
     
 @router.post("/api/v1/usdt_bep20_transaction", tags=["Transaction"])
-def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
+    if len(Private_key) == 44:
+        fernet_obj = Fernet(Private_key)
+
+        encrypted_message = b'gAAAAABjFHijg3LNivDhd9miUDxvRHQ3w_bYp5rVz9ADKs77Abzr0qxseTmM_JCIJOWwFD4ZAFP-T5M_gI5mactZaFQz26QTHLn9uvkchRAS3SK9vbh5HZDN_cGfIBxyYEcNvEFFChSRSBxsR6tQe1owU5x8zjM_Yuxxqa1WCMqauWsGywoN5SU='
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        #decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = Private_key
+    #if len(decrypted_message) == 66:
+    priv_key = key
+  
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
     
@@ -261,21 +277,21 @@ def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme)
     if float(value) > _bal2_:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient usdt_bep20 Funds")
-        
+    
     #print("sending890 .....................................")
     value_to = bsc_w3.toWei(value, 'ether')
     try:
         input_balance = usdt_bep.functions.transfer(bsc_w3.toChecksumAddress(account_2), value_to).buildTransaction(
             {
                 'from': account_1,
-                'nonce': w3.eth.get_transaction_count(account_1),
+                'nonce': bsc_w3.eth.get_transaction_count(account_1),
                 'gas': 250000,
-                'gasPrice': w3.toWei('50', 'gwei'),
+                'gasPrice': bsc_w3.toWei('5.5', 'gwei'),
             }
         )
 
         signed = bsc_w3.eth.account.sign_transaction(
-            input_balance, private_key=private_key)
+            input_balance, private_key=priv_key)
         tx = bsc_w3.eth.send_raw_transaction(signed.rawTransaction)
         
         return {"hash_tx": bsc_w3.toHex(tx)}
@@ -287,6 +303,16 @@ def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme)
 
 @router.post("/api/v1/usdt_erc20_bals", tags=["Transaction"])
 def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
+    
     url = "https://api.etherscan.io/api"
     apikey = etherscan_API
     adr_verify = Web3.isAddress(wallet_id)
@@ -306,6 +332,15 @@ def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),wallet
 
 @router.post("/api/v1/usdt_erc20_transaction", tags=["Transaction"])
 def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     usdt_ = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
     account_1 = account_from
     account_2 = account_to
@@ -351,7 +386,28 @@ def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme)
 
 
 @router.post("/api/v1/bnb_", tags=["Transaction"])
-def bnb_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def bnb_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
+    if len(Private_key) == 44:
+        fernet_obj = Fernet(Private_key)
+
+        encrypted_message = b'gAAAAABjFHijg3LNivDhd9miUDxvRHQ3w_bYp5rVz9ADKs77Abzr0qxseTmM_JCIJOWwFD4ZAFP-T5M_gI5mactZaFQz26QTHLn9uvkchRAS3SK9vbh5HZDN_cGfIBxyYEcNvEFFChSRSBxsR6tQe1owU5x8zjM_Yuxxqa1WCMqauWsGywoN5SU='
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        #decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = Private_key
+    #if len(decrypted_message) == 66:
+    priv_key = key
+    
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
     account_1 = account_from
@@ -377,17 +433,17 @@ def bnb_transaction(response: Response, token: str = Depends(token_auth_scheme),
     private_key = private_key
     addr = account_2
 
-    nonce = w3.eth.getTransactionCount(account_1)
+    nonce = bsc_w3.eth.getTransactionCount(account_1)
 
     tx = {
         'nonce': nonce,
         'to': account_2,
         'value': bsc_w3.toWei(value, 'ether'),
         'gas': 200000,
-        'gasPrice': bsc_w3.toWei('50', 'gwei'),
+        'gasPrice': bsc_w3.toWei('5.5', 'gwei'),
     }
 
-    signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
+    signed_tx = bsc_w3.eth.account.signTransaction(tx, priv_key)
     tx_hash = bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     new_data = (bsc_w3.toHex(tx_hash))
     return {"New_transaction": new_data, }
@@ -395,6 +451,15 @@ def bnb_transaction(response: Response, token: str = Depends(token_auth_scheme),
 
 @router.post("/api/v1/bnb_bals", tags=["Transaction"])
 def bnb_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
     adr_verify = Web3.isAddress(wallet_id)
@@ -411,7 +476,28 @@ def bnb_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_
 
 
 @router.post("/api/v1/busd_transaction", tags=["Transaction"])
-def busd_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def busd_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
+    if len(Private_key) == 44:
+        fernet_obj = Fernet(Private_key)
+
+        encrypted_message = b'gAAAAABjFHijg3LNivDhd9miUDxvRHQ3w_bYp5rVz9ADKs77Abzr0qxseTmM_JCIJOWwFD4ZAFP-T5M_gI5mactZaFQz26QTHLn9uvkchRAS3SK9vbh5HZDN_cGfIBxyYEcNvEFFChSRSBxsR6tQe1owU5x8zjM_Yuxxqa1WCMqauWsGywoN5SU='
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        #decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = Private_key
+    #if len(decrypted_message) == 66:
+    priv_key = key
+    
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
     busd_addr =bsc_w3.toChecksumAddress('0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56')
@@ -450,12 +536,12 @@ def busd_transaction(response: Response, token: str = Depends(token_auth_scheme)
                 'from': bsc_w3.toChecksumAddress(account_1),
                 'nonce': nonce,
                 'gas': 250000,
-                'gasPrice': w3.toWei('50', 'gwei'),
+                'gasPrice': w3.toWei('5.5', 'gwei'),
             }
         )
 
         signed = bsc_w3.eth.account.sign_transaction(
-            input_balance, private_key=private_key)
+            input_balance, private_key=priv_key)
         tx = bsc_w3.eth.send_raw_transaction(signed.rawTransaction)
         
         return {"hash_tx": bsc_w3.toHex(tx)}
@@ -467,6 +553,15 @@ def busd_transaction(response: Response, token: str = Depends(token_auth_scheme)
 
 @router.post("/api/v1/busd_bals", tags=["Transaction"])
 def busd_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
         
@@ -487,7 +582,28 @@ def busd_bals(response: Response, token: str = Depends(token_auth_scheme),wallet
                             detail=f"Not a valid busd_bep20 wallet check the wallet and try again")
 
 @router.post("/api/v1/exl_transaction", tags=["Transaction"])
-def exl_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def exl_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
+    if len(Private_key) == 44:
+        fernet_obj = Fernet(Private_key)
+
+        encrypted_message = b'gAAAAABjFHijg3LNivDhd9miUDxvRHQ3w_bYp5rVz9ADKs77Abzr0qxseTmM_JCIJOWwFD4ZAFP-T5M_gI5mactZaFQz26QTHLn9uvkchRAS3SK9vbh5HZDN_cGfIBxyYEcNvEFFChSRSBxsR6tQe1owU5x8zjM_Yuxxqa1WCMqauWsGywoN5SU='
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        #decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = Private_key
+    #if len(decrypted_message) == 66:
+    priv_key = key
+    
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
     account_1 = account_from
@@ -512,7 +628,6 @@ def exl_transaction(response: Response, token: str = Depends(token_auth_scheme),
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient exl20 Funds")
 
-    private_key = private_key
 
     nonce = bsc_w3.eth.getTransactionCount(account_1)
     tx = {
@@ -523,7 +638,7 @@ def exl_transaction(response: Response, token: str = Depends(token_auth_scheme),
         'chainId': 27082022,
         'gasPrice': bsc_w3.toWei('1', 'gwei'),
     }
-    signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
+    signed_tx = bsc_w3.eth.account.signTransaction(tx, priv_key)
     tx_hash = bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     new_data = bsc_w3.toHex(tx_hash)
     return {"New_transaction": new_data, }
@@ -531,6 +646,15 @@ def exl_transaction(response: Response, token: str = Depends(token_auth_scheme),
 
 @router.post("/api/v1/exl_bals", tags=["Transaction"])
 def exl_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
     adr_verify = bsc_w3.isAddress(wallet_id)
@@ -550,6 +674,15 @@ def exl_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_
 
 @router.post("/api/v1/bitcoin_transaction", tags=["Transaction"])
 def _prepare_tx_btc(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     c = Bitcoin
     try:
         addr_from = addr_from
@@ -569,6 +702,15 @@ def _prepare_tx_btc(response: Response, token: str = Depends(token_auth_scheme),
 
 @router.post("/api/v1/bitcoin_unspent", tags=["Transaction"])
 def bitcoin_bals(response: Response, token: str = Depends(token_auth_scheme),bitcoin_addr: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     try:
         c = Bitcoin()
         addr = bitcoin_addr
@@ -586,6 +728,15 @@ def bitcoin_bals(response: Response, token: str = Depends(token_auth_scheme),bit
 
 @router.post("/api/v1/bitcoincash_transaction", tags=["Transaction"])
 def _prepare_tx_bch(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     c = BitcoinCash()
     try:
         addr_from = addr_from
@@ -605,6 +756,15 @@ def _prepare_tx_bch(response: Response, token: str = Depends(token_auth_scheme),
 
 @router.post("/api/v1/get_btc_bals", tags=["Transaction"])
 def btc_bals(response: Response, token: str = Depends(token_auth_scheme),user_addr: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     try:
         # 1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
         bals = get_address_overview(user_addr, 'btc')
@@ -618,6 +778,15 @@ def btc_bals(response: Response, token: str = Depends(token_auth_scheme),user_ad
 
 @router.post("/api/v1/bitcash_unspent", tags=["Transaction"])
 def bitcash_bals(response: Response, token: str = Depends(token_auth_scheme),bitcash_addr: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     try:
         c = BitcoinCash()
         addr = bitcash_addr
@@ -635,6 +804,15 @@ def bitcash_bals(response: Response, token: str = Depends(token_auth_scheme),bit
 
 @router.post("/api/v1/litecoin_transaction", tags=["Transaction"])
 def _prepare_tx_lit(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     c = Litecoin()
     try:
         addr_to = addr_to
@@ -654,6 +832,15 @@ def _prepare_tx_lit(response: Response, token: str = Depends(token_auth_scheme),
 
 @router.post("/api/v1/get_ltc_bals", tags=["Transaction"])
 def ltc_bals(response: Response, token: str = Depends(token_auth_scheme),user_addr: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     try:
         # 1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
         bals = get_address_overview(user_addr, 'ltc')
@@ -667,6 +854,15 @@ def ltc_bals(response: Response, token: str = Depends(token_auth_scheme),user_ad
 
 @router.post("/api/v1/binance_withdraw", tags=["Transaction"])
 async def binance_withdraw(background_tasks: BackgroundTasks, response: Response, token: str = Depends(token_auth_scheme),Coin: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     try:
         # name parameter will be set to the asset value by the client if not passed
         result = client.withdraw(
@@ -683,6 +879,15 @@ async def binance_withdraw(background_tasks: BackgroundTasks, response: Response
 @router.post("/api/v1/dash_transaction", tags=["Transaction"])
 # create unsigned txobj with change output
 def _preparetx_dash(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...),  addr_to: str = Form(...), value: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     c = Dash()
     addr_to = addr_to
     value = value
@@ -696,6 +901,16 @@ def _preparetx_dash(response: Response, token: str = Depends(token_auth_scheme),
 
 @router.post("/api/v1/get_dash_bals", tags=["Transaction"])
 def dash_bals(response: Response, token: str = Depends(token_auth_scheme),user_addr: str = Form(...)):
+    
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     try:
         # 1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
         bals = get_address_overview(user_addr, 'dash')
@@ -709,6 +924,15 @@ def dash_bals(response: Response, token: str = Depends(token_auth_scheme),user_a
         
 @router.post("/api/v1/exl20_tarnfar", tags=["Transaction"])
 def exl20_afcash(response: Response, token: str = Depends(token_auth_scheme), account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
     account_1 = address_key

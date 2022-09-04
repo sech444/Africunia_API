@@ -4,11 +4,6 @@ from . import models
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer
 
-from app.utils import VerifyToken
-# Scheme for the Authorization header
-token_auth_scheme = HTTPBearer()
-
-
 app = FastAPI()
 
 origins = ["http://www.africuniabank.com"]
@@ -51,16 +46,3 @@ app.include_router(smart_swap.router)
 app.include_router(Oracle_feeds.router)
 
 
-@app.get("/api/private")
-def private(response: Response, token: str = Depends(token_auth_scheme)):  # 👈 updated code
-    """A valid access token is required to access this route"""
-
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
-
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
-    # 👆 new code
-
-    return result

@@ -19,11 +19,16 @@ import ast
 import pandas as pd
 import asyncio
 from tronpy import AsyncTron
-from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
+from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form, Response
 import json
 from web3 import Web3
 from dotenv import load_dotenv
 import os
+import jwt
+from app.utils import VerifyToken
+from fastapi.security import HTTPBearer
+# Scheme for the Authorization header
+token_auth_scheme = HTTPBearer()
 from tronpy.exceptions import (
    
     AddressNotFound,
@@ -66,7 +71,18 @@ client = JsonRpcClient(JSON_RPC_URL)
 
 #"sssU6icMrRgxgcv5hhgd4xXCBUK7X"
 @router.post("/api/v1/xrp_transaction", tags=["Transaction"])
-def xrp_transaction(account_Secret = Form(...), account_to = Form(...),value_to_send = Form(...)):
+def xrp_transaction(response: Response, token: str = Depends(token_auth_scheme),account_Secret = Form(...), account_to = Form(...),value_to_send = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    # 👆 new code
+
+
     xrp_wallet = Wallet(seed=account_Secret, sequence=16237283)
    # p_wallet = str(xrp_wallet)
     wallet_2 = json.dumps(xrp_wallet, default=vars)
@@ -114,7 +130,17 @@ def xrp_transaction(account_Secret = Form(...), account_to = Form(...),value_to_
 
 
 @router.post("/api/v1/get_xrp_bals", tags=["Transaction"])
-def Get_xrp_bals(user_adr: str = Form(...)):
+def Get_xrp_bals(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    # 👆 new code
+    
     adr_verify = user_adr
     
     try:
@@ -170,7 +196,17 @@ amount = 1000000
 print(amount)'''
 # send some 'amount' of Tron to the 'wallet' address
 @router.post("/api/v1/tron_transaction", tags=["Transaction"])
-async def send_tron(sender_address =  Form(...), recipient_address = Form(...), account_to_send = Form(...),PRIVATE_KEY = Form(...)):
+async def send_tron(response: Response, token: str = Depends(token_auth_scheme),sender_address =  Form(...), recipient_address = Form(...), account_to_send = Form(...),PRIVATE_KEY = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    # 👆 new code
+    
     client = Tron()
     WALLET_ADDRESS = sender_address
     if client.is_address(sender_address) != True:
@@ -209,7 +245,17 @@ async def send_tron(sender_address =  Form(...), recipient_address = Form(...), 
     
 
 @router.post("/api/v1/get_tron_bals", tags=["Transaction"])
-def account_balance(user_adr: str = Form(...)):
+def account_balance(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    # 👆 new code
+    
     try:
         if client_trx.is_address(user_adr) != True:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -265,7 +311,17 @@ def create_wallet_on_xrp_network():
     
     
 @router.post("/api/v1/exl20_afcash_bals", tags=["Transaction"])
-def get_exl20_afcash_bals(user_adr: str = Form(...)):
+def get_exl20_afcash_bals(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    # 👆 new code
+    
     adr_verify = Web3.isAddress(user_adr.upper())
     if not adr_verify:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -282,7 +338,17 @@ def get_exl20_afcash_bals(user_adr: str = Form(...)):
 
 
 @router.post("/api/v1/exl20_afcash_tarnsaction", tags=["Transaction"])
-def get_exl20_afcash(account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    # 👆 new code
+    
     account_1 = account_from
     account_2 = account_to
     value = value_to_send
@@ -327,7 +393,17 @@ def get_exl20_afcash(account_from: str = Form(...), account_to: str = Form(...),
 
 
 @router.post("/api/v1/exl20_afcash_tarnfar", tags=["Transaction"])
-def exl20_afcash_token( account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...)):
+def exl20_afcash_token(response: Response, token: str = Depends(token_auth_scheme), account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...)):
+    """A valid access token is required to access this route"""
+
+    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
+    # 👇 new code
+    if result.get("status"):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    # 👆 new code
+    
     account_1 = address_key
     account_2 = account_to
     value = value_to_send
