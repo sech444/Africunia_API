@@ -198,15 +198,14 @@ print(amount)'''
 # send some 'amount' of Tron to the 'wallet' address
 @router.post("/api/v1/tron_transaction", tags=["Transaction"])
 async def send_tron(response: Response, token: str = Depends(token_auth_scheme),sender_address =  Form(...), recipient_address = Form(...), account_to_send = Form(...),PRIVATE_KEY = Form(...)):
-    """A valid access token is required to access this route
+    """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
-    # 👆 new code"""
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
     
     client = Tron()
     WALLET_ADDRESS = sender_address
@@ -313,15 +312,14 @@ def create_wallet_on_xrp_network():
     
 @router.post("/api/v1/exl20_afcash_bals", tags=["Transaction"])
 def get_exl20_afcash_bals(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
-    """A valid access token is required to access this route
+    """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
-    # 👆 new code"""
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
     
     adr_verify = Web3.isAddress(user_adr.upper())
     if not adr_verify:
@@ -340,15 +338,14 @@ def get_exl20_afcash_bals(response: Response, token: str = Depends(token_auth_sc
 
 @router.post("/api/v1/exl20_afcash_transaction", tags=["Transaction"])
 def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
-    """A valid access token is required to access this route
+    """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
-    # 👆 new code"""
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
     
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
@@ -407,15 +404,14 @@ def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme)
 
 @router.post("/api/v1/exl20_afcash_tarnfar", tags=["Transaction"])
 def exl20_afcash_token(response: Response, token: str = Depends(token_auth_scheme), account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...)):
-    """A valid access token is required to access this route
+    """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
-    # 👆 new code"""
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
     
     account_1 = address_key
     account_2 = account_to

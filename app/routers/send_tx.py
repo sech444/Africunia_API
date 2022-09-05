@@ -198,14 +198,14 @@ with open("usdt_abi.json", "r") as file:
 
 @router.post("/api/v1/usdt_bep20_bals", tags=["Transaction"])
 async def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
-    """A valid access token is required to access this route
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
-  
+    """A valid access token is required to access this route"""
+
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
+
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result"""
-    
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
     
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
@@ -232,15 +232,15 @@ async def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),
     
 @router.post("/api/v1/usdt_bep20_transaction", tags=["Transaction"])
 def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
-    """A valid access token is required to access this route
+    """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result"""
-    
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
+   
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
 
@@ -387,14 +387,14 @@ def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme)
 
 @router.post("/api/v1/bnb_", tags=["Transaction"])
 def bnb_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
-    """A valid access token is required to access this route
+    """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result"""
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
     
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
@@ -451,14 +451,14 @@ def bnb_transaction(response: Response, token: str = Depends(token_auth_scheme),
 
 @router.post("/api/v1/bnb_bals", tags=["Transaction"])
 def bnb_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
-    """A valid access token is required to access this route
+    """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result"""
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
     
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
@@ -477,14 +477,14 @@ def bnb_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_
 
 @router.post("/api/v1/busd_transaction", tags=["Transaction"])
 def busd_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
-    """A valid access token is required to access this route
+    """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result"""
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
     
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
@@ -553,14 +553,14 @@ def busd_transaction(response: Response, token: str = Depends(token_auth_scheme)
 
 @router.post("/api/v1/busd_bals", tags=["Transaction"])
 def busd_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
-    """A valid access token is required to access this route
+    """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result"""
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
     
     
     bsc = "https://bsc-dataseed.binance.org/"
@@ -584,14 +584,14 @@ def busd_bals(response: Response, token: str = Depends(token_auth_scheme),wallet
 
 @router.post("/api/v1/exl_transaction", tags=["Transaction"])
 def exl_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
-    """A valid access token is required to access this route
+    """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result"""
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
     
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
@@ -647,14 +647,14 @@ def exl_transaction(response: Response, token: str = Depends(token_auth_scheme),
 
 @router.post("/api/v1/exl_bals", tags=["Transaction"])
 def exl_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
-    """A valid access token is required to access this route
+    """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result"""
+    #if result.get("status"):
+        #response.status_code = status.HTTP_400_BAD_REQUEST
+        #return result
     
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
