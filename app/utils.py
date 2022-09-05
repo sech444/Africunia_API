@@ -3,7 +3,7 @@ import os
 import jwt
 from jwt import PyJWT
 from configparser import ConfigParser
-from jwt import PyJWKClient
+#from jwt import PyJWKClient
 #import shortuuid
 #import uuid
 from cryptography.fernet import Fernet

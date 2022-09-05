@@ -23,6 +23,7 @@ from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, sta
 import json
 from web3 import Web3
 from dotenv import load_dotenv
+from cryptography.fernet import Fernet
 import os
 import jwt
 from app.utils import VerifyToken
