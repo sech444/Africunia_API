@@ -197,7 +197,7 @@ print(amount)'''
 # send some 'amount' of Tron to the 'wallet' address
 @router.post("/api/v1/tron_transaction", tags=["Transaction"])
 async def send_tron(response: Response, token: str = Depends(token_auth_scheme),sender_address =  Form(...), recipient_address = Form(...), account_to_send = Form(...),PRIVATE_KEY = Form(...)):
-    """A valid access token is required to access this route"""
+    """A valid access token is required to access this route
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
@@ -205,7 +205,7 @@ async def send_tron(response: Response, token: str = Depends(token_auth_scheme),
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
         return result
-    # 👆 new code
+    # 👆 new code"""
     
     client = Tron()
     WALLET_ADDRESS = sender_address
@@ -312,7 +312,7 @@ def create_wallet_on_xrp_network():
     
 @router.post("/api/v1/exl20_afcash_bals", tags=["Transaction"])
 def get_exl20_afcash_bals(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
-    """A valid access token is required to access this route"""
+    """A valid access token is required to access this route
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
@@ -320,7 +320,7 @@ def get_exl20_afcash_bals(response: Response, token: str = Depends(token_auth_sc
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
         return result
-    # 👆 new code
+    # 👆 new code"""
     
     adr_verify = Web3.isAddress(user_adr.upper())
     if not adr_verify:
@@ -337,9 +337,9 @@ def get_exl20_afcash_bals(response: Response, token: str = Depends(token_auth_sc
 
 
 
-@router.post("/api/v1/exl20_afcash_tarnsaction", tags=["Transaction"])
-def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
-    """A valid access token is required to access this route"""
+@router.post("/api/v1/exl20_afcash_transaction", tags=["Transaction"])
+def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
+    """A valid access token is required to access this route
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
@@ -347,7 +347,19 @@ def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme)
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
         return result
-    # 👆 new code
+    # 👆 new code"""
+    
+    if len(Private_key) == 44:
+        fernet_obj = Fernet(Private_key)
+
+        encrypted_message = b'gAAAAABjFXUIZ5b4N8QzHdTqzi1DRSxPHIrNRW_sWtyFlFS4CzcQjUfp2dTYvci4j3Vv43YoO5p_bL9dcK9afMk8dBfQ526kvE7u8OYSeCpLgTncEbkBrAZjgXNE4IL11FvwJxqLXpz9pI_P4key4BkNdeydOZXhsHYPfP6IwSZtAOR15LvbbZ8='
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        #decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = Private_key
+    #if len(decrypted_message) == 66:
+    priv_key = key
     
     account_1 = account_from
     account_2 = account_to
@@ -381,7 +393,7 @@ def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme)
         ) 
 
         signed = w3.eth.account.sign_transaction(
-            input_balance, private_key=private_key)
+            input_balance, private_key=priv_key)
         tx = w3.eth.send_raw_transaction(signed.rawTransaction)
         #print(tx)
         #print(f"Swap tx: {w3.toHex(tx)}")
@@ -394,7 +406,7 @@ def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme)
 
 @router.post("/api/v1/exl20_afcash_tarnfar", tags=["Transaction"])
 def exl20_afcash_token(response: Response, token: str = Depends(token_auth_scheme), account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...)):
-    """A valid access token is required to access this route"""
+    """A valid access token is required to access this route
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
@@ -402,7 +414,7 @@ def exl20_afcash_token(response: Response, token: str = Depends(token_auth_schem
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
         return result
-    # 👆 new code
+    # 👆 new code"""
     
     account_1 = address_key
     account_2 = account_to

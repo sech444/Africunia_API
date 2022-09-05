@@ -198,13 +198,13 @@ with open("usdt_abi.json", "r") as file:
 
 @router.post("/api/v1/usdt_bep20_bals", tags=["Transaction"])
 async def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
-    """A valid access token is required to access this route"""
+    """A valid access token is required to access this route
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
   
     # 👇 new code
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+        return result"""
     
     
     bsc = "https://bsc-dataseed.binance.org/"
@@ -232,19 +232,19 @@ async def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),
     
 @router.post("/api/v1/usdt_bep20_transaction", tags=["Transaction"])
 def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
-    """A valid access token is required to access this route"""
+    """A valid access token is required to access this route
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+        return result"""
     
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
 
-        encrypted_message = b'gAAAAABjFHijg3LNivDhd9miUDxvRHQ3w_bYp5rVz9ADKs77Abzr0qxseTmM_JCIJOWwFD4ZAFP-T5M_gI5mactZaFQz26QTHLn9uvkchRAS3SK9vbh5HZDN_cGfIBxyYEcNvEFFChSRSBxsR6tQe1owU5x8zjM_Yuxxqa1WCMqauWsGywoN5SU='
+        encrypted_message = b'gAAAAABjFWoA9dLKDJ-eJHzveb56ka-3X-vJynPR7l1jXPTsC-CKp0Pslpx-S0_qrtLFDUKmDt3Bsf3T-w_UMXXJUDAv6hA5ZOoEJ3kjDiryL05e3bDOAlpF_aMfzYk3jPyZU1ycaIlw2vs0JCuYkW_aBNi87U5HhWOuymXIRcr2NGiUHA9HDQw='
         decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
         #decrypted_message = bytes(decrypted_mess, 'utf-8')
         key = decrypted_message
@@ -387,19 +387,19 @@ def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme)
 
 @router.post("/api/v1/bnb_", tags=["Transaction"])
 def bnb_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
-    """A valid access token is required to access this route"""
+    """A valid access token is required to access this route
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+        return result"""
     
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
 
-        encrypted_message = b'gAAAAABjFHijg3LNivDhd9miUDxvRHQ3w_bYp5rVz9ADKs77Abzr0qxseTmM_JCIJOWwFD4ZAFP-T5M_gI5mactZaFQz26QTHLn9uvkchRAS3SK9vbh5HZDN_cGfIBxyYEcNvEFFChSRSBxsR6tQe1owU5x8zjM_Yuxxqa1WCMqauWsGywoN5SU='
+        encrypted_message = b'gAAAAABjFWoA9dLKDJ-eJHzveb56ka-3X-vJynPR7l1jXPTsC-CKp0Pslpx-S0_qrtLFDUKmDt3Bsf3T-w_UMXXJUDAv6hA5ZOoEJ3kjDiryL05e3bDOAlpF_aMfzYk3jPyZU1ycaIlw2vs0JCuYkW_aBNi87U5HhWOuymXIRcr2NGiUHA9HDQw='
         decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
         #decrypted_message = bytes(decrypted_mess, 'utf-8')
         key = decrypted_message
@@ -451,14 +451,14 @@ def bnb_transaction(response: Response, token: str = Depends(token_auth_scheme),
 
 @router.post("/api/v1/bnb_bals", tags=["Transaction"])
 def bnb_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
-    """A valid access token is required to access this route"""
+    """A valid access token is required to access this route
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+        return result"""
     
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
@@ -477,19 +477,19 @@ def bnb_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_
 
 @router.post("/api/v1/busd_transaction", tags=["Transaction"])
 def busd_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
-    """A valid access token is required to access this route"""
+    """A valid access token is required to access this route
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+        return result"""
     
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
 
-        encrypted_message = b'gAAAAABjFHijg3LNivDhd9miUDxvRHQ3w_bYp5rVz9ADKs77Abzr0qxseTmM_JCIJOWwFD4ZAFP-T5M_gI5mactZaFQz26QTHLn9uvkchRAS3SK9vbh5HZDN_cGfIBxyYEcNvEFFChSRSBxsR6tQe1owU5x8zjM_Yuxxqa1WCMqauWsGywoN5SU='
+        encrypted_message = b'gAAAAABjFWoA9dLKDJ-eJHzveb56ka-3X-vJynPR7l1jXPTsC-CKp0Pslpx-S0_qrtLFDUKmDt3Bsf3T-w_UMXXJUDAv6hA5ZOoEJ3kjDiryL05e3bDOAlpF_aMfzYk3jPyZU1ycaIlw2vs0JCuYkW_aBNi87U5HhWOuymXIRcr2NGiUHA9HDQw='
         decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
         #decrypted_message = bytes(decrypted_mess, 'utf-8')
         key = decrypted_message
@@ -553,14 +553,15 @@ def busd_transaction(response: Response, token: str = Depends(token_auth_scheme)
 
 @router.post("/api/v1/busd_bals", tags=["Transaction"])
 def busd_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
-    """A valid access token is required to access this route"""
+    """A valid access token is required to access this route
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+        return result"""
+    
     
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
@@ -583,19 +584,19 @@ def busd_bals(response: Response, token: str = Depends(token_auth_scheme),wallet
 
 @router.post("/api/v1/exl_transaction", tags=["Transaction"])
 def exl_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
-    """A valid access token is required to access this route"""
+    """A valid access token is required to access this route
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+        return result"""
     
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
 
-        encrypted_message = b'gAAAAABjFHijg3LNivDhd9miUDxvRHQ3w_bYp5rVz9ADKs77Abzr0qxseTmM_JCIJOWwFD4ZAFP-T5M_gI5mactZaFQz26QTHLn9uvkchRAS3SK9vbh5HZDN_cGfIBxyYEcNvEFFChSRSBxsR6tQe1owU5x8zjM_Yuxxqa1WCMqauWsGywoN5SU='
+        encrypted_message = b'gAAAAABjFXUIZ5b4N8QzHdTqzi1DRSxPHIrNRW_sWtyFlFS4CzcQjUfp2dTYvci4j3Vv43YoO5p_bL9dcK9afMk8dBfQ526kvE7u8OYSeCpLgTncEbkBrAZjgXNE4IL11FvwJxqLXpz9pI_P4key4BkNdeydOZXhsHYPfP6IwSZtAOR15LvbbZ8='
         decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
         #decrypted_message = bytes(decrypted_mess, 'utf-8')
         key = decrypted_message
@@ -646,14 +647,14 @@ def exl_transaction(response: Response, token: str = Depends(token_auth_scheme),
 
 @router.post("/api/v1/exl_bals", tags=["Transaction"])
 def exl_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
-    """A valid access token is required to access this route"""
+    """A valid access token is required to access this route
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
     if result.get("status"):
         response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+        return result"""
     
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
