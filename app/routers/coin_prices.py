@@ -501,43 +501,43 @@ except:
 
 listData = [
     {
-        "coin": "btc",
+        "coin": "BTC",
         "name": "Bitcoin",
         "rate": get_price("bitcoin"),
         "coin_logo": "assets/img/btc.png"
     },
     {
-        "coin": "bch",
+        "coin": "BCH",
         "name": "Bitcoin Cash",
         "rate": get_price_bch("bitcoin_cash"),
         "coin_logo": "assets/img/bch.png"
     },
     {
-        "coin": "ltc",
+        "coin": "LTC",
         "name": "Litecoin",
         "rate": get_Ltccoin_Price('litercoin'),
         "coin_logo": "assets/img/ltc.png"
     },
     {
-        "coin": "xrp",
+        "coin": "RXP",
         "name": "Ripple",
         "rate": get_xrp_price("Ripple"),
         "coin_logo": "assets/img/xrp.png"
     },
     {
-        "coin": "dash",
-        "name": "dash",
+        "coin": "DASH",
+        "name": "Dash",
         "rate": getDashcoinPrice("crypto_dash"),
         "coin_logo": "assets/img/dash.png"
     },
     {
-        "coin": "xlm",
+        "coin": "XLM",
         "name": "Stellar",
         "rate": get_xlmu_Price("stellar"),
         "coin_logo": "assets/img/xlm.png"
     },
     {
-        "coin": "ether",
+        "coin": "ETHER",
         "name": "Ethereum",
         "rate": get_ether_coin_Price("ether"),
         "coin_logo": "assets/img/ether.png"
@@ -573,7 +573,7 @@ listData = [
         "coin_logo": "assets\\/img\\/exl.png"
     },
      {
-        "coin": "usdt",
+        "coin": "USDT",
         "name": "Tether",
         "rate": get_usdt_coin_Price("usdtusd"),
         "coin_logo": "assets\/img\/usdt.png"
