@@ -470,6 +470,7 @@ def bnbusdt():
         data = r.json()
         priceFloat = float(data['price'])
         #print(priceFloat)
+        return priceFloat
     except:
         raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                     detail=f"price update soon")
