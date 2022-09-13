@@ -293,7 +293,7 @@ def main_dash():
         if price != last_price:
             #print('Dashcoin price: ',price)
             last_price = price
-    return
+        return last_price
 # print(main_xlmusd())
 
 
@@ -403,7 +403,6 @@ def AFCASH_coin():
     except:
         raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"price updating soon")
-    return{"coins" : json_formatted_str}
 
 
 
@@ -426,7 +425,29 @@ def exl_price():
         "rate" : float(listans[0]),
         "coin_logo": "assets\\/img\\/exl.png"
         }
-   
+
+def afcash(crypto_dash):
+    url = "https://coincodex.com/crypto/africunia-bank/"
+    headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"}
+    try:
+    # getting the request from url 
+        import re
+        data = requests.get(url,headers=headers) 
+        # converting the text 
+        soup = BS(data.text, 'html.parser')
+        
+    
+        # finding metha info for the current price
+        ans = soup.find('div', {"class" :"coin-info-box-content"}).text
+        listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
+        #print(listans)
+        #print(float(listans[0]))
+        return float(listans[0])
+    except:
+        return  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"price update soon")
+
+
 # url of the exl coin price
 
 url = "https://www.livecoinwatch.com/price/Excoincial-EXL"
@@ -538,7 +559,7 @@ listData = [
         "coin_logo": "assets/img/xlm.png"
     },
     {
-        "coin": "ETHER",
+        "coin": "ETH",
         "name": "Ethereum",
         "rate": get_ether_coin_Price("ether"),
         "coin_logo": "assets/img/ether.png"
@@ -564,7 +585,7 @@ listData = [
      {
         "coin": "AFCASH",
         "name": "AFCASH (EXL20)",
-        "rate": main_dash2(),
+        "rate": afcash("crypto_dash"),
         "coin_logo": "assets\\/img\\/afcash.png"
     },
      {
