@@ -447,6 +447,18 @@ def afcash(crypto_dash):
         return  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"price update soon")
 
+def main_afcash():
+    last_price = -1
+
+    while True:
+
+        crypto_dash = 'dash'
+        price = afcash(crypto_dash)
+
+        if price != last_price:
+            #print('Afcash price: ',price)
+            last_price = price
+        return last_price
 
 # url of the exl coin price
 
@@ -585,7 +597,7 @@ listData = [
      {
         "coin": "AFCASH",
         "name": "AFCASH (EXL20)",
-        "rate": afcash("crypto_dash"),
+        "rate": main_afcash(),
         "coin_logo": "assets\\/img\\/afcash.png"
     },
      {
