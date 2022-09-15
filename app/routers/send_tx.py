@@ -705,12 +705,12 @@ def _prepare_tx_btc(response: Response, token: str = Depends(token_auth_scheme),
 def bitcoin_bals(response: Response, token: str = Depends(token_auth_scheme),bitcoin_addr: str = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
     
     try:
         c = Bitcoin()
@@ -731,12 +731,12 @@ def bitcoin_bals(response: Response, token: str = Depends(token_auth_scheme),bit
 def _prepare_tx_bch(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
     
     c = BitcoinCash()
     try:
@@ -759,12 +759,12 @@ def _prepare_tx_bch(response: Response, token: str = Depends(token_auth_scheme),
 def btc_bals(response: Response, token: str = Depends(token_auth_scheme),user_addr: str = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
     
     try:
         # 1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
@@ -781,12 +781,12 @@ def btc_bals(response: Response, token: str = Depends(token_auth_scheme),user_ad
 def bitcash_bals(response: Response, token: str = Depends(token_auth_scheme),bitcash_addr: str = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
     
     try:
         c = BitcoinCash()
@@ -807,12 +807,12 @@ def bitcash_bals(response: Response, token: str = Depends(token_auth_scheme),bit
 def _prepare_tx_lit(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
     
     c = Litecoin()
     try:
@@ -835,12 +835,12 @@ def _prepare_tx_lit(response: Response, token: str = Depends(token_auth_scheme),
 def ltc_bals(response: Response, token: str = Depends(token_auth_scheme),user_addr: str = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
     
     try:
         # 1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
@@ -857,12 +857,12 @@ def ltc_bals(response: Response, token: str = Depends(token_auth_scheme),user_ad
 async def binance_withdraw(background_tasks: BackgroundTasks, response: Response, token: str = Depends(token_auth_scheme),Coin: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
     
     try:
         # name parameter will be set to the asset value by the client if not passed
@@ -882,12 +882,12 @@ async def binance_withdraw(background_tasks: BackgroundTasks, response: Response
 def _preparetx_dash(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...),  addr_to: str = Form(...), value: str = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
     
     c = Dash()
     addr_to = addr_to
@@ -905,12 +905,12 @@ def dash_bals(response: Response, token: str = Depends(token_auth_scheme),user_a
     
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
     
     try:
         # 1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD')
@@ -927,12 +927,12 @@ def dash_bals(response: Response, token: str = Depends(token_auth_scheme),user_a
 def exl20_afcash(response: Response, token: str = Depends(token_auth_scheme), account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
     
     exl_url = "https://rpc.exlscan.com/"
     bsc_w3 = Web3(Web3.HTTPProvider(exl_url))

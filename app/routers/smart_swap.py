@@ -75,13 +75,13 @@ client = JsonRpcClient(JSON_RPC_URL)
 def xrp_transaction(response: Response, token: str = Depends(token_auth_scheme),account_Secret = Form(...), account_to = Form(...),value_to_send = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
-    # 👆 new code
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
+    # # 👆 new code
 
 
     xrp_wallet = Wallet(seed=account_Secret, sequence=16237283)
@@ -134,13 +134,13 @@ def xrp_transaction(response: Response, token: str = Depends(token_auth_scheme),
 def Get_xrp_bals(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
-    # 👆 new code
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
+    # # 👆 new code
     
     adr_verify = user_adr
     
@@ -248,13 +248,13 @@ async def send_tron(response: Response, token: str = Depends(token_auth_scheme),
 def account_balance(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
-    # 👆 new code
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
+    # # 👆 new code
     
     try:
         if client_trx.is_address(user_adr) != True:

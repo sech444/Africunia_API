@@ -202,7 +202,8 @@ def get_Ltccoin_Price(crypto_ltc):
         r = requests.get(URL)
         priceFloat = float(json.loads(r.text)['last'])
         return priceFloat
-    except requests.ConnectionError:
+    except requests.ConnectionError as e:
+        print(e)
         print("Error querying Bitstamp API")
 
 
@@ -597,7 +598,7 @@ listData = [
      {
         "coin": "AFCASH",
         "name": "AFCASH (EXL20)",
-        "rate": main_afcash(),
+        "rate": main_dash2(),#main_afcash(),
         "coin_logo": "assets\\/img\\/afcash.png"
     },
      {
