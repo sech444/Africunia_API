@@ -7,7 +7,7 @@ from decimal import Decimal
 from web3 import Web3
 import json
 import pandas as pd
-from app.schemas import Coin_addr, Coin_symbol
+from app.schemas import Coin_addr, Coin_symbol, BNB_network, USDT_network
 from pythonpancakes import PancakeSwapAPI
 import ast
 ps = PancakeSwapAPI()
@@ -44,6 +44,15 @@ with open("compiled.json", "r") as file:
     Compiled_code = file.read()
     #print(Compiled_code)
 
+@router.post("/api/v1/bnb_withdraw", tags=["Transaction"])
+async def get_network(Network: BNB_network,Send_Address:str =Form(...),Amount:float = Form(...),Address:str =Form(...), private_key: str=Form(...)):
+    TokenA = Network.value
+    print(TokenA)
+
+@router.post("/api/v1/usdt_withdraw", tags=["Transaction"])
+async def get_network(Network: USDT_network,Send_Address:str =Form(...),Amount:float = Form(...),Address:str =Form(...), private_key: str=Form(...)):
+    TokenA = Network.value
+    print(TokenA)
 
 @router.post("/api/v1/get_swap", tags=["Transaction"])
 async def get_swap(swap_tokenA: Coin_symbol, swap_tokenB: Coin_symbol,account_to_swap:float = Form(...),account_from:str =Form(...),account_to:str = Form(...), private_key: str=Form(...)):

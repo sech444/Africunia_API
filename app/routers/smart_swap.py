@@ -40,7 +40,7 @@ w3 = Web3(Web3.HTTPProvider('https://rpc.exlscan.com/'))
 
 router = APIRouter()
 
-contract_addr ='0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b'
+contract_addr ='0x561748A6B1D8b328788dc49C03e0605cc2030953'
 dbAddress = w3.toChecksumAddress(contract_addr).lower()
 #print(dbAddress )
 

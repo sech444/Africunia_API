@@ -11,7 +11,7 @@ import csv
 ps = PancakeSwapAPI()
 import asyncio
 import time
-
+from web3 import Web3
 
 ps = PancakeSwapAPI()
 
@@ -22,18 +22,63 @@ tokens =  ps.tokens()
 #asyncio.sleep(tokens)
 #print(tokens)
 #print(f"started at {time.strftime('%X')}")
-
 data =tokens["data"] 
-
 data2 = json.dumps(data)
 
+w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/bde4e3babba54474844b65de59d0a039'))
+Ethereum_Mainnet = w3
 
+bsc = "https://bsc-dataseed.binance.org/"
+Binance_Smart_Chain = Web3(Web3.HTTPProvider(bsc))
 
-#with open('compiled_code.json', 'w') as outfile:
-   # json.dump(data, outfile)
-    #compiled_code = outfile.read()
-    #print(compiled_code)
+class BNB_network(str, Enum):
+    Binance_Smart_Chain = "Binance_Smart_Chain"
+    Ethereum_Mainnet = "Ethereum_Mainnet"
+    OneLedger = "OneLedger"
+    Polygon_Mainnet_Matic_Network = "Polygon_Mainnet_Matic_Network"
+
+class USDT_network(str, Enum):
+    Binance_Smart_Chain= "Binance_Smart_Chain_bep20 "
+    Ethereum_Mainnet = "Ethereum_Mainnet_erc20"
+    OneLedger = "Tether(USDT) TRC20 "
+    Polygon_Mainnet_Matic_Network = "Polygon_Mainnet_Matic_Network"
     
+class BTC_network(str, Enum):
+    Binance_Smart_Chain = "noo"
+    Ethereum_Mainnet = "noo"
+    Bitcoin = "noo"
+    Polygon_Mainnet_Matic_Network = "Polygon_Mainnet_Matic_Network"
+
+class litecoin_network(str, Enum):
+    Binance_Smart_Chain = "noo"
+    Ethereum_Mainnet = "noo"
+    Bitcoin = "noo"
+    Polygon_Mainnet_Matic_Network = "noo"
+    
+class BUSD_network(str, Enum):
+    Binance_Smart_Chain = "noo"
+    Ethereum_Mainnet = "noo"
+    OneLedger = "noo"
+    Polygon_Mainnet_Matic_Network = "noo"
+
+class CUSDT_network(str, Enum):
+    Binance_Smart_Chain = "noo"
+    Ethereum_Mainnet = "noo"
+    OneLedger = "noo"
+    Polygon_Mainnet_Matic_Network = "noo"
+    
+class Ripple_network(str, Enum):
+    Binance_Smart_Chain = "noo"
+    Ethereum_Mainnet = "noo"
+    Bitcoin = "noo"
+    Polygon_Mainnet_Matic_Network = "noo"
+
+class bitcoin_cash_network(str, Enum):
+    Binance_Smart_Chain = "noo"
+    Ethereum_Mainnet = "noo"
+    Bitcoin = "noo"
+    Polygon_Mainnet_Matic_Network = "noo"
+
 
 with open("./compiled_code.json") as data_file:    
     data = json.load(data_file)
