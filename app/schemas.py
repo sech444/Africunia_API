@@ -1,3 +1,4 @@
+from urllib.request import FTPHandler
 from fastapi.params import Body
 from pydantic import BaseModel , Field
 from typing import Optional
@@ -15,7 +16,7 @@ from web3 import Web3
 
 ps = PancakeSwapAPI()
 
-
+# Afcash at Binance_Smart_Chain
 afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
 #print(f"started at {time.strftime('%X')}")
 tokens =  ps.tokens()
@@ -25,65 +26,71 @@ tokens =  ps.tokens()
 data =tokens["data"] 
 data2 = json.dumps(data)
 
-w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/bde4e3babba54474844b65de59d0a039'))
-Ethereum_Mainnet = w3
 
-bsc = "https://bsc-dataseed.binance.org/"
-Binance_Smart_Chain = Web3(Web3.HTTPProvider(bsc))
+# networks list
+with open("./networks_id.json",'r') as net_file:
+    data_n = net_file.read()
+    #print(net_file.read())
+    
+#df1 = pd.DataFrame(data_n).astype(str) 
+Df1=pd.read_json(data_n)
+
 
 class BNB_network(str, Enum):
-    Binance_Smart_Chain = "Binance_Smart_Chain"
-    Ethereum_Mainnet = "Ethereum_Mainnet"
-    OneLedger = "OneLedger"
-    Polygon_Mainnet_Matic_Network = "Polygon_Mainnet_Matic_Network"
+    Binance_Smart_Chain = "Binance SmartChain bep20 "
+    Ethereum_Mainnet = "Ethereum Mainnet" 
+    Tether = "Tether(USDT) TRC20 "
+    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
 
 class USDT_network(str, Enum):
-    Binance_Smart_Chain= "Binance_Smart_Chain_bep20 "
-    Ethereum_Mainnet = "Ethereum_Mainnet_erc20"
-    OneLedger = "Tether(USDT) TRC20 "
-    Polygon_Mainnet_Matic_Network = "Polygon_Mainnet_Matic_Network"
+    Binance_Smart_Chain= "Binance Smart Chain bep20 "
+    Ethereum_Mainnet = "Ethereum Mainnet erc20"
+    Tether = "Tether(USDT) TRC20 "
+    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
     
 class BTC_network(str, Enum):
-    Binance_Smart_Chain = "noo"
-    Ethereum_Mainnet = "noo"
-    Bitcoin = "noo"
-    Polygon_Mainnet_Matic_Network = "Polygon_Mainnet_Matic_Network"
-
-class litecoin_network(str, Enum):
-    Binance_Smart_Chain = "noo"
-    Ethereum_Mainnet = "noo"
-    Bitcoin = "noo"
-    Polygon_Mainnet_Matic_Network = "noo"
+    Binance_Smart_Chain= "Binance Smart Chain bep20 "
+    Ethereum_Mainnet = "Ethereum Mainnet erc20"
+    Tether = "Tether(USDT) TRC20 "
+    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
     
+class litecoin_network(str, Enum):
+    Binance_Smart_Chain = "Binance SmartChain bep20 "
+    Ethereum_Mainnet = "Ethereum Mainnet" 
+    Tether = "Tether(USDT) TRC20 "
+    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
+
 class BUSD_network(str, Enum):
-    Binance_Smart_Chain = "noo"
-    Ethereum_Mainnet = "noo"
-    OneLedger = "noo"
-    Polygon_Mainnet_Matic_Network = "noo"
+    Binance_Smart_Chain = "Binance SmartChain bep20 "
+    Ethereum_Mainnet = "Ethereum Mainnet" 
+    Tether = "Tether(USDT) TRC20 "
+    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
+
 
 class CUSDT_network(str, Enum):
-    Binance_Smart_Chain = "noo"
-    Ethereum_Mainnet = "noo"
-    OneLedger = "noo"
-    Polygon_Mainnet_Matic_Network = "noo"
+    Binance_Smart_Chain = "Binance SmartChain bep20 "
+    Ethereum_Mainnet = "Ethereum Mainnet" 
+    Tether = "Tether(USDT) TRC20"
+    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
     
 class Ripple_network(str, Enum):
-    Binance_Smart_Chain = "noo"
-    Ethereum_Mainnet = "noo"
-    Bitcoin = "noo"
-    Polygon_Mainnet_Matic_Network = "noo"
+    Binance_Smart_Chain = "Binance SmartChain bep20 "
+    Ethereum_Mainnet = "Ethereum Mainnet" 
+    Tether = "Tether(USDT) TRC20 "
+    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
+
 
 class bitcoin_cash_network(str, Enum):
-    Binance_Smart_Chain = "noo"
-    Ethereum_Mainnet = "noo"
-    Bitcoin = "noo"
-    Polygon_Mainnet_Matic_Network = "noo"
+    Binance_Smart_Chain= "Binance_Smart_Chain_bep20 "
+    Ethereum_Mainnet = "Ethereum_Mainnet_erc20"
+    Tether = "Tether(USDT) TRC20 "
+    Polygon_Mainnet_Matic = "Polygon_Mainnet_Matic_Network"
 
 
-with open("./compiled_code.json") as data_file:    
+with open("./compiled_code.json") as data_file:
     data = json.load(data_file)
     data_file.close()
-   
+
    
 df = pd.DataFrame(list(data.items()))
 #print(df[0][2])

@@ -16,8 +16,8 @@ python spot.py
 ```
 """
 
-KEY = "ibYu11dP3BPPoAAolp7tub82EnGQpurBGt73UnheU2lpZlu93V3r6jjJMDbV7giE"
-SECRET = "9dy5QSZCfTX54f4524Do5S0e79pwBn9DIR5MdKpFZd5csnKYFNeiZBTxYfVQbLCV"
+KEY = ""
+SECRET = ""
 BASE_URL = "https://api.binance.com"  # production base url
 # BASE_URL = 'https://testnet.binance.vision' # testnet base url
 

@@ -385,7 +385,7 @@ def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme)
                             detail=f"Transaction error, most have BNB for gas fee")
 
 
-@router.post("/api/v1/bnb_", tags=["Transaction"])
+@router.post("/api/v1/bnb", tags=["Transaction"])
 def bnb_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
     """A valid access token is required to access this route"""
 
@@ -527,7 +527,7 @@ def busd_transaction(response: Response, token: str = Depends(token_auth_scheme)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient usdt_bep20 Funds")
         
-    #print("sending890 .....................................")
+    print("sending890 .....................................")
     nonce = bsc_w3.eth.get_transaction_count(account_1)
     value_to = bsc_w3.toWei(value, 'ether')
     try:

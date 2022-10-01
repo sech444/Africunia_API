@@ -1,0 +1,23 @@
+{
+    "BNB": {
+        "name": "Binance",
+        "Binance Smart Chain": "Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/'))"
+    },
+    "polygon": {
+        "name": "Polygon",
+        "Polygon Mainnet Matic": "Web3(Web3.HTTPProvider('https://thegraph.com/hosted-service/subgraph/maticnetwork/mainnet-root-subgraphs'))"
+    },
+    "USDT_TR20": {
+        "name": "BNB",
+        "addr": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
+    },
+    "ETH": {
+        "name": "ETH",
+        "Ethereum Mainnet": "Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/bde4e3babba54474844b65de59d0a039'))"
+    },
+    "XRP": {
+        "name": "XRP",
+        "XRP client": "JsonRpcClient('https://xrplcluster.com')"
+    }
+}
+

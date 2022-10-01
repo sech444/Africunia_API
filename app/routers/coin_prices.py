@@ -448,18 +448,6 @@ def afcash(crypto_dash):
         return  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"price update soon")
 
-def main_afcash():
-    last_price = -1
-
-    while True:
-
-        crypto_dash = 'dash'
-        price = afcash(crypto_dash)
-
-        if price != last_price:
-            #print('Afcash price: ',price)
-            last_price = price
-        return last_price
 
 # url of the exl coin price
 
@@ -514,6 +502,36 @@ web3 = Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/'))
 abi = '[{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"description","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint80","name":"_roundId","type":"uint80"}],"name":"getRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"latestRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]'
 addr = '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE'
 contract = web3.eth.contract(address=addr, abi=abi)
+
+ex_w3 = Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/'))
+abi2 = '[{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"description","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint80","name":"_roundId","type":"uint80"}],"name":"getRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"latestRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]'
+addr2 = '0x264990fbd0A4796A3E3d8E37C4d5F87a3aCa5Ebf'
+contract = ex_w3.eth.contract(address=addr2, abi=abi2)
+
+
+# Set up contract instance
+# Set up while loop for prices feed
+def get_afcash_Price(crypto_ltc):
+    contract = web3.eth.contract(address=addr, abi=abi)
+    latestData = contract.functions.latestRoundData().call()
+    prices = latestData[1]/ 10**8
+    return prices/ 10**2.4412
+
+def main_afcash():
+  
+  last_price = -1
+  
+  while True:
+    
+    crypto = 'bitcoin'
+    price = get_afcash_Price(crypto)
+  
+    if price != last_price:
+      #print('BTC_ETH: ',price)
+      last_price = price
+    return last_price
+      
+
 
 
 
@@ -629,8 +647,8 @@ listData = [
      {
         "coin": "AFCASH",
         "name": "AFCASH (EXL20)",
-        "rate": main_dash2(), #main_afcash(), #
-        "coin_logo": "assets\\/img\\/afcash.png"
+        "rate": main_afcash(), #main_dash2(), #
+        "coin_logo": "assets\/img\\/afcash.png"
     },
      {
         "coin": "EXL",
