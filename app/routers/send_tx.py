@@ -336,10 +336,10 @@ def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme)
 
     result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
     
     usdt_ = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
     account_1 = account_from
