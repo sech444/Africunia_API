@@ -350,7 +350,7 @@ def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme)
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
 
-        encrypted_message = b'gAAAAABjFXUIZ5b4N8QzHdTqzi1DRSxPHIrNRW_sWtyFlFS4CzcQjUfp2dTYvci4j3Vv43YoO5p_bL9dcK9afMk8dBfQ526kvE7u8OYSeCpLgTncEbkBrAZjgXNE4IL11FvwJxqLXpz9pI_P4key4BkNdeydOZXhsHYPfP6IwSZtAOR15LvbbZ8='
+        encrypted_message = b'gAAAAABjPCtaMK7U68jNGPBNKJ8ml5VND9BH3lpofqBGHiwGQWvCE4YNLzG4Mwz2X_KXY_TXZyZ0xZ5T1jFxpsrfTNNH5zinfioYmg-9LVbVt4gmFecuMVtblUtsGsb_nxABE-6RIHP7OL-hbdW9lReGlcINnHls163U536OREM55MMUMMShlMw='
         decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
         #decrypted_message = bytes(decrypted_mess, 'utf-8')
         key = decrypted_message
