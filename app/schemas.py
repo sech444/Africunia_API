@@ -74,6 +74,7 @@ class CUSDT_network(str, Enum):
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
     
 class Ripple_network(str, Enum):
+    XRP_client = "XRP client"
     Binance_Smart_Chain = "Binance SmartChain bep20 "
     Ethereum_Mainnet = "Ethereum Mainnet" 
     Tether = "Tether(USDT) TRC20 "
