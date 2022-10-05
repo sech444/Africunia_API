@@ -1,8 +1,12 @@
 from time import sleep
+from wsgiref.validate import validator
 from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
 import json
 import xrpl
 import requests
+import pandas as pd
+from app.schemas import BNB_network, USDT_network
+from typing import Optional
 from xrpl.models.transactions import Payment
 from xrpl.transaction import safe_sign_transaction, send_reliable_submission
 from xrpl.ledger import get_latest_validated_ledger_sequence
@@ -70,9 +74,16 @@ client_trx = Tron() #network='nile'
 JSON_RPC_URL = "https://xrplcluster.com"
 client = JsonRpcClient(JSON_RPC_URL)
 
+with open("./networks_id.json",'r') as net_file:
+    data_n = net_file.read()
+    #print(net_file.read())
+    
+#df1 = pd.DataFrame(data_n).astype(str) 
+Df1=pd.read_json(data_n)
+
 #"sssU6icMrRgxgcv5hhgd4xXCBUK7X"
 @router.post("/api/v1/xrp_transaction", tags=["Transaction"])
-def xrp_transaction(response: Response, token: str = Depends(token_auth_scheme),account_Secret = Form(...), account_to = Form(...),value_to_send = Form(...)):
+def xrp_transaction(Network: BNB_network,response: Response, token: str = Depends(token_auth_scheme),private_key= Form(...), account_to = Form(...),value_to_send = Form(...),destination_tag:Optional[int] = Form(None, description="Please comfirm if the recciving address reuires a MEMO/Tag.")):
     """A valid access token is required to access this route"""
 
     # result = VerifyToken(token.credentials).verify()  # 👈 updated code
@@ -82,50 +93,100 @@ def xrp_transaction(response: Response, token: str = Depends(token_auth_scheme),
     #     response.status_code = status.HTTP_400_BAD_REQUEST
     #     return result
     # # 👆 new code
+    TokenA = Network.value
+    print(len(TokenA))
+    if len(TokenA) == 25 :
+        bsc = Df1['BNB']['Binance Smart Chain']
+        #result = ast.literal_eval(bsc)
+        # print(bsc)
+        # return bsc
+    elif len(TokenA) == 16 :
+        bsc = Df1['ETH']['Ethereum Mainnet']
+        #result = ast.literal_eval(bsc)
+        # print(bsc)
+        # return bsc
+    elif len(TokenA) == 21 :
+        bsc = Df1['polygon']['Polygon Mainnet Matic']
+        # #result = ast.literal_eval(bsc)
+        # print(bsc)
+        # return bsc
+    else :
+        len(TokenA) == 25 
+        bsc = Df1['BNB']['Binance Smart Chain']
+        # result = ast.literal_eval(bsc)
+        # print(result)
+        # return bsc
+    bsc_w3 = eval(bsc)
+   #print(bsc_w3)
+    
+    #print(bsc_w3.isConnected())
+    account_1 = account_from
+    account_2 = account_to
+    value = value_to_send
+    #print("sending567 ...................................................01")
+    
+    if len(private_key) == 44:
+        fernet_obj = Fernet(private_key)
 
-
-    xrp_wallet = Wallet(seed=account_Secret, sequence=16237283)
-   # p_wallet = str(xrp_wallet)
+        encrypted_message = b'gAAAAABjPDT8CmjRPxPKJgyN7_PMPm5SutGf80MOiGcnyU8QZ4NbPUzbSgrrzipbSr2hbPbS_yZKGj2TDhGjQkikJcFGTF1E2naU5E5OVNoHJsECmnp47Hk='
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        #decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = private_key
+    #if len(decrypted_message) == 66:
+    priv_key = key
+    print('getting wallet')
+    xrp_wallet = Wallet(seed=priv_key, sequence=16237283)
+    p_wallet = str(xrp_wallet)
+    print(p_wallet)
     wallet_2 = json.dumps(xrp_wallet, default=vars)
     #get the classic_address to check balance
     s=str(wallet_2)
     D2=ast.literal_eval(s)
+    print(D2)
     acct_info = AccountInfo(account=D2["classic_address"],ledger_index="validated",strict=True,)
+    #print(acct_info)
     response2 = client.request(acct_info)
     result = response2.result["account_data"]
     bals = result['Balance']
-    #print(xrp_wallet.classic_address) # "rMCcNuTcajgw7YTgBy1sys3b89QqjUrMpH"
+    print(bals) # "rMCcNuTcajgw7YTgBy1sys3b89QqjUrMpH"
     try:
         current_validated_ledger = get_latest_validated_ledger_sequence(client)
         xrp_wallet.sequence = get_next_valid_seq_number(xrp_wallet.classic_address, client)
-        if account_to <= bals:
+        if value_to_send > bals:
             return{"data": "Invalid details" }
-        # prepare the transaction
+        print('prepare the transaction')
         # the amount is expressed in drops, not 
         # see https://xrpl.org/basic-data-types.html#specifying-currency-amounts
         my_tx_payment = Payment(
             account=xrp_wallet.classic_address,
             amount=value_to_send,
             destination=account_to, 
+            destination_tag=int(destination_tag),
             last_ledger_sequence=current_validated_ledger + 20,
             sequence=xrp_wallet.sequence,
             fee="10",
         )
         # sign the transaction
         my_tx_payment_signed = safe_sign_transaction(my_tx_payment,xrp_wallet)
-        #print(my_tx_payment_signed)
+        print("my_tx_payment_signed")
         # submit the transaction
-  
+
         tx_response = send_reliable_submission(my_tx_payment_signed, client)
-        #print(json.dumps(tx_response.result, indent=4, sort_keys=True))
+        print('submited the transaction')
+        print(json.dumps(tx_response.result, indent=4, sort_keys=True))
         
         metadata = tx_response.result.get("meta", {})
         if metadata.get("TransactionResult"):
-            #print("Result code:", metadata["TransactionResult"])
+            print("Result code:", metadata["TransactionResult"])
             return {"transaction": tx_response.result}
-    except:
+    except  xrpl.constants.XRPLException as e:
+        print(e)
+        data = json.dumps(e)
+        print(data)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Invalid details; could not determine encoding algorithm")
+                                detail=f'tecDST_TAG_NEEDED, or ')
       
 
 
@@ -167,6 +228,7 @@ def Get_xrp_bals(response: Response, token: str = Depends(token_auth_scheme),use
         
 @router.post('/api/v1/api/xrp_webhook', tags=["WebHook"])
 def transaction_receipt(tx_hash:str = Form(...),webhook_url:str = Form(...)) -> dict():
+    
     try:#print(json.dumps(tx_hash.result, indent=4, sort_keys=True))
         data = xrpl.transaction.get_transaction_from_hash(tx_hash = tx_hash, client =client,)
         tx_xrp = json.dumps(data, default=vars)

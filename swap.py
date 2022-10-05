@@ -120,15 +120,3 @@ print(account.privateKey.hex())
 """
 
 
-from cryptography.fernet import Fernet
-message = '0x87ef1f1a91db9d221fe1e1b137d6ac37efb5610ccd5acfb21acae3db040d9e59'
-
-key = Fernet.generate_key()
-print(key)
-fernet_obj = Fernet(key)
-encrypted_message = fernet_obj.encrypt(message.encode())
-print(encrypted_message)
-decrypted_message = fernet_obj.decrypt(encrypted_message).decode()
-print("massage", decrypted_message)
-print(len(b'58HaJn3Bl51gaz8tWeUOna2aIMaSJ9OV2pN6eYbmyyk='))
-encrypted_message = b'gAAAAABjPCtaMK7U68jNGPBNKJ8ml5VND9BH3lpofqBGHiwGQWvCE4YNLzG4Mwz2X_KXY_TXZyZ0xZ5T1jFxpsrfTNNH5zinfioYmg-9LVbVt4gmFecuMVtblUtsGsb_nxABE-6RIHP7OL-hbdW9lReGlcINnHls163U536OREM55MMUMMShlMw='
