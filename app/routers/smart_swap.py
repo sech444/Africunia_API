@@ -533,8 +533,8 @@ async def fund_me(response: Response, token: str = Depends(token_auth_scheme), a
     Afcash = w3.eth.contract(address=foun_me_address, abi=abi)
     getusd = w3.toWei(value, 'ether')
     get_rate = Afcash.functions.getConversionRate(int(getusd)).call()
-    print(get_rate)
-    print("sending890")
+    #print(get_rate)
+    #print("sending890")
     try:
         input_balance = Afcash.functions.fund().buildTransaction(
                 {
@@ -545,10 +545,10 @@ async def fund_me(response: Response, token: str = Depends(token_auth_scheme), a
                 'gasPrice': w3.toWei('5', 'gwei'),
                 }
             ) 
-        print("signing")
-        print(private_key)
+        #print("signing")
+        #print(private_key)
         signed = w3.eth.account.sign_transaction(input_balance, private_key=private_key)
-        print("signed transaction")
+        #print("signed transaction")
         tx = w3.eth.send_raw_transaction(signed.rawTransaction)
         print(tx)
         tx_hash = w3.toHex(tx)
