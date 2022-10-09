@@ -527,16 +527,17 @@ async def fund_me(response: Response, token: str = Depends(token_auth_scheme), a
     addr = account_from #w3.isChecksumAddress("0x4Ff26e42af59Bda47ac8D7BB15CEa3c6CaBafC7E")
     value = value_to_send #int(0.001)
     private_key=PRIVATE_KEY #""
-    foun_me_address =w3.toChecksumAddress('0xfA44c22c384aDA264e3b3C6ccB311567f3AEDcE6') 
+    foun_me_address =w3.toChecksumAddress('0x29465Aa45c1c137822878c4ee3107CF7B7A7DEF2') 
     abi = data_n
     # print(abi)
     Afcash = w3.eth.contract(address=foun_me_address, abi=abi)
     getusd = w3.toWei(value, 'ether')
     get_rate = Afcash.functions.getConversionRate(int(getusd)).call()
-    #print(get_rate)
-    #print("sending890")
+    nonce = w3.eth.get_transaction_count(addr)
+    print(get_rate)
+    print("sending890")
     try:
-        input_balance = Afcash.functions.fund().buildTransaction(
+        input_balance = Afcash.functions.deposit().buildTransaction(
                 {
                 'from': w3.toChecksumAddress(str(addr)),
                 'value': w3.toWei(value, 'ether'),
@@ -546,6 +547,8 @@ async def fund_me(response: Response, token: str = Depends(token_auth_scheme), a
                 }
             ) 
         #print("signing")
+        #print(private_key)
+        print("signing")
         #print(private_key)
         signed = w3.eth.account.sign_transaction(input_balance, private_key=private_key)
         #print("signed transaction")
@@ -566,7 +569,8 @@ async def fund_me(response: Response, token: str = Depends(token_auth_scheme), a
                 "tx_hash":tx_hash,
                 "data" : w3.toJSON(receipt_ )
                 }
-    except:
+    except ValueError as e:
+        print(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"transaction fail chack your balance and try again") 
 '''

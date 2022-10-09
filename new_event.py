@@ -9,7 +9,7 @@ web3 = Web3(Web3.HTTPProvider(infura_url))
 
 
 
-contract_addr=web3.toChecksumAddress('0x49e8fd12fba447798ad5259c7bbabc0c8f9f9eec')
+contract_addr=web3.toChecksumAddress('0x29465Aa45c1c137822878c4ee3107CF7B7A7DEF2')
 
 with open("./fund_abi.json", "r") as file:
     usdt_erc20 = file.read()
@@ -34,7 +34,7 @@ async def log_loop(event_filter, poll_interval):
 
 
 def main():
-    event_filter = contract.events.Sent.createFilter(fromBlock='latest')
+    event_filter = contract.events.depositDone.createFilter(fromBlock='latest')
     loop = asyncio.get_event_loop()
     try:
         loop.run_until_complete(
