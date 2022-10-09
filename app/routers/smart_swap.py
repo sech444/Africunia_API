@@ -1,4 +1,5 @@
 from time import sleep
+import datetime
 from wsgiref.validate import validator
 from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
 import json
@@ -23,6 +24,7 @@ import ast
 import pandas as pd
 from json import JSONEncoder
 import asyncio
+from aiohttp import ClientResponse
 from tronpy import AsyncTron
 from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form, Response
 import json
@@ -92,7 +94,7 @@ def xrp_transaction(Network: Ripple_network,response: Response, token: str = Dep
     #print(len(TokenA))
     if len(TokenA) == 25 :
         bsc = Df1['BNB']['Binance Smart Chain']
-        #result = ast.literal_eval(bsc)
+        #xrp_tx()
         # print(bsc)
         # return bsc
     elif len(TokenA) == 10 :
@@ -252,7 +254,7 @@ ONE_TRON = 1000000
 # your wallet information
 '''#WALLET_ADDRESS = "your wallet here"
 PRIVATE_KEY = "your Private Key "
-recipient_address = 'TYotKQtGriZGnGw5UUWThj63dqFAtXSTnS'#'TPhBQKbg3WqZnxCeiDw9ZtsaYutkvHqeWS'
+
 amount = 1000000
 print(amount)'''
 # send some 'amount' of Tron to the 'wallet' address
@@ -514,3 +516,120 @@ def exl20_afcash_token(response: Response, token: str = Depends(token_auth_schem
     except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Transaction error, most have exl20 for gas fee")
+
+
+@router.post("/api/v1/eth_fund_me", tags=["WebHook"])        
+async def fund_me(response: Response, token: str = Depends(token_auth_scheme), account_from: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...),webhook_url:Optional[str] = Form(None, description="returns the tx hash to the URL that you will provide (that is an HTTP request)")): 
+    w3 = Web3(Web3.HTTPProvider('https://goerli.infura.io/v3/2b4e6cbc9f444bed94a86178238f8cad'))
+    with open("./fund_abi.json", 'r') as f_file:
+        data_n = f_file.read()
+        
+    addr = account_from #w3.isChecksumAddress("0x4Ff26e42af59Bda47ac8D7BB15CEa3c6CaBafC7E")
+    value = value_to_send #int(0.001)
+    private_key=PRIVATE_KEY #""
+    foun_me_address =w3.toChecksumAddress('0xfA44c22c384aDA264e3b3C6ccB311567f3AEDcE6') 
+    abi = data_n
+    # print(abi)
+    Afcash = w3.eth.contract(address=foun_me_address, abi=abi)
+    getusd = w3.toWei(value, 'ether')
+    get_rate = Afcash.functions.getConversionRate(int(getusd)).call()
+    print(get_rate)
+    print("sending890")
+    try:
+        input_balance = Afcash.functions.fund().buildTransaction(
+                {
+                'from': w3.toChecksumAddress(str(addr)),
+                'value': w3.toWei(value, 'ether'),
+                'nonce': w3.eth.get_transaction_count(addr),
+                'gas': 250000,
+                'gasPrice': w3.toWei('5', 'gwei'),
+                }
+            ) 
+        print("signing")
+        print(private_key)
+        signed = w3.eth.account.sign_transaction(input_balance, private_key=private_key)
+        print("signed transaction")
+        tx = w3.eth.send_raw_transaction(signed.rawTransaction)
+        print(tx)
+        tx_hash = w3.toHex(tx)
+        receipt_ = w3.eth.get_transaction(tx_hash)
+        await asyncio.sleep(10)
+        data = {"amount in eth": value,
+                "amount in usd":get_rate /10 **18,
+            'tx_hash': w3.toHex(tx),
+            'details': w3.toJSON(receipt_ ),
+        }
+        r=requests.post(webhook_url,data=json.dumps(data))
+
+        return { "amount in eth": value,
+                "amount in usd":get_rate /10 **18,
+                "tx_hash":tx_hash,
+                "data" : w3.toJSON(receipt_ )
+                }
+    except:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"transaction fail chack your balance and try again") 
+'''
+def __call__():
+    xrp_contact_addr = '0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE'
+    if len(private_key) == 44:
+        fernet_obj = Fernet(private_key)
+
+        encrypted_message = b'gAAAAABjPDT8CmjRPxPKJgyN7_PMPm5SutGf80MOiGcnyU8QZ4NbPUzbSgrrzipbSr2hbPbS_yZKGj2TDhGjQkikJcFGTF1E2naU5E5OVNoHJsECmnp47Hk='
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        #decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = private_key
+    #if len(decrypted_message) == 66:
+    priv_key = key
+    account_1 = account_from
+    account_2 = account_to
+    value = value_to_send
+
+    usdt_bep=bsc_w3.eth.contract(address=busd_addr, abi=usdt_erc20)
+    account_1 = account_from
+    account_2 = account_to.upper()
+    value = value_to_send
+    #print("sending567 ...................................................")
+    adr_verify = bsc_w3.isAddress(account_1)
+    if not adr_verify:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Invaild busd_bep20_wallet")
+    #print("sending567 isChecksumAddress")
+    if not bsc_w3.isAddress(account_2):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Not a valid busd_bep20 wallet check the wallet and try again")
+    #print("sending567")
+    #value_2 = int(float(value))
+    trans = usdt_bep.functions.balanceOf(bsc_w3.toChecksumAddress(account_1)).call()
+    _bal2_ = bsc_w3.fromWei(trans, 'ether')
+    #print(_bal2_)
+    if float(value) > _bal2_:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Insufficient usdt_bep20 Funds")    
+    #print("sending890 .....................................")
+    nonce = bsc_w3.eth.get_transaction_count(account_1)
+    value_to = bsc_w3.toWei(value, 'ether')
+    try:
+        input_balance = usdt_bep.functions.transfer(bsc_w3.toChecksumAddress(account_2), value_to).buildTransaction(
+            {
+                'from': bsc_w3.toChecksumAddress(account_1),
+                'nonce': nonce,
+                'gas': 250000,
+                'gasPrice': w3.toWei('5.5', 'gwei'),
+            }
+        )
+
+        signed = bsc_w3.eth.account.sign_transaction(
+            input_balance, private_key=priv_key)
+        tx = bsc_w3.eth.send_raw_transaction(signed.rawTransaction)
+        
+        return {"hash_tx": bsc_w3.toHex(tx)}
+    except ValueError as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Transaction error, most have BNB for gas fee")
+'''
+
+#foun_me_address = '0x49e8fd12fba447798ad5259c7bbabc0c8f9f9eec'

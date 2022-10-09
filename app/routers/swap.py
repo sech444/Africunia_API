@@ -302,7 +302,7 @@ async def get_network(Network: BNB_network, account_from: str = Form(...), value
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient usdt_bep20 Funds")
         
-    print("sending890 .....................................")
+    #print("sending890 .....................................")
     nonce = bsc_w3.eth.get_transaction_count(account_1)
     value_to = bsc_w3.toWei(value, 'ether')
     try:
@@ -388,7 +388,7 @@ async def get_swap(swap_tokenA: Coin_symbol, swap_tokenB: Coin_symbol,account_to
         # Approve input token spend first by PancakeSwap V2 Router
         approve = input_contract.functions.approve(
                         pswap_router_address, 
-                        web3.toWei(Decimal('10000'), 'ether'),
+                        web3.toWei(Decimal(out_2), 'ether'), # 100000
                     ).buildTransaction({
                         'from': my_address,
                         'gasPrice': web3.toWei('5', 'gwei'),

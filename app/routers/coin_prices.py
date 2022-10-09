@@ -646,7 +646,7 @@ listData = [
     },
      {
         "coin": "AFCASH",
-        "name": "AFCASH (EXL20)",
+        "name": "AFRICUNIA BANK",
         "rate": main_afcash(), #main_dash2(), #
         "coin_logo": "assets\/img\\/afcash.png"
     },
