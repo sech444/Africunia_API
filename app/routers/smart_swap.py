@@ -527,7 +527,7 @@ async def fund_me(response: Response, token: str = Depends(token_auth_scheme), a
     addr = account_from #w3.isChecksumAddress("0x4Ff26e42af59Bda47ac8D7BB15CEa3c6CaBafC7E")
     value = value_to_send #int(0.001)
     private_key=PRIVATE_KEY #""
-    foun_me_address =w3.toChecksumAddress('0x29465Aa45c1c137822878c4ee3107CF7B7A7DEF2') 
+    foun_me_address =w3.toChecksumAddress('0x0becF4dc23F996e969Dc07c201C5883Bd3513D2F') 
     abi = data_n
     # print(abi)
     Afcash = w3.eth.contract(address=foun_me_address, abi=abi)
@@ -546,14 +546,11 @@ async def fund_me(response: Response, token: str = Depends(token_auth_scheme), a
                 'gasPrice': w3.toWei('5', 'gwei'),
                 }
             ) 
-        #print("signing")
-        #print(private_key)
-        print("signing")
-        #print(private_key)
+
         signed = w3.eth.account.sign_transaction(input_balance, private_key=private_key)
         #print("signed transaction")
         tx = w3.eth.send_raw_transaction(signed.rawTransaction)
-        print(tx)
+        #print(tx)
         tx_hash = w3.toHex(tx)
         receipt_ = w3.eth.get_transaction(tx_hash)
         await asyncio.sleep(10)
