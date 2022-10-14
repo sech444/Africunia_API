@@ -8,8 +8,8 @@
         "Polygon Mainnet Matic": "Web3(Web3.HTTPProvider('https://thegraph.com/hosted-service/subgraph/maticnetwork/mainnet-root-subgraphs'))"
     },
     "USDT_TR20": {
-        "name": "BNB",
-        "addr": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
+        "name": "Tether(USDT_TRC20)",
+        "Tether(USDT_TRC20)": "client_trx = Tron()"
     },
     "ETH": {
         "name": "ETH",
@@ -18,6 +18,11 @@
     "XRP": {
         "name": "XRP",
         "XRP client": "JsonRpcClient('https://xrplcluster.com')"
+    },
+    "BTC": {
+        "name": "BTC",
+        "BTC_Mainnet": "Bitcoin" 
     }
+
 }
 

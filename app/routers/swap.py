@@ -401,7 +401,7 @@ async def get_swap(swap_tokenA: Coin_symbol, swap_tokenB: Coin_symbol,account_to
         asyncio.sleep(10)
 
         pswap_contract = web3.eth.contract(address=pswap_router_address, abi=pswap_abi)
-        amountIn = (web3.toWei(0.00001, 'ether'))
+        amountIn = account_to_swap #(web3.toWei(0.00001, 'ether'))
         amount1 = pswap_contract.functions.getAmountsOut( amountIn,[input_address, output_address] ).call()
         amountOutMin = amount1[1] * 0.9
         minAmountPrint = web3.fromWei(amountOutMin, 'ether')

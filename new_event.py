@@ -249,6 +249,39 @@ def main():
     finally:
         loop.close()
 
+def main2():
+    #event_filter = contract.events.Received.createFilter(fromBlock='latest')
+    event_filter = contract.events.Deposit.createFilter(fromBlock='latest')
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(
+            asyncio.gather(
+                log_loop(event_filter, 2)))
+    finally:
+        loop.close()
+
 
 if __name__ == "__main__":
     main()
+    
+    """
+
+
+app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    print('Accepting client connection...')
+    await websocket.accept()
+    while True:
+        try:
+            # Wait for any message from the client
+            await websocket.receive_text()
+            # Send message to the client
+            resp = {'value': random.uniform(0, 1)}
+            await websocket.send_json(resp)
+        except Exception as e:
+            print('error:', e)
+            break
+    print('Bye..')
+    
+    
+"Deposit: """

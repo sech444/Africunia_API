@@ -39,8 +39,15 @@ Df1=pd.read_json(data_n)
 class BNB_network(str, Enum):
     Binance_Smart_Chain = "Binance SmartChain bep20 "
     Ethereum_Mainnet = "Ethereum Mainnet" 
-    Tether = "Tether(USDT) TRC20 "
+    Tether = "Tether(USDT_TRC20)"
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
+    
+class ETH_network(str, Enum):
+    Tether = "Tether(USDT_TRC20)"
+    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
+    Binance_Smart_Chain = "Binance SmartChain bep20"
+    Ethereum_Mainnet = "Ethereum Mainnet" 
+
 
 class USDT_network(str, Enum):
     Binance_Smart_Chain= "Binance Smart Chain bep20 "
@@ -49,10 +56,12 @@ class USDT_network(str, Enum):
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
     
 class BTC_network(str, Enum):
+    BTC_Mainnet = "BTC_Mainnet"
     Binance_Smart_Chain= "Binance Smart Chain bep20 "
     Ethereum_Mainnet = "Ethereum Mainnet erc20"
     Tether = "Tether(USDT) TRC20 "
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
+    
     
 class litecoin_network(str, Enum):
     Binance_Smart_Chain = "Binance SmartChain bep20 "
@@ -81,11 +90,28 @@ class Ripple_network(str, Enum):
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
 
 
-class bitcoin_cash_network(str, Enum):
+class Bitcoin_cash_network(str, Enum):
     Binance_Smart_Chain= "Binance_Smart_Chain_bep20 "
     Ethereum_Mainnet = "Ethereum_Mainnet_erc20"
     Tether = "Tether(USDT) TRC20 "
     Polygon_Mainnet_Matic = "Polygon_Mainnet_Matic_Network"
+    
+    
+class Dash_network(str, Enum):
+    Binance_Smart_Chain= "Binance_Smart_Chain_bep20 "
+    Ethereum_Mainnet = "Ethereum_Mainnet_erc20"
+    Tether = "Tether(USDT) TRC20 "
+    Polygon_Mainnet_Matic = "Polygon_Mainnet_Matic_Network"
+    
+
+class Ltc_network(str, Enum):
+    Binance_Smart_Chain= "Binance_Smart_Chain_bep20 "
+    Ethereum_Mainnet = "Ethereum_Mainnet_erc20"
+    Tether = "Tether(USDT) TRC20 "
+    Polygon_Mainnet_Matic = "Polygon_Mainnet_Matic_Network"
+    
+
+
 
 
 with open("./compiled_code.json") as data_file:

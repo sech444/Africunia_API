@@ -35,6 +35,9 @@ import os
 import jwt
 from app.utils import VerifyToken
 from fastapi.security import HTTPBearer
+import random
+
+
 token_auth_scheme = HTTPBearer()
 from tronpy.exceptions import (
    
@@ -259,15 +262,128 @@ amount = 1000000
 print(amount)'''
 # send some 'amount' of Tron to the 'wallet' address
 @router.post("/api/v1/tron_transaction", tags=["Transaction"])
-async def send_tron(response: Response, token: str = Depends(token_auth_scheme),sender_address =  Form(...), recipient_address = Form(...), account_to_send = Form(...),PRIVATE_KEY = Form(...)):
+async def send_tron(Network: USDT_network, response: Response, token: str = Depends(token_auth_scheme),sender_address =  Form(...), recipient_address = Form(...), account_to_send = Form(...),private_key = Form(...)):
     """A valid access token is required to access this route"""
 
-    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    TokenA = Network.value
+    print(len(TokenA))
+    if len(TokenA) == 25 :
+        bsc = Df1['BNB']['Binance Smart Chain']
+        #xrp_tx()
+        # print(bsc)
+        # return bsc
+    elif len(TokenA) == 10 :
+        bsc = Df1['XRP']['XRP client']
+        #result = ast.literal_eval(bsc)
+        #print(bsc)
+        # return bsc
+    elif len(TokenA) == 16 :
+        bsc = Df1['ETH']['Ethereum Mainnet']
+        #result = ast.literal_eval(bsc)
+        # print(bsc)
+        # return bsc
+    elif len(TokenA) == 21 :
+        bsc = Df1['polygon']['Polygon Mainnet Matic']
+        # #result = ast.literal_eval(bsc)
+        # print(bsc)
+        # return bsc
+    else :
+        len(TokenA) == 25 
+        bsc = Df1['BNB']['Binance Smart Chain']
+        # result = ast.literal_eval(bsc)
+        # print(result)
+        # return bsc
+    client = eval(bsc)
+   #print(bsc_w3)
+    
+    # #print(bsc_w3.isConnected())
+    # account_1 = private_key
+    # account_2 = account_to
+    # value = value_to_send
+    # #print("sending567 ...................................................01")
+    
+    if len(private_key) == 44:
+        fernet_obj = Fernet(private_key)
 
-    # 👇 new code
-    #if result.get("status"):
-        #response.status_code = status.HTTP_400_BAD_REQUEST
-        #return result
+        encrypted_message = b'gAAAAABjSOx-vUeOVYauXwja28UPOSHegavGNeyAK5jQtO6pAlUKmaTxGegOxTOyvfWWb06XQcoo5b76qLAldh9jGsI8RUy6bij-_YCLElzTNaqy0NFnXPgAgyULjouP-fLRd1xz5YiOBFyXbeCYyH_VCoGfBk9rHVakZQFmKeF-6WFx5BqWhpE='
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        #decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = private_key
+    #if len(decrypted_message) == 66:
+    priv_key = key
+    
+    client = Tron()
+    WALLET_ADDRESS = sender_address
+    if client.is_address(sender_address) != True:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Invaild wallet")
+            
+    balance = client.get_account_balance(str(sender_address))
+    if balance >= int(account_to_send):
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"bals not up to the aomunt you went to send")
+    
+    try:
+        priv_key = PrivateKey(bytes.fromhex(priv_key))
+        
+        # create transaction and broadcast it
+        #print("building txn")
+        txn = (client.transfer(str(WALLET_ADDRESS), str(recipient_address), int(account_to_send))
+            .memo("test memo")#"Transaction Description") # (
+            .build()
+            .inspect()
+            .sign(priv_key)
+            .broadcast()
+            )
+        # wait until the transaction is sent through and then return the details 
+        #print("waiting for transaction is sent through and then return the details ")
+        #print(txn)
+        details=txn.wait()
+        #print(details["transaction"]["transaction"]["txID"])
+
+        return {"transaction hash" : details}
+    except:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"Not a valid xrp hash check the hash and try again")
+    
+
+@router.post("/api/v1/tron_usdt_tr20_transaction", tags=["Transaction"])
+async def usdt_tr20(Network: USDT_network, response: Response, token: str = Depends(token_auth_scheme),sender_address =  Form(...), recipient_address = Form(...), account_to_send = Form(...),PRIVATE_KEY = Form(...)):
+    """A valid access token is required to access this route"""
+
+    
+    TokenA = Network.value
+    print(len(TokenA))
+    if len(TokenA) == 25 :
+        bsc = Df1['BNB']['Binance Smart Chain']
+        #xrp_tx()
+        # print(bsc)
+        # return bsc
+    elif len(TokenA) == 10 :
+        bsc = Df1['XRP']['XRP client']
+        #result = ast.literal_eval(bsc)
+        #print(bsc)
+        # return bsc
+    elif len(TokenA) == 16 :
+        bsc = Df1['ETH']['Ethereum Mainnet']
+        #result = ast.literal_eval(bsc)
+        # print(bsc)
+        # return bsc
+    elif len(TokenA) == 21 :
+        bsc = Df1['polygon']['Polygon Mainnet Matic']
+        # #result = ast.literal_eval(bsc)
+        # print(bsc)
+        # return bsc
+    else :
+        len(TokenA) == 25 
+        bsc = Df1['BNB']['Binance Smart Chain']
+        # result = ast.literal_eval(bsc)
+        # print(result)
+        # return bsc
+    client = eval(bsc)
+   #print(bsc_w3)
     
     client = Tron()
     WALLET_ADDRESS = sender_address
@@ -299,12 +415,11 @@ async def send_tron(response: Response, token: str = Depends(token_auth_scheme),
         #print(details["transaction"]["transaction"]["txID"])
 
         return {"transaction hash" : details}
- 
-    
     except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"Not a valid xrp hash check the hash and try again")
     
+
 
 @router.post("/api/v1/get_tron_bals", tags=["Transaction"])
 def account_balance(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
@@ -474,7 +589,6 @@ def exl20_afcash_token(response: Response, token: str = Depends(token_auth_schem
     #if result.get("status"):
         #response.status_code = status.HTTP_400_BAD_REQUEST
         #return result
-    
     account_1 = address_key
     account_2 = account_to
     value = value_to_send
@@ -533,7 +647,7 @@ async def fund_me(response: Response, token: str = Depends(token_auth_scheme), a
     Afcash = w3.eth.contract(address=foun_me_address, abi=abi)
     getusd = w3.toWei(value, 'ether')
     get_rate = Afcash.functions.getConversionRate(int(getusd)).call()
-    nonce = w3.eth.get_transaction_count(addr)
+    #nonce = w3.eth.get_transaction_count(addr)
     print(get_rate)
     print("sending890")
     try:
@@ -570,6 +684,25 @@ async def fund_me(response: Response, token: str = Depends(token_auth_scheme), a
         print(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"transaction fail chack your balance and try again") 
+
+
+'''@router.websocket("/test")
+async def test(websocket: WebSocket):
+    print('Accepting client connection...')
+    await websocket.accept()
+    while True:
+        try:
+            # Wait for any message from the client
+            await websocket.receive_text()
+            # Send message to the client
+            resp = {'value': random.uniform(0, 1)}
+            await websocket.send_json(resp)
+        except Exception as e:
+            print('error:', e)
+            break
+    print('Bye..')
+print(test("request"))
+'''
 '''
 def __call__():
     xrp_contact_addr = '0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE'

@@ -21,12 +21,14 @@ import os
 from binance.helpers import round_step_size
 import asyncio
 import decimal
+from app.schemas import BTC_network,ETH_network
 from blockcypher import get_address_overview
 from binance.enums import *
 from pprint import pformat
 from app.utils import VerifyToken
 from fastapi.security import HTTPBearer
 from cryptography.fernet import Fernet
+import pandas as pd
 import jwt
 from app.utils import VerifyToken
 # Scheme for the Authorization header
@@ -36,8 +38,8 @@ token_auth_scheme = HTTPBearer()
 
 router = APIRouter()
 
-w3 = Web3(Web3.HTTPProvider(
-    'https://mainnet.infura.io/v3/bde4e3babba54474844b65de59d0a039'))
+# w3 = Web3(Web3.HTTPProvider(
+#     'https://mainnet.infura.io/v3/bde4e3babba54474844b65de59d0a039'))
 
 load_dotenv()
 #w3 = os.getenv("w3")
@@ -54,12 +56,19 @@ headers = {
 
 client = Client(API_KEY, SECRET_KEY)
 
+with open("./networks_id.json",'r') as net_file:
+    data_n = net_file.read()
+    #print(net_file.read())
+    
+Df1=pd.read_json(data_n)
 
 
 @router.post("/api/v1/get_eth_bals", tags=["Transaction"])
 def Get_eth_bals(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
     adr_verify = Web3.isAddress(user_adr.upper())
-   
+    bsc = Df1['ETH']['Ethereum Mainnet']
+    w3 = eval(bsc)
+    print(w3)
     try:
         if not adr_verify:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -73,43 +82,92 @@ def Get_eth_bals(response: Response, token: str = Depends(token_auth_scheme),use
 
 
 @router.post("/api/v1/eth_transaction", tags=["Transaction"])
-async def eth_transaction(background_tasks: BackgroundTasks,response: Response, token: str = Depends(token_auth_scheme), account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+async def eth_transaction(Network: ETH_network,background_tasks: BackgroundTasks,response: Response, token: str = Depends(token_auth_scheme), account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
     # checking the wallet if the are eth wallets
+    
+    TokenA = Network.value
+    print(len(TokenA))
+    if len(TokenA) == 25 :
+        bsc = Df1['BNB']['Binance Smart Chain']
+        #result = ast.literal_eval(bsc)
+        # print(bsc)
+        # return bsc
+    elif len(TokenA) == 16 :
+        bsc = Df1['ETH']['Ethereum Mainnet']
+        #result = ast.literal_eval(bsc)
+        print(bsc)
+        # return bsc
+    elif len(TokenA) == 21 :
+        bsc = Df1['polygon']['Polygon Mainnet Matic']
+        # #result = ast.literal_eval(bsc)
+        # print(bsc)
+        # return bsc
+    else :
+        len(TokenA) == 25 
+        bsc = Df1['BNB']['Binance Smart Chain']
+        # result = ast.literal_eval(bsc)
+        # print(result)
+        # return bsc
+    w3 = eval(bsc)
+    print(w3)
+    if len(Private_key) == 44:
+        fernet_obj = Fernet(Private_key)
+
+        encrypted_message = b'gAAAAABjR-8X6mVBk2vh0HdKNGJfC3nfuv9h3Aii83i53oaudekkVsPUxIo12t1FWJNmrCasjMmgOy7zmFdGbbrfN7DHnAG7UUkVPOaXwTSApiEM9DSoOBa5e567a9BrnNVVEPhwjVRnAoxyiMRDybzk03ht7jjMq_CtjBIt09fjeLHgFUa4ZlQ='
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        #decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = Private_key
+    #if len(decrypted_message) == 66:
+    priv_key = key
+    
+    print(priv_key)
     adr_verify = w3.isAddress(account_from)
     if not adr_verify:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"account_from Not a valid ETH wallet check the wallet and try again")
     account_2 = account_to
-    if not Web3.isChecksumAddress(account_to):
+    if not w3.toChecksumAddress(account_2):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"account_to Not a valid ETH wallet check the wallet and try again")
-
+                detail=f"account_to Not a valid ETH wallet check the wallet and try again")
+   
     value = value_to_send
+    print(value)
     # check if not sending more the this bals
+    print('check if not sending more the this bals')
     value_2 = int(float(value_to_send))
-    trans = w3.eth.get_balance(value_2)
+    trans = w3.eth.get_balance(account_from)
     _bal2_ = w3.fromWei(trans, 'ether')
-    if float(value) > _bal2_:
+    print(_bal2_)
+    if float(value_2) > _bal2_:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient ETH Funds")
 
     # getting the transaction count of the send (nonce)
     nonce = w3.eth.getTransactionCount(account_from)
-    # building the transaction
-    tx = {
-        'nonce': nonce,
-        'to': account_2,
-        'value': w3.toWei(value, 'ether'),
-        'gas': 200000,
-        'gasPrice': w3.toWei('50', 'gwei'),
-    }
+    print("building the transaction")
+    # gas_fee = w3.eth.getBlock('latest')
+    # print(gas_fee)
+    try:
+        tx = {
+            'nonce': nonce,
+            'to': account_2,
+            'value': w3.toWei(value, 'ether'),
+            'gas': 250000,
+            'gasPrice': w3.toWei(50, 'gwei')
+        }
 
-    # sign the transaction and waiting for tx_hash
+        # sign the transaction and waiting for tx_hash
 
-    signed_tx = w3.eth.account.signTransaction(tx, private_key)
-    tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    new_data = (w3.toHex(tx_hash))
-    return {"New_transaction": new_data, }
+        signed_tx = w3.eth.account.signTransaction(tx, priv_key)
+        tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+        new_data = (w3.toHex(tx_hash))
+        return {"New_transaction": new_data, }
+    except ValueError as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Transaction error, most have ETH for gas fee")
 
 
 @router.post("/api/v1/create_order_buy", tags=["Transaction"])
@@ -155,8 +213,6 @@ def create_Order(response: Response, token: str = Depends(token_auth_scheme),sym
         return{"data": order}
     except BinanceAPIException as e:
         print(e)
-        print (e.status_code)
-        print (e.message)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Not a valid transaction check the symbol eg. BNBUSDT then orderid eg. 4136872022 and try again")
 
@@ -173,8 +229,6 @@ def create_Order(response: Response, token: str = Depends(token_auth_scheme),ass
         return{"data": bals}
     except BinanceAPIException as e:
         print(e)
-        print (e.status_code)
-        print (e.message)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Not a valid transaction check the asset symbol eg. BNB , USDT ")
 
@@ -190,16 +244,12 @@ def get_deposit_address(response: Response, token: str = Depends(token_auth_sche
 
 
 # using web3py to Transfer usdt tether bep20 from one account to other  account with binance
-contract_addr=w3.toChecksumAddress('0x55d398326f99059fF775485246999027B3197955')
 
-with open("usdt_abi.json", "r") as file:
-    usdt_erc20 = file.read()
-    
 
 @router.post("/api/v1/usdt_bep20_bals", tags=["Transaction"])
 async def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
     """A valid access token is required to access this route"""
-
+    
     #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
     # 👇 new code
@@ -209,6 +259,11 @@ async def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),
     
     bsc = "https://bsc-dataseed.binance.org/"
     bsc_w3 = Web3(Web3.HTTPProvider(bsc))
+    
+    contract_addr=bsc_w3.toChecksumAddress('0x55d398326f99059fF775485246999027B3197955')
+
+    with open("usdt_abi.json", "r") as file:
+        usdt_erc20 = file.read()
         
     
     usdt_bep=bsc_w3.eth.contract(address=contract_addr, abi=usdt_erc20)
@@ -219,7 +274,7 @@ async def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),
                             detail=f"Invaild wallet")
     try:
         _trans = usdt_bep.functions.balanceOf(wallet_id).call()
-        _bal2_ = w3.fromWei(_trans, 'ether')
+        _bal2_ = bsc_w3.fromWei(_trans, 'ether')
         return {"balance": _bal2_}
     except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -234,13 +289,15 @@ async def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),
 def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
     """A valid access token is required to access this route"""
 
-    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    bsc = "https://bsc-dataseed.binance.org/"
+    bsc_w3 = Web3(Web3.HTTPProvider(bsc))
+    
+    contract_addr=bsc_w3.toChecksumAddress('0x55d398326f99059fF775485246999027B3197955')
 
-    # 👇 new code
-    #if result.get("status"):
-        #response.status_code = status.HTTP_400_BAD_REQUEST
-        #return result
-   
+    with open("usdt_abi.json", "r") as file:
+        usdt_erc20 = file.read()
+        
+    
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
 
@@ -305,14 +362,16 @@ def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme)
 def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_id: str = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
-
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
+    bsc = Df1['ETH']['Ethereum Mainnet']
+    w3 = eval(bsc)
+    #print(w3)
+    usdt_ = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
     
+    with open("usdt_abi.json", "r") as file:
+        usdt_erc20 = file.read()
+        
     
+    USDT_ERC20 = w3.eth.contract(abi=usdt_erc20, address=usdt_)
     url = "https://api.etherscan.io/api"
     apikey = etherscan_API
     adr_verify = Web3.isAddress(wallet_id)
@@ -320,7 +379,8 @@ def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),wallet
         if not adr_verify:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Invaild wallet")
-        _trans = w3.eth.get_balance(adr_verify)
+        print('chacking')
+        _trans = USDT_ERC20.functions.balanceOf(wallet_id).call()
         _bal2_ = w3.fromWei(_trans, 'ether')
         return {"balance": _bal2_}
     except :
@@ -331,15 +391,51 @@ def usdt_bals(response: Response, token: str = Depends(token_auth_scheme),wallet
 
 
 @router.post("/api/v1/usdt_erc20_transaction", tags=["Transaction"])
-def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), private_key: str = Form(...)):
+def usdt_transaction(Network: ETH_network, response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    with open("usdt_abi.json", "r") as file:
+        usdt_erc20 = file.read()
+        
+    
+    TokenA = Network.value
+    print(len(TokenA))
+    if len(TokenA) == 25 :
+        bsc = Df1['BNB']['Binance Smart Chain']
+        #result = ast.literal_eval(bsc)
+        # print(bsc)
+        # return bsc
+    elif len(TokenA) == 16 :
+        bsc = Df1['ETH']['Ethereum Mainnet']
+        #result = ast.literal_eval(bsc)
+        print(bsc)
+        # return bsc
+    elif len(TokenA) == 21 :
+        bsc = Df1['polygon']['Polygon Mainnet Matic']
+        # #result = ast.literal_eval(bsc)
+        # print(bsc)
+        # return bsc
+    else :
+        len(TokenA) == 25 
+        bsc = Df1['BNB']['Binance Smart Chain']
+        # result = ast.literal_eval(bsc)
+        # print(result)
+        # return bsc
+    w3 = eval(bsc)
+    print(w3)
+    if len(Private_key) == 44:
+        fernet_obj = Fernet(Private_key)
 
-    # # 👇 new code
-    # if result.get("status"):
-    #     response.status_code = status.HTTP_400_BAD_REQUEST
-    #     return result
+        encrypted_message = b'gAAAAABjR-8X6mVBk2vh0HdKNGJfC3nfuv9h3Aii83i53oaudekkVsPUxIo12t1FWJNmrCasjMmgOy7zmFdGbbrfN7DHnAG7UUkVPOaXwTSApiEM9DSoOBa5e567a9BrnNVVEPhwjVRnAoxyiMRDybzk03ht7jjMq_CtjBIt09fjeLHgFUa4ZlQ='
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        #decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = Private_key
+    #if len(decrypted_message) == 66:
+    priv_key = key
+    
+    print(priv_key)
     
     usdt_ = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
     account_1 = account_from
@@ -376,7 +472,7 @@ def usdt_transaction(response: Response, token: str = Depends(token_auth_scheme)
             'nonce': w3.eth.get_transaction_count(adr_verify),
         })
         signed = w3.eth.account.sign_transaction(
-            input_balance, private_key=private_key)
+            input_balance, private_key=priv_key)
         tx = w3.eth.send_raw_transaction(signed.rawTransaction)
         #print(f"Swap tx: {web3.toHex(tx)}")
         return {"Swap tx": w3.toHex(tx)}
@@ -414,7 +510,7 @@ def bnb_transaction(response: Response, token: str = Depends(token_auth_scheme),
     account_2 = account_to
     value = value_to_send
 
-    adr_verify = w3.isAddress(account_from)
+    adr_verify = bsc_w3.isAddress(account_from)
     if not adr_verify:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Invaild wallet")
@@ -479,13 +575,9 @@ def bnb_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_
 def busd_transaction(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
     """A valid access token is required to access this route"""
 
-    #result = VerifyToken(token.credentials).verify()  # 👈 updated code
-
-    # 👇 new code
-    #if result.get("status"):
-        #response.status_code = status.HTTP_400_BAD_REQUEST
-        #return result
-    
+    with open("usdt_abi.json", "r") as file:
+        usdt_erc20 = file.read()
+        
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
 
@@ -536,7 +628,7 @@ def busd_transaction(response: Response, token: str = Depends(token_auth_scheme)
                 'from': bsc_w3.toChecksumAddress(account_1),
                 'nonce': nonce,
                 'gas': 250000,
-                'gasPrice': w3.toWei('5.5', 'gwei'),
+                'gasPrice': bsc_w3.toWei('5.5', 'gwei'),
             }
         )
 
@@ -557,10 +649,8 @@ def busd_bals(response: Response, token: str = Depends(token_auth_scheme),wallet
 
     #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    #if result.get("status"):
-        #response.status_code = status.HTTP_400_BAD_REQUEST
-        #return result
+    with open("usdt_abi.json", "r") as file:
+        usdt_erc20 = file.read()
     
     
     bsc = "https://bsc-dataseed.binance.org/"
@@ -576,7 +666,7 @@ def busd_bals(response: Response, token: str = Depends(token_auth_scheme),wallet
                             detail=f"Invaild wallet valid busd_bep20")
     try:
         _trans = usdt_bep.functions.balanceOf(bsc_w3.toChecksumAddress(wallet_id)).call()
-        _bal2_ = w3.fromWei(_trans, 'ether')
+        _bal2_ = bsc_w3.fromWei(_trans, 'ether')
         return {"balance": _bal2_}
     except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -623,7 +713,7 @@ def exl_transaction(response: Response, token: str = Depends(token_auth_scheme),
     value_2 = int(float(value))
     #print("building .....tx...3", value_2)
     trans = bsc_w3.eth.get_balance(account_1)
-    _bal2_ = w3.fromWei(trans, 'ether')
+    _bal2_ = bsc_w3.fromWei(trans, 'ether')
 
     if float(value) >= _bal2_:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -674,32 +764,40 @@ def exl_bals(response: Response, token: str = Depends(token_auth_scheme),wallet_
 
 
 @router.post("/api/v1/bitcoin_transaction", tags=["Transaction"])
-def _prepare_tx_btc(response: Response, token: str = Depends(token_auth_scheme),priv_key: str = Form(...), addr_from: str = Form(...), addr_to: str = Form(...), value: str = Form(...), fee: str = Form(...), change_addr: str = Form(...), segwit=False):  # create unsigned txobj with change output
+def _prepare_tx_btc(response: Response, token: str = Depends(token_auth_scheme),priv_key=Form(...), addr_from = Form(...), addr_to= Form(...), value = Form(...), fee = Form(...), change_addr = Form(...), segwit=False):  # create unsigned txobj with change output
     """A valid access token is required to access this route"""
 
-    result = VerifyToken(token.credentials).verify()  # 👈 updated code
+    # result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
-    # 👇 new code
-    if result.get("status"):
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return result
-    
+    # # 👇 new code
+    # if result.get("status"):
+    #     response.status_code = status.HTTP_400_BAD_REQUEST
+    #     return result
+    priv ="0e8799d75edc22689eac89ece2a1c4117d2dc92c4722b2cded76520ea0c0fb20"
     c = Bitcoin
+    priv_key=c.privtopub(priv)
     try:
-        addr_from = addr_from
-        addr_to = addr_to
-        value = value
+        #addr_from = addr_from.value
+        to = addr_to
+        #value = int(value)
         fee = fee
-        priv_key = priv_key
+        privkey = priv_key
         change_addr = change_addr
-        tx = c.preparesignedtx(priv_key, addr_to, value, fee,
-                               change_addr, segwit=False, addr_from=addr_from)
+        tx = c.preparesignedtx(self=Bitcoin,privkey=priv_key, to=addr_to, value=int(10000) )
         data = c.pushtx(tx)
+        print(data)
         return{"data": data}
-    except ValueError:
+    except ValueError as e:
+        print(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Transaction error")
 
+'''bitcoin_addr = '1MSMQSeTXvdT6pTzAASEDWAaNRLnufAhEY'#'0e8799d75edc22689eac89ece2a1c4117d2dc92c4722b2cded76520ea0c0fb20'
+c = Bitcoin()
+addr = bitcoin_addr
+utxo_set = c.unspent(addr)
+print(utxo_set)
+'''
 
 @router.post("/api/v1/bitcoin_unspent", tags=["Transaction"])
 def bitcoin_bals(response: Response, token: str = Depends(token_auth_scheme),bitcoin_addr: str = Form(...)):
@@ -951,7 +1049,7 @@ def exl20_afcash(response: Response, token: str = Depends(token_auth_scheme), ac
     value_2 = int(float(value))
     #print("building .....tx...3", value_2)
     trans = bsc_w3.eth.get_balance(account_1)
-    _bal2_ = w3.fromWei(trans, 'ether')
+    _bal2_ = bsc_w3.fromWei(trans, 'ether')
 
     if float(value) >= _bal2_:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
