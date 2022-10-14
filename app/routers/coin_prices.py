@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup as BS
 router = APIRouter()
 
 
-@router.get("/",tags=["Coin_Price"])
+@router.get("/", tags=["Coin_Price"])
 def root():
     return listData
 
@@ -39,9 +39,10 @@ def main():
         if price != last_price:
            # print('Bitcoin price: ',price)
             last_price = price
-    return 
+    return
 
-@router.get('/api/v1/btcusd',tags=["Coin_Price"])
+
+@router.get('/api/v1/btcusd', tags=["Coin_Price"])
 async def index(background_tasks: BackgroundTasks):
     background_tasks.add_task(main)
     return {
@@ -50,7 +51,7 @@ async def index(background_tasks: BackgroundTasks):
         "rate": get_price("bitcoin"),
         "coin_logo": "assets\/img\/btc.png"
     }
-    
+
 
 def get_price_bch(crypto_bchusd):
     URL = 'https://www.bitstamp.net/api/v2/ticker/bchusd/'
@@ -76,7 +77,7 @@ def main_bch():
     return
 
 
-@router.get('/api/v1/bch',tags=["Coin_Price"])
+@router.get('/api/v1/bch', tags=["Coin_Price"])
 async def index_bch(background_tasks: BackgroundTasks):
     background_tasks.add_task(main_bch)
     return {
@@ -85,10 +86,10 @@ async def index_bch(background_tasks: BackgroundTasks):
         "rate": get_price_bch("bitcoin_cash"),
         "coin_logo": "assets\/img\/bch.png"
     }
-    
+
 
 def get_ether_coin_Price(crypto_ether):
-    URL = 'https://www.bitstamp.net/api/v2/ticker/ethusd/'#usdtusd
+    URL = 'https://www.bitstamp.net/api/v2/ticker/ethusd/'  # usdtusd
     try:
         r = requests.get(URL)
         priceFloat = float(json.loads(r.text)['last'])
@@ -111,8 +112,7 @@ def main_ether():
     return
 
 
-
-@router.get('/api/v1/ethusd',tags=["Coin_Price"])
+@router.get('/api/v1/ethusd', tags=["Coin_Price"])
 async def index_eth(background_tasks: BackgroundTasks):
     background_tasks.add_task(main_ether)
     return {
@@ -123,9 +123,8 @@ async def index_eth(background_tasks: BackgroundTasks):
     }
 
 
-
 def get_usdt_coin_Price(crypto_ether):
-    URL = 'https://www.bitstamp.net/api/v2/ticker/usdtusd/'#usdtusd
+    URL = 'https://www.bitstamp.net/api/v2/ticker/usdtusd/'  # usdtusd
     try:
         r = requests.get(URL)
         priceFloat = float(json.loads(r.text)['last'])
@@ -148,7 +147,7 @@ def main_usdt():
     return
 
 
-@router.get('/api/v1/usdtusd',tags=["Coin_Price"])
+@router.get('/api/v1/usdtusd', tags=["Coin_Price"])
 async def index_usdt(background_tasks: BackgroundTasks):
     background_tasks.add_task(main_ether)
     return {
@@ -157,8 +156,6 @@ async def index_usdt(background_tasks: BackgroundTasks):
         "rate": get_usdt_coin_Price("usdtusd"),
         "coin_logo": "assets\/img\/usdt.png"
     }
-
-
 
 
 def get_xlmu_Price(crypto_xlmusd):
@@ -185,7 +182,7 @@ def main_Xlmusd():
     return
 
 
-@router.get('/api/v1/xlmusd',tags=["Coin_Price"])
+@router.get('/api/v1/xlmusd', tags=["Coin_Price"])
 async def index_Stellar(background_tasks: BackgroundTasks):
     background_tasks.add_task(main_Xlmusd)
     return {
@@ -193,8 +190,8 @@ async def index_Stellar(background_tasks: BackgroundTasks):
         "name": "Stellar",
         "rate": get_xlmu_Price("stellar"),
         "coin_logo": "assets\/img\/xlm.png"
-        }
-    
+    }
+
 
 def get_Ltccoin_Price(crypto_ltc):
     URL = 'https://www.bitstamp.net/api/v2/ticker/ltcusd/'
@@ -221,7 +218,7 @@ def main_ltc():
     return
 
 
-@router.get('/api/v1/ltc',tags=["Coin_Price"])
+@router.get('/api/v1/ltc', tags=["Coin_Price"])
 async def index_ltc(background_tasks: BackgroundTasks):
     background_tasks.add_task(main_ltc)
     return {
@@ -230,7 +227,7 @@ async def index_ltc(background_tasks: BackgroundTasks):
         "rate": get_Ltccoin_Price('litercoin'),
         "coin_logo": "assets\/img\/ltc.png"
     }
-    
+
 
 def get_xrp_price(crypto_xrpusd):
     URL = 'https://www.bitstamp.net/api/v2/ticker/xrpusd/'
@@ -255,7 +252,7 @@ def main_xrp():
     return
 
 
-@router.get('/api/v1/xrpusd',tags=["Coin_Price"])
+@router.get('/api/v1/xrpusd', tags=["Coin_Price"])
 async def index_xrp(background_tasks: BackgroundTasks):
     background_tasks.add_task(main_xrp)
     return {
@@ -264,9 +261,6 @@ async def index_xrp(background_tasks: BackgroundTasks):
         "rate": get_xrp_price("Ripple"),
         "coin_logo": "assets\/img\/xrp.png"
     }
-   
-    
-    
 
 
 def getDashcoinPrice(crypto_dash):
@@ -298,7 +292,7 @@ def main_dash():
 # print(main_xlmusd())
 
 
-@router.get('/api/v1/dash',tags=["Coin_Price"])
+@router.get('/api/v1/dash', tags=["Coin_Price"])
 async def index_dash(background_tasks: BackgroundTasks):
     background_tasks.add_task(main_dash)
     return {
@@ -306,31 +300,31 @@ async def index_dash(background_tasks: BackgroundTasks):
         "name": "Dash",
         "rate": float(getDashcoinPrice("crypto_dash")),
         "coin_logo": "assets\/img\/dash.png"
-    } 
-    
-    
-@router.get('/api/v1/bnb_usdt',tags=["Coin_Price"])
+    }
+
+
+@router.get('/api/v1/bnb_usdt', tags=["Coin_Price"])
 def bnb_usdt():
     base_url = "https://api.binance.com"
-    path ="/api/v3/ticker/price"
+    path = "/api/v3/ticker/price"
     params = '?symbol=BNBUSDT'
     try:
         r = requests.get(base_url+path+params)
         data = r.json()
         priceFloat = float(data['price'])
-        #print(priceFloat)
-        #return priceFloat
+        # print(priceFloat)
+        # return priceFloat
         return {
-        "coin": "BNB",
-        "name": "Binance Coin",
-        "rate": priceFloat,
-        "coin_logo": "assets\/img\/bnb.png"
-    }
+            "coin": "BNB",
+            "name": "Binance Coin",
+            "rate": priceFloat,
+            "coin_logo": "assets\/img\/bnb.png"
+        }
     except requests.ConnectionError:
-        print("Error querying Bitstamp API")  
-   
+        print("Error querying Bitstamp API")
 
-@router.get('/api/v1/trx_usdt',tags=["Coin_Price"])
+
+@router.get('/api/v1/trx_usdt', tags=["Coin_Price"])
 def trx_usdt():
     base_url = "https://api.binance.com"
     path = "/api/v3/ticker/price"
@@ -343,9 +337,9 @@ def trx_usdt():
         "rate_usdt": float(data['price']),
         "coin_logo": "assets\/img\/trx.png"
     }
-    
-    
-@router.get('/api/v1/busd',tags=["Coin_Price"])
+
+
+@router.get('/api/v1/busd', tags=["Coin_Price"])
 def trx_usdt():
     base_url = "https://api.binance.com"
     path = "/api/v3/ticker/price"
@@ -357,10 +351,9 @@ def trx_usdt():
         "name": "Binance USD",
         "rate_usdt": float(data['price']),
         "coin_logo": "assets\/img\/busd.png"}
-    
-    
-    
-@router.get('/api/v1/btcusdt',tags=["Coin_Price"])
+
+
+@router.get('/api/v1/btcusdt', tags=["Coin_Price"])
 def binance_btcusdt():
     base_url = "https://api.binance.com"
     path = "/api/v3/ticker/price"
@@ -372,10 +365,10 @@ def binance_btcusdt():
         "name": "Bitcoin",
         "rate_usdt": float(data['price']),
         "coin_logo": "assets\/img\/btcusdt.png"
-    }  
-    
+    }
 
-@router.get("/api/v1/all_coin_binance",tags=["Coin_Price"])
+
+@router.get("/api/v1/all_coin_binance", tags=["Coin_Price"])
 def all_coin():
     PATH = '/api/v3/ticker/price'
     base_url = "https://api.binance.com"
@@ -384,93 +377,95 @@ def all_coin():
     }
 
    #url = urljoin(base_url, PATH)
-    r = requests.get(base_url+ PATH)
+    r = requests.get(base_url + PATH)
     if r.status_code == 200:
         data = r.json()
         json_formatted_str = json.dumps(data, indent=4)
     else:
-        raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"Not a valid eth wallet check the wallet and try again")
-    return{"coins" : json_formatted_str}
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Not a valid eth wallet check the wallet and try again")
+    return{"coins": json_formatted_str}
 
 
-@router.get("/api/v1/all_afcash",tags=["Coin_Price"])
+@router.get("/api/v1/all_afcash", tags=["Coin_Price"])
 def AFCASH_coin():
     try:
         client = Coinpaprika.Client()
         pair_list = client.ticker('afcash-africunia-bank')
         quotes = pair_list['quotes']['USD']['price']
-        return{"rate": quotes }
+        return{"rate": quotes}
     except:
-        raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"price updating soon")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"price updating soon")
 
 
-
-@router.get("/api/v1/exl_price",tags=["Coin_Price"])
+@router.get("/api/v1/exl_price", tags=["Coin_Price"])
 # method to get the price of bit coin
 def exl_price():
-  # getting the request from url 
+  # getting the request from url
     import re
-    data = requests.get(url,headers=headers) 
-    # converting the text 
+    data = requests.get(url, headers=headers)
+    # converting the text
     soup = BS(data.text, 'html.parser')
-    
+
     # finding metha info for the current price
-    ans = soup.find('span', {"class" :"price"}).text
+    ans = soup.find('span', {"class": "price"}).text
     listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
-    #print(float(listans[0]))
+    # print(float(listans[0]))
     return{
         "coin": "EXL",
         "name": "Excoincial",
-        "rate" : float(listans[0]),
+        "rate": float(listans[0]),
         "coin_logo": "assets\\/img\\/exl.png"
-        }
+    }
+
 
 def afcash(crypto_dash):
     url = "https://coincodex.com/crypto/africunia-bank/"
-    headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"}
+    headers = {
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"}
     try:
-    # getting the request from url 
+        # getting the request from url
         import re
-        data = requests.get(url,headers=headers) 
-        # converting the text 
+        data = requests.get(url, headers=headers)
+        # converting the text
         soup = BS(data.text, 'html.parser')
-        
-    
+
         # finding metha info for the current price
-        ans = soup.find('div', {"class" :"coin-info-box-content"}).text
+        ans = soup.find('div', {"class": "coin-info-box-content"}).text
         listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
-        #print(listans)
-        #print(float(listans[0]))
+        # print(listans)
+        # print(float(listans[0]))
         return float(listans[0])
     except:
-        return  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"price update soon")
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                             detail=f"price update soon")
 
 
 # url of the exl coin price
 
 url = "https://www.livecoinwatch.com/price/Excoincial-EXL"
-headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"}
+headers = {
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"}
+
 
 def exl_price2():
     try:
-    # getting the request from url 
+        # getting the request from url
         import re
-        data = requests.get(url,headers=headers) 
-        # converting the text 
+        data = requests.get(url, headers=headers)
+        # converting the text
         soup = BS(data.text, 'html.parser')
-        
-    
+
         # finding metha info for the current price
-        ans = soup.find('div', {"class" :"cion-item text-center text-lg-left second-row-col"}).text
+        ans = soup.find(
+            'div', {"class": "cion-item text-center text-lg-left second-row-col"}).text
         listans = [float(s) for s in re.findall(r'[\d]*[.][\d]+', ans)]
-        #print(float(listans[0]))
+        # print(float(listans[0]))
         return float(listans[0])
     except:
-        return  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"price update soon")
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                             detail=f"price update soon")
 
 
 def main_dash2():
@@ -478,24 +473,25 @@ def main_dash2():
         client = Coinpaprika.Client()
         pair_list = client.ticker('afcash-africunia-bank')
         quotes = pair_list['quotes']['USD']['price']
-        
+
         return quotes
     except:
-        return  HTTPException(status_code = 404, detail=  "Id not found")
+        return HTTPException(status_code=404, detail="Id not found")
+
 
 def bnbusdt():
     try:
         base_url = "https://api.binance.com"
-        path ="/api/v3/ticker/price"
+        path = "/api/v3/ticker/price"
         params = '?symbol=BNBUSDT'
         r = requests.get(base_url+path+params)
         data = r.json()
         priceFloat = float(data['price'])
-        #print(priceFloat)
+        # print(priceFloat)
         return priceFloat
     except:
-        raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                    detail=f"price update soon")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"price update soon")
 
 
 web3 = Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/'))
@@ -514,25 +510,23 @@ contract = ex_w3.eth.contract(address=addr2, abi=abi2)
 def get_afcash_Price(crypto_ltc):
     contract = web3.eth.contract(address=addr, abi=abi)
     latestData = contract.functions.latestRoundData().call()
-    prices = latestData[1]/ 10**8
-    return prices/ 10**2.4412
+    prices = latestData[1] / 10**8
+    return prices / 10**2.4412
+
 
 def main_afcash():
-  
-  last_price = -1
-  
-  while True:
-    
-    crypto = 'bitcoin'
-    price = get_afcash_Price(crypto)
-  
-    if price != last_price:
-      #print('BTC_ETH: ',price)
-      last_price = price
-    return last_price
-      
 
+    last_price = -1
 
+    while True:
+
+        crypto = 'bitcoin'
+        price = get_afcash_Price(crypto)
+
+        if price != last_price:
+            #print('BTC_ETH: ',price)
+            last_price = price
+        return last_price
 
 
 # Set up contract instance
@@ -540,48 +534,48 @@ def main_afcash():
 def get_exl_Price(crypto_ltc):
     contract = web3.eth.contract(address=addr, abi=abi)
     latestData = contract.functions.latestRoundData().call()
-    prices = latestData[1]/ 10**6
-    return prices/ 10**5
+    prices = latestData[1] / 10**6
+    return prices / 10**5
+
 
 def main_exl():
-  
-  last_price = -1
-  
-  while True:
-    
-    crypto = 'bitcoin'
-    price = get_exl_Price(crypto)
-  
-    if price != last_price:
-      #print('BTC_ETH: ',price)
-      last_price = price
-    return last_price
-      
+
+    last_price = -1
+
+    while True:
+
+        crypto = 'bitcoin'
+        price = get_exl_Price(crypto)
+
+        if price != last_price:
+            #print('BTC_ETH: ',price)
+            last_price = price
+        return last_price
 
 
 try:
     base_url = "https://api.binance.com"
-    path ="/api/v3/ticker/price"
+    path = "/api/v3/ticker/price"
     params = '?symbol=TRXUSDT'
     r = requests.get(base_url+path+params)
     data = r.json()
     priceFloat2 = float(data['price'])
-    #print(priceFloat2)
+    # print(priceFloat2)
 except:
-    raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"price update soon")
-    
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                        detail=f"price update soon")
+
 try:
     base_url = "https://api.binance.com"
-    path ="/api/v3/ticker/price"
+    path = "/api/v3/ticker/price"
     params = '?symbol=BUSDUSDT'
     r = requests.get(base_url+path+params)
     data = r.json()
     priceFloat12 = float(data['price'])
-    #print(priceFloat2)
+    # print(priceFloat2)
 except:
-    raise  HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"price update soon")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                        detail=f"price update soon")
 
 listData = [
     {
@@ -597,13 +591,43 @@ listData = [
         "coin_logo": "assets/img/bch.png"
     },
     {
+        "coin": "BCH ERC20",
+        "name": "Bitcoin Cash",
+        "rate": get_price_bch("bitcoin_cash"),
+        "coin_logo": "assets/img/bch.png"
+    },
+    {
+        "coin": "BCH BEP20",
+        "name": "Bitcoin Cash",
+        "rate": get_price_bch("bitcoin_cash"),
+        "coin_logo": "assets/img/bch.png"
+    },
+    {
         "coin": "LTC",
         "name": "Litecoin",
         "rate": get_Ltccoin_Price('litercoin'),
         "coin_logo": "assets/img/ltc.png"
     },
     {
+        "coin": "LTC BEP20",
+        "name": "Litecoin",
+        "rate": get_Ltccoin_Price('litercoin'),
+        "coin_logo": "assets/img/ltc.png"
+    },
+    {
         "coin": "RXP",
+        "name": "Ripple",
+        "rate": get_xrp_price("Ripple"),
+        "coin_logo": "assets/img/xrp.png"
+    },
+    {
+        "coin": "RXP BEP20",
+        "name": "Ripple",
+        "rate": get_xrp_price("Ripple"),
+        "coin_logo": "assets/img/xrp.png"
+    },
+    {
+        "coin": "RXP ERC20",
         "name": "Ripple",
         "rate": get_xrp_price("Ripple"),
         "coin_logo": "assets/img/xrp.png"
@@ -621,95 +645,165 @@ listData = [
         "coin_logo": "assets/img/xlm.png"
     },
     {
-        "coin": "ETH",
+        "coin": "XLM BEP20",
+        "name": "Stellar",
+        "rate": get_xlmu_Price("stellar"),
+        "coin_logo": "assets/img/xlm.png"
+    },
+    {
+        "coin": "ETH ERC20",
         "name": "Ethereum",
         "rate": get_ether_coin_Price("ether"),
         "coin_logo": "assets/img/ether.png"
     },
-     {
-        "coin": "BNB",
+    {
+        "coin": "BNB BEP20",
         "name": "Binance Coin",
         "rate": bnbusdt(),
         "coin_logo": "assets/img/bnb.png"
     },
     {
-        "coin": "TRX",
+        "coin": "TRX TRC20",
         "name": "TRON Coin",
         "rate": priceFloat2,
         "coin_logo": "assets\\/img\\/trx.png"
     },
     {
-        "coin": "BUSD",
+        "coin": "TRX BEP20",
+        "name": "TRON Coin",
+        "rate": priceFloat2,
+        "coin_logo": "assets\\/img\\/trx.png"
+    },
+    {
+        "coin": "BUSD ERC20",
         "name": "Binance USD",
         "rate": priceFloat12,
         "coin_logo": "assets\\/img\\/busd.png"
     },
-     {
+    {
         "coin": "AFCASH",
         "name": "AFRICUNIA BANK",
-        "rate": main_afcash(), #main_dash2(), #
+        "rate": main_afcash(),  # main_dash2(), #
         "coin_logo": "assets\/img\\/afcash.png"
     },
-     {
+    {
         "coin": "EXL",
         "name": "Excoincial",
-        "rate": main_exl(),#exl_price2(),
+        "rate": main_exl(),  # exl_price2(),
         "coin_logo": "assets\\/img\\/exl.png"
     },
-     {
-        "coin": "USDT",
+    {
+        "coin": "USDT ERC20",
         "name": "Tether",
         "rate": get_usdt_coin_Price("usdtusd"),
         "coin_logo": "assets\/img\/usdt.png"
+    },
+    {
+        "coin": "USDT BEP20",
+        "name": "Tether",
+        "rate": get_usdt_coin_Price("usdtusd"),
+        "coin_logo": "assets\/img\/usdt.png"
+    },
+    {
+        "coin": "USDT TRC20",
+        "name": "Tether",
+        "rate": get_usdt_coin_Price("usdtusd"),
+        "coin_logo": "assets\/img\/usdt.png"
+    },
+    {
+        "coin": "USDT Polygon",
+        "name": "Tether",
+        "rate": get_usdt_coin_Price("usdtusd"),
+        "coin_logo": "assets\/img\/usdt.png"
+    },
+    {
+        "coin": "BUSD BEP20",
+        "name": "Binance USD",
+        "rate": priceFloat12,
+        "coin_logo": "assets\\/img\\/busd.png"
+    },
+    {
+        "coin": "BNB ERC20",
+        "name": "Binance Coin",
+        "rate": bnbusdt(),
+        "coin_logo": "assets/img/bnb.png"
+    },
+    {
+        
+        "coin": "ETH BEP20",
+        "name": "Ethereum",
+        "rate": get_ether_coin_Price("ether"),
+        "coin_logo": "assets/img/ether.png"
+    },
+    {
+        "coin": "BTC BEP20",
+        "name": "Bitcoin",
+        "rate": get_price("bitcoin"),
+        "coin_logo": "assets/img/btc.png"
+    },
+    {
+        "coin": "BTC ERC20",
+        "name": "Bitcoin",
+        "rate": get_price("bitcoin"),
+        "coin_logo": "assets/img/btc.png"
+    },
+    {
+        "coin": "BUSD ERC20",
+        "name": "Binance USD",
+        "rate": priceFloat12,
+        "coin_logo": "assets\\/img\\/busd.png"
+    },
+    {
+        "coin": "BUSD Polygon",
+        "name": "Binance USD",
+        "rate": priceFloat12,
+        "coin_logo": "assets\\/img\\/busd.png"
     }
 
 ]
 
 
-
 def exl_afcash():
-        
+
     afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
 
-    #print(tokens)
+    # print(tokens)
     exl_url = "https://rpc.exlscan.com/"
     w3 = Web3(Web3.HTTPProvider(exl_url))
 
     with open("pancake.json", "r") as file:
         swap_Afcash_file = file.read()
-        #print(swap_Afcash_file)
+        # print(swap_Afcash_file)
     # Closing file
 
     AfcashSwap = w3.eth.contract(abi=swap_Afcash_file, address=afcash)
 
     EXL = AfcashSwap.functions.totalSupply().call()
 
-    #print(EXL)
+    # print(EXL)
     total = w3.fromWei(EXL, 'ether')
 
-    #print( total) 
-    return total 
-    
-    
-
+    #print( total)
+    return total
 
 
 def TRC20_afcash():
-        
+
     er20_afcash = "TR26H88jy3zhcLgUw5RxM4BAPozCoiWqHM"
     #afcash_addr = Web3.isAddress(afcash)
-    #print(tokens)
+    # print(tokens)
     #w3 = Web3(Web3.HTTPProvider('https://api.trongrid.io https://apilist.tronscan.org/api/contracts/code?contract= er20_afcash'))
 
-    base_url = "https://apilist.tronscan.org/api/account?address=TR26H88jy3zhcLgUw5RxM4BAPozCoiWqHM"#" https://apilist.tronscan.org/api/contract?contract=TR26H88jy3zhcLgUw5RxM4BAPozCoiWqHM"
+    # " https://apilist.tronscan.org/api/contract?contract=TR26H88jy3zhcLgUw5RxM4BAPozCoiWqHM"
+    base_url = "https://apilist.tronscan.org/api/account?address=TR26H88jy3zhcLgUw5RxM4BAPozCoiWqHM"
     url = r.get(base_url)
     data = url.json()
-    #print(data)
+    # print(data)
     with open("TRC20_ABI.json", "r") as file:
         swap_Afcash = file.read()
-        #print(swap_Afcash_file)
+        # print(swap_Afcash_file)
     # Closing file
-    
+
     import requests
 
     url = "https://api.shasta.trongrid.io/v1/contracts/{TR26H88jy3zhcLgUw5RxM4BAPozCoiWqHM}/tokens"
@@ -717,71 +811,72 @@ def TRC20_afcash():
     headers = {
         'Content-Type': "application/json",
         'TRON-PRO-API-KEY': "148ccca9-c9e0-4493-ad4a-8fe1476a5207"
-        }
-    response = requests.get( url, headers=headers)
-    #print(response.text)
-
+    }
+    response = requests.get(url, headers=headers)
+    # print(response.text)
 
     #AfcashS = w3.eth.contract(address= er20_afcash, abi=swap_Afcash,)
     #res = w3.isConnected()
-    #print(res)
+    # print(res)
    # EXL = AfcashS.functions.totalSupply().call()
 
-    #print(EXL)
+    # print(EXL)
     #total = w3.fromWei(EXL, 'ether')
 
     #print('TRC20 ', total)
-    
-#TRC20_afcash()
+
+# TRC20_afcash()
+
 
 def bep20_afcash():
-        
+
     afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
 
-    #print(tokens)
+    # print(tokens)
     exl_url = "https://bsc-dataseed.binance.org/"
     w3 = Web3(Web3.HTTPProvider(exl_url))
 
     with open("erc20afcash.json", "r") as file:
         swap_Afcash_file = file.read()
-        #print(swap_Afcash_file)
+        # print(swap_Afcash_file)
     # Closing file
 
     AfcashSwap = w3.eth.contract(abi=swap_Afcash_file, address=afcash)
 
     EXL = AfcashSwap.functions.totalSupply().call()
 
-    #print(EXL)
+    # print(EXL)
     total = w3.fromWei(EXL, 'ether')
 
-    #print(total)  
+    # print(total)
     return total
 
 
 def er20_afcash():
-        
+
     afcash = "0xb8a5dBa52FE8A0Dd737Bf15ea5043CEA30c7e30B"
 
-    #print(tokens)
+    # print(tokens)
     exl_url = "https://mainnet.infura.io/v3/bde4e3babba54474844b65de59d0a039"
     w3 = Web3(Web3.HTTPProvider(exl_url))
 
     with open("erc20afcash.json", "r") as file:
         swap_Afcash_file = file.read()
-        #print(swap_Afcash_file)
+        # print(swap_Afcash_file)
     # Closing file
 
     AfcashSwap = w3.eth.contract(abi=swap_Afcash_file, address=afcash)
 
     EXL = AfcashSwap.functions.totalSupply().call()
 
-    #print(EXL)
+    # print(EXL)
     total = w3.fromWei(EXL, 'ether')
 
-    #print(total)  
+    # print(total)
     return total
 
-@router.get('/api/v1/total_coins',tags=["Coin_Price"])
+
+@router.get('/api/v1/total_coins', tags=["Coin_Price"])
 def total_coins():
 
     TRC20 = exl_afcash()
@@ -791,11 +886,8 @@ def total_coins():
     total = ERC20 + BEP20 + BEP20 + TRC20
     return{
         "TRC20": TRC20,
-        "EXL20" : EXL20,
-        "BEP20" : BEP20,
-        "ERC20" : ERC20,
-        "total" : total
+        "EXL20": EXL20,
+        "BEP20": BEP20,
+        "ERC20": ERC20,
+        "total": total
     }
-
-
-
