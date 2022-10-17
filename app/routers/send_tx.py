@@ -885,7 +885,9 @@ class Hello(str):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f"InsufficientFunds plus estimated_fee")
 
-
+    """def Wrapped BTC():
+        pass
+"""
 
 @router.post("/api/v1/get_btc_bals", tags=["Transaction"])
 def btc_bals(response: Response, token: str = Depends(token_auth_scheme),user_addr: str = Form(...)):

@@ -514,7 +514,7 @@ def get_exl20_afcash_bals(response: Response, token: str = Depends(token_auth_sc
 
 
 @router.post("/api/v1/exl20_afcash_transaction", tags=["Transaction"])
-def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
+def get_afcash_exl20(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
     """A valid access token is required to access this route"""
 
     #result = VerifyToken(token.credentials).verify()  # 👈 updated code
@@ -563,7 +563,7 @@ def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme)
                 'from': account_1,
                 'nonce': w3.eth.get_transaction_count(account_1),
                 'gas': 250000,
-                'gasPrice': w3.toWei('50', 'gwei'),
+                'gasPrice': w3.toWei('5', 'gwei'),
             }
         ) 
 
@@ -573,15 +573,16 @@ def get_exl20_afcash(response: Response, token: str = Depends(token_auth_scheme)
         #print(tx)
         #print(f"Swap tx: {w3.toHex(tx)}")
         return {"hash_tx": w3.toHex(tx)}
-    except ValueError:
+    except ValueError as e:
+        print(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Transaction error, most have exl20 for gas fee")
+                            detail=json.dumps(e, default=vars))
 
 
 
-@router.post("/api/v1/exl20_afcash_tarnfar", tags=["Transaction"])
+"""@router.post("/api/v1/exl20_afcash_tarnfar", tags=["Transaction"])
 def exl20_afcash_token(response: Response, token: str = Depends(token_auth_scheme), account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...)):
-    """A valid access token is required to access this route"""
+   
 
     #result = VerifyToken(token.credentials).verify()  # 👈 updated code
 
@@ -630,7 +631,7 @@ def exl20_afcash_token(response: Response, token: str = Depends(token_auth_schem
     except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Transaction error, most have exl20 for gas fee")
-
+"""
 
 @router.post("/api/v1/eth_fund_me", tags=["WebHook"])        
 async def fund_me(response: Response, token: str = Depends(token_auth_scheme), account_from: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY = Form(...),webhook_url:Optional[str] = Form(None, description="returns the tx hash to the URL that you will provide (that is an HTTP request)")): 
