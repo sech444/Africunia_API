@@ -59,7 +59,6 @@ class BTC_network(str, Enum):
     BTC_Mainnet = "BTC_Mainnet"
     Binance_Smart_Chain= "Binance Smart Chain bep20 "
     Ethereum_Mainnet = "Ethereum Mainnet erc20"
-    Tether = "Tether(USDT) TRC20 "
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
     
     

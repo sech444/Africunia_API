@@ -4,7 +4,7 @@ from . import models
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer
 
-app = FastAPI(title='AFRICUNIABNAK_API')
+app = FastAPI(title='AFRICUNIABNAK API')
 
 origins = ["http://www.africuniabank.com"]
 

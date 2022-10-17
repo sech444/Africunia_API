@@ -615,19 +615,19 @@ listData = [
         "coin_logo": "assets/img/ltc.png"
     },
     {
-        "coin": "RXP",
+        "coin": "XRP",
         "name": "Ripple",
         "rate": get_xrp_price("Ripple"),
         "coin_logo": "assets/img/xrp.png"
     },
     {
-        "coin": "RXP BEP20",
+        "coin": "XRPP BEP20",
         "name": "Ripple",
         "rate": get_xrp_price("Ripple"),
         "coin_logo": "assets/img/xrp.png"
     },
     {
-        "coin": "RXP ERC20",
+        "coin": "XRP ERC20",
         "name": "Ripple",
         "rate": get_xrp_price("Ripple"),
         "coin_logo": "assets/img/xrp.png"

@@ -118,3 +118,19 @@ print(account.privateKey)
 print(account.address)
 print(account.privateKey.hex())
 """
+
+
+#from bitcoin.rpc import RawProxy
+# Create a connection to local Bitcoin Core node
+#p = RawProxy('http://excoincialxx:2022hZh7Bf7bxK69@149.102.139.44:8332')
+# Run the getinfo command, store the resulting data in info
+# Alice's transaction ID
+#txid = "3b5ccdd1127e3a1fb7a64cc85a9f4cf5e47f4feed713af6a61ee1bdeeb067140"
+# First, retrieve the raw transaction in hex
+#raw_tx = p.getrawtransaction(txid)
+# Decode the transaction hex into a JSON object
+#decoded_tx = p.decoderawtransaction(raw_tx)
+# Retrieve each of the outputs from the transaction
+#for output in decoded_tx['vout']:
+#    print(output['scriptPubKey']['addresses'], output['value'])
+

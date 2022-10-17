@@ -363,7 +363,7 @@ async def get_swap(swap_tokenA: Coin_symbol, swap_tokenB: Coin_symbol,account_to
     
         input_address = addr_A #"0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
         output_address = addr_B #coin_addr
-        #print(output_address)
+        print(output_address)
         # https://docs.pancakeswap.finance/code/smart-contracts/pancakeswap-exchange/router-v2
         pswap_router_address = "0x10ED43C718714eb63d5aA57B78B54704E256024E"
 
@@ -383,8 +383,8 @@ async def get_swap(swap_tokenA: Coin_symbol, swap_tokenB: Coin_symbol,account_to
 
         bnb_balance = web3.eth.get_balance(my_address)
         human_bnb_balance = web3.fromWei(bnb_balance, 'ether')
-        #print(f"BNB balance: {human_bnb_balance}")
-
+        print(f"BNB balance: {human_bnb_balance}")
+        #print('Approve ')
         # Approve input token spend first by PancakeSwap V2 Router
         approve = input_contract.functions.approve(
                         pswap_router_address, 
@@ -397,7 +397,7 @@ async def get_swap(swap_tokenA: Coin_symbol, swap_tokenB: Coin_symbol,account_to
 
         signed = web3.eth.account.sign_transaction(approve, private_key=privatekey)
         tx = web3.eth.send_raw_transaction(signed.rawTransaction)
-        print(f"Approve tx: {web3.toHex(tx)}. Waiting 10s for approval")
+        #print(f"Approve tx: {web3.toHex(tx)}. Waiting 10s for approval")
         asyncio.sleep(10)
 
         pswap_contract = web3.eth.contract(address=pswap_router_address, abi=pswap_abi)
@@ -405,11 +405,11 @@ async def get_swap(swap_tokenA: Coin_symbol, swap_tokenB: Coin_symbol,account_to
         amount1 = pswap_contract.functions.getAmountsOut( amountIn,[input_address, output_address] ).call()
         amountOutMin = amount1[1] * 0.9
         minAmountPrint = web3.fromWei(amountOutMin, 'ether')
-        print('Minimum recieved:', minAmountPrint)
+        #print('Minimum recieved:', minAmountPrint)
         asyncio.sleep(5)
 
         swap_amount = accountToswap
-        print(f"Swapping {swap_amount} INPUT to OUTPUT")
+        #print(f"Swapping {swap_amount} INPUT to OUTPUT")
 
         pswap_txn = pswap_contract.functions.swapExactTokensForTokens(
                 web3.toWei(Decimal(swap_amount), 'ether'),
