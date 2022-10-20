@@ -621,7 +621,7 @@ listData = [
         "coin_logo": "assets/img/xrp.png"
     },
     {
-        "coin": "XRPP BEP20",
+        "coin": "XRP BEP20",
         "name": "Ripple",
         "rate": get_xrp_price("Ripple"),
         "coin_logo": "assets/img/xrp.png"

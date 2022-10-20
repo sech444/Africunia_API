@@ -158,30 +158,18 @@ def LITECOIN_wallet(wallet_name: str = Form(...)):
             }
     
 @router.post("/api/v1/create_stellar_wallet",tags=["Coin_Wallets"])
-def STELLAR_wallet(wallet_name: str = Form(...)):
-    # Create factory
-    hd_wallet_fact = HdWalletBipFactory(HdWalletBip44Coins.STELLAR)
-    # Create random
-    hd_wallet = hd_wallet_fact.CreateRandom(wallet_name.upper(), HdWalletSubstrateWordsNum.WORDS_NUM_12,)
+def STELLAR_wallet():
+    from stellar_sdk.keypair import Keypair
 
-    # Generate with default parameters
-    hd_wallet.Generate(addr_num=1)
-    # Specify parameters (it'll generate addresses from index 10 to 15)
-    #hd_wallet.Generate()
-    wallet_data = hd_wallet.ToDict()
-    # After generated, you can check if the wallet is watch-only with the IsWatchOnly method
-    is_wo = hd_wallet.IsWatchOnly()
-    return{"wallet_name": wallet_data["wallet_name"],
-           "coin_name": wallet_data["coin_name"],
-           "mnemonic": wallet_data["mnemonic"],
-            "master_key": wallet_data["master_key"],
-           "address":wallet_data["address"],
-            "seed": wallet_data["seed_bytes"],
-            "account_key": wallet_data["account_key"],
-            "purpose_key" : wallet_data["purpose_key"],
-            "coin_key"  : wallet_data["coin_key"]
-            }
-@router.post("/api/v1/create_ripple_wallet",tags=["Coin_Wallets"])
+    # create a random keypair
+    kp = Keypair.random()
+
+    #print('wallets end')
+    return{"Secret": kp.secret,
+           "Public Key": kp.public_key
+           }
+    
+"""@router.post("/api/v1/create_ripple_wallet",tags=["Coin_Wallets"])
 def RIPPLE_wallet(wallet_name: str = Form(...)):
     # Create factory
     hd_wallet_fact = HdWalletBipFactory(HdWalletBip44Coins.RIPPLE)
@@ -204,7 +192,7 @@ def RIPPLE_wallet(wallet_name: str = Form(...)):
             "account_key": wallet_data["account_key"],
             "purpose_key" : wallet_data["purpose_key"],
             "coin_key"  : wallet_data["coin_key"]
-            }
+            }"""
     
 @router.post("/api/v1/create_dash_wallet",tags=["Coin_Wallets"])
 def DASH_wallet(wallet_name: str = Form(...)):

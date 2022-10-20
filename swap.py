@@ -1,3 +1,5 @@
+from stellar_sdk.exceptions import NotFoundError, BadResponseError, BadRequestError
+from stellar_sdk import Asset, Keypair, Network, Server, TransactionBuilder
 from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
 import json
 from web3 import Web3
@@ -20,7 +22,7 @@ from requests.adapters import HTTPAdapter
 
 # Afcash = w3.eth.contract(address= contract_addr, abi=Compiled_code)
 
-#print(Afcash.functions.name().call())
+# print(Afcash.functions.name().call())
 
 '''alice = input('addr to reciver: ')#'0x9875adb3f2ab35cb2328c9974292e5711eced73b' 0xB1E6c654Cd79265865b07611CAB04E80d245e92e
 Address = w3.toChecksumAddress(alice)
@@ -31,7 +33,6 @@ bals_ = w3.fromWei(bals, 'ether'),
 print(bals_)'''
 
 
-
 '''acct_from = input("acct_from: ")
 value_to_send = input("value: ")
 my_private_key = input("private_key: ")
@@ -39,9 +40,6 @@ tx_hash = Afcash.functions.transferFrom(acct_from, alice, value_to_send).call()
 '''
 
 # 2. Sign a transaction
-
-
-
 
 
 # working with Contract, you need :
@@ -131,6 +129,152 @@ print(account.privateKey.hex())
 # Decode the transaction hex into a JSON object
 #decoded_tx = p.decoderawtransaction(raw_tx)
 # Retrieve each of the outputs from the transaction
-#for output in decoded_tx['vout']:
+# for output in decoded_tx['vout']:
 #    print(output['scriptPubKey']['addresses'], output['value'])
 
+
+"""
+Create, sign, and submit a transaction using Python Stellar SDK.
+Assumes that you have the following items:
+1. Secret key of a funded account to be the source account
+2. Public key of an existing account as a recipient
+    These two keys can be created and funded by the friendbot at
+    https://www.stellar.org/laboratory/ under the heading "Quick Start: Test Account"
+3. Access to Python Stellar SDK (https://github.com/StellarCN/py-stellar-base) through Python shell.
+See: https://developers.stellar.org/docs/start/list-of-operations/#payment
+
+from stellar_sdk import Asset, Keypair, Network, Server, TransactionBuilder
+from stellar_sdk.exceptions import NotFoundError, BadResponseError, BadRequestError
+
+server = Server(horizon_url="https://horizon-testnet.stellar.org")
+source_key = Keypair.from_secret("SB5DIJEVCOXHDF7N2IVQY4SD4QLTF5PJUL3BGHHJL5ZT72HZ5GGP27P4")
+destination_id = "GAHK7EEG2WWHVKDNT4CEQFZGKF2LGDSW2IVM4S5DP42RBW3K6BTODB4A"
+
+# First, check to make sure that the destination account exists.
+# You could skip this, but if the account does not exist, you will be charged
+# the transaction fee when the transaction fails.
+try:
+    server.load_account(destination_id)
+except NotFoundError:
+    # If the account is not found, surface an error message for logging.
+    raise Exception("The destination account does not exist!")
+print('geting public_key')
+# If there was no error, load up-to-date information on your account.
+source_account = server.load_account(source_key.public_key)
+
+# Let's fetch base_fee from network
+base_fee = server.fetch_base_fee()
+print('Start building the transaction')
+# Start building the transaction.
+transaction = (
+    TransactionBuilder(
+        source_account=source_account,
+        network_passphrase=Network.TESTNET_NETWORK_PASSPHRASE,
+        base_fee=base_fee,
+    )
+    # Because Stellar allows transaction in many currencies, you must specify the asset type.
+    # Here we are sending Lumens.
+    .append_payment_op(destination=destination_id, asset=Asset.native(), amount="10")
+    # A memo allows you to add your own metadata to a transaction. It's
+    # optional and does not affect how Stellar treats the transaction.
+    .add_text_memo("Test Transaction")
+    # Wait a maximum of three minutes for the transaction
+    .set_timeout(10)
+    .build()
+)
+print('Sign the transaction to prove you are actually the person sending it.')
+# Sign the transaction to prove you are actually the person sending it.
+transaction.sign(source_key)
+
+try:
+    # And finally, send it off to Stellar!
+    response = server.submit_transaction(transaction)
+    print(f"Response: {response}")
+except (BadRequestError, BadResponseError) as err:
+    print(f"Something went wrong!\n{err}")
+
+"""
+from stellar_sdk.keypair import Keypair
+
+# create a random keypair
+print("create a random keypair")
+kp = Keypair.random()
+#print('wallets')
+print(f"Secret: {kp.secret}")
+print(f"Public Key: {kp.public_key}")
+print("-" * 68)
+print('wallets end')
+
+from stellar_sdk import Server
+
+server = Server(horizon_url="https://horizon.stellar.org")
+account = "GD3CSGCSEX2US2QMAIGNIXNGSGCQWERS7UQZR6C27HVVDGONJMMPZA3P"
+bals = server.accounts(account)
+print(bals)
+# get a list of transactions that occurred in ledger 1400
+# transactions = server.transactions().for_ledger(1400).call()
+# print(transactions)
+
+# get a list of transactions submitted by a particular account
+transactions = server.transactions().for_account(account_id=account).call()
+print(transactions)
+
+
+# The following example will show you how to handle paging
+print(f"Gets all payment operations associated with {account}.")
+payments_records = []
+payments_call_builder = (
+    server.payments().for_account(account).order(desc=False).limit(10)
+)  # limit can be set to a maximum of 200
+payments_records += payments_call_builder.call()["_embedded"]["records"]
+page_count = 0
+while page_records := payments_call_builder.next()["_embedded"]["records"]:
+    payments_records += page_records
+    print(f"Page {page_count} fetched")
+    print(f"data: {page_records}")
+    page_count += 1
+print(f"Payments count: {len(payments_records)}")
+
+from stellar_sdk import Server
+from stellar_model import AccountResponse
+
+server = Server("https://horizon.stellar.org")
+account_id = "GD3CSGCSEX2US2QMAIGNIXNGSGCQWERS7UQZR6C27HVVDGONJMMPZA3P"
+raw_resp = server.accounts().account_id(account_id).call()
+parsed_resp = AccountResponse.parse_obj(raw_resp)
+print(f"Account Sequence: {parsed_resp.sequence}")
+# This example shows how to add memo to a transaction.
+# See: https://developers.stellar.org/docs/glossary/transactions/#memo
+# See: https://stellar-sdk.readthedocs.io/en/latest/building_transactions.html#building-transactions
+
+from stellar_sdk import Account, Asset, Keypair, Network, TransactionBuilder
+
+from stellar_sdk import Keypair
+
+public_key = "GDHMW6QZOL73SHKG2JA3YHXFDHM46SS5ZRWEYF5BCYHX2C5TVO6KZBYL"
+keypair = Keypair.from_public_key(public_key)
+can_sign = keypair.can_sign()
+print(can_sign)
+'''root_keypair = Keypair.from_secret(
+    "3f6e5eafb884cba06b279b98d5dad957c2f0e797ccd0517fcb91aebf27cfb3305cec7db5a443c9ef901d321e40a4a9c15d40145ce6ece6373c1b6548a41800b1"
+)
+# Create an Account object from an address and sequence number.
+root_account = Account(account=root_keypair.public_key, sequence=1)
+
+transaction = (
+    TransactionBuilder(
+        source_account=root_account,
+        network_passphrase=Network.PUBLIC_NETWORK_PASSPHRASE,
+        base_fee=100,
+    )
+    .add_text_memo("473959802")
+    .append_payment_op(
+        destination="GAHK7EEG2WWHVKDNT4CEQFZGKF2LGDSW2IVM4S5DP42RBW3K6BTODB4A",
+        amount="2000",
+        asset=Asset.native(),
+    )
+    .set_timeout(30)
+    .build()
+)
+
+'''
