@@ -66,13 +66,14 @@ with open("pancake.json", "r") as file:
     Compiled_code = file.read()
     #print(Compiled_code)
 
-
-Afcash = w3.eth.contract(address=contract_addr, abi=Compiled_code)
+#afcash ='0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b'
+#contract_addr
+Afcash=w3.eth.contract(address=contract_addr, abi=Compiled_code)
 
 #print(Afcash.functions.name().call())
 
 # connect to the Tron blockchain
-client_trx = Tron() #network='nile'
+client_trx = Tron()  #network='nile'
 
 with open("./networks_id.json",'r') as net_file:
     data_n = net_file.read()
@@ -518,7 +519,7 @@ def get_afcash_exl20(response: Response, token: str = Depends(token_auth_scheme)
     """A valid access token is required to access this route"""
 
     #result = VerifyToken(token.credentials).verify()  # 👈 updated code
-
+    
     # 👇 new code
     #if result.get("status"):
         #response.status_code = status.HTTP_400_BAD_REQUEST
@@ -562,7 +563,7 @@ def get_afcash_exl20(response: Response, token: str = Depends(token_auth_scheme)
             {
                 'from': account_1,
                 'nonce': w3.eth.get_transaction_count(account_1),
-                'gas': 250000,
+                'gas': 550000,
                 'gasPrice': w3.toWei('50', 'gwei'),
             }
         ) 
@@ -576,7 +577,7 @@ def get_afcash_exl20(response: Response, token: str = Depends(token_auth_scheme)
     except ValueError as e:
         print(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=json.dumps(e, default=vars))
+                            detail=f"Insufficient exl for gas fee")
 
 
 
