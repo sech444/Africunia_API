@@ -67,7 +67,7 @@ with open("pancake.json", "r") as file:
     #print(Compiled_code)
 
 
-Afcash = w3.eth.contract(address= contract_addr, abi=Compiled_code)
+Afcash = w3.eth.contract(address=contract_addr, abi=Compiled_code)
 
 #print(Afcash.functions.name().call())
 
@@ -488,7 +488,7 @@ def create_wallet_on_xrp_network():
     
     
 @router.post("/api/v1/exl20_afcash_bals", tags=["Transaction"])
-def get_exl20_afcash_bals(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
+def afcash_bals(response: Response, token: str = Depends(token_auth_scheme),user_adr: str = Form(...)):
     """A valid access token is required to access this route"""
 
     #result = VerifyToken(token.credentials).verify()  # 👈 updated code
