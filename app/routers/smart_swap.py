@@ -559,7 +559,7 @@ async def get_afcash_exl20(response: Response, token: str = Depends(token_auth_s
     #print("sending890")
     await asyncio.sleep(5)
     nonce = w3.eth.get_transaction_count(account_1) 
-   
+    print(nonce)
     value_to = w3.toWei(value, 'ether')
     try:
         input_balance = Afcash.functions.transfer(account_2, value_to).buildTransaction(
