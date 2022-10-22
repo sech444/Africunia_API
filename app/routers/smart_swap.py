@@ -558,17 +558,17 @@ def get_afcash_exl20(response: Response, token: str = Depends(token_auth_scheme)
                             detail=f"Insufficient exl20_afcash Funds")
     #print("sending890")
     nonce = w3.eth.get_transaction_count(account_1)
-    print(nonce)
+    #print(nonce)
     nonce += 1
-    print(nonce)
+    #print(nonce)
     value_to = w3.toWei(value, 'ether')
     try:
         input_balance = Afcash.functions.transfer(account_2, value_to).buildTransaction(
             {
                 'from': account_1,
                 'nonce': nonce ,
-                'gas': 510000,
-                'gasPrice': w3.toWei('55', 'gwei'),
+                'gas': 250000,
+                'gasPrice': w3.toWei('5', 'gwei'),
             }
         ) 
 
