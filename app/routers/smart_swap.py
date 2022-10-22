@@ -515,7 +515,7 @@ def afcash_bals(response: Response, token: str = Depends(token_auth_scheme),user
 
 
 @router.post("/api/v1/exl20_afcash_transaction", tags=["Transaction"])
-def get_afcash_exl20(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
+async def get_afcash_exl20(response: Response, token: str = Depends(token_auth_scheme),account_from: str = Form(...), account_to: str = Form(...), value_to_send: float = Form(...), Private_key: str = Form(...)):
     """A valid access token is required to access this route"""
 
     #result = VerifyToken(token.credentials).verify()  # 👈 updated code
@@ -557,16 +557,17 @@ def get_afcash_exl20(response: Response, token: str = Depends(token_auth_scheme)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient exl20_afcash Funds")
     #print("sending890")
+    await asyncio.sleep(5)
     nonce = w3.eth.get_transaction_count(account_1) 
-    print(nonce)
+   
     value_to = w3.toWei(value, 'ether')
     try:
         input_balance = Afcash.functions.transfer(account_2, value_to).buildTransaction(
             {
                 'from': account_1,
-                'nonce': nonce ,
+                'nonce': nonce,
                 'gas': 250000,
-                'gasPrice': w3.toWei('5', 'gwei'),
+                'gasPrice': w3.toWei('1', 'gwei'),
             }
         ) 
 
