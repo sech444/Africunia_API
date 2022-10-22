@@ -556,7 +556,7 @@ async def get_afcash_exl20(response: Response, token: str = Depends(token_auth_s
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient exl20_afcash Funds")
     #print("sending890")
-    await asyncio.sleep(25) 
+    #await asyncio.sleep(25) 
     nonce = w3.eth.get_transaction_count(account_1) 
     print(nonce)
     value_to = w3.toWei(value, 'ether')
