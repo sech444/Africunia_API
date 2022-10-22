@@ -557,7 +557,7 @@ def get_afcash_exl20(response: Response, token: str = Depends(token_auth_scheme)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient exl20_afcash Funds")
     #print("sending890")
-    nonce = w3.eth.get_transaction_count(account_1) + 1
+    nonce = w3.eth.get_transaction_count(account_1) 
     print(nonce)
     value_to = w3.toWei(value, 'ether')
     try:
