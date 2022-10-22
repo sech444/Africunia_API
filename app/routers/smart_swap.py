@@ -564,7 +564,7 @@ def get_afcash_exl20(response: Response, token: str = Depends(token_auth_scheme)
             {
                 'from': account_1,
                 'nonce': nonce,
-                'gas': 5000000,
+                'gas': 500000,
                 'gasPrice': w3.toWei('55', 'gwei'),
             }
         ) 
