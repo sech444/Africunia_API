@@ -524,7 +524,6 @@ async def get_afcash_exl20(response: Response, token: str = Depends(token_auth_s
     #if result.get("status"):
         #response.status_code = status.HTTP_400_BAD_REQUEST
         #return result
-    await asyncio.sleep(15)
     if len(Private_key) == 44:
         fernet_obj = Fernet(Private_key)
 
@@ -557,8 +556,8 @@ async def get_afcash_exl20(response: Response, token: str = Depends(token_auth_s
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient exl20_afcash Funds")
     #print("sending890")
-    await asyncio.sleep(20) 
-    nonce = w3.eth.get_transaction_count(account_1) 
+    await asyncio.sleep(25) 
+    nonce = w3.eth.get_transaction_count(account_1, 'pending') 
     print(nonce)
     value_to = w3.toWei(value, 'ether')
     try:
