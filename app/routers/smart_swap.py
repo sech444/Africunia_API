@@ -563,7 +563,7 @@ def get_afcash_exl20(response: Response, token: str = Depends(token_auth_scheme)
         input_balance = Afcash.functions.transfer(account_2, value_to).buildTransaction(
             {
                 'from': account_1,
-                'nonce': nonce += 1,
+                'nonce': nonce ,
                 'gas': 51000,
                 'gasPrice': w3.toWei('55', 'gwei'),
             }
