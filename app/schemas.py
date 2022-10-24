@@ -1,125 +1,121 @@
-from urllib.request import FTPHandler
-from fastapi.params import Body
-from pydantic import BaseModel , Field
-from typing import Optional
-from enum import Enum 
 import json
+from enum import Enum
+
 import pandas as pd
-from decimal import Decimal
-import pandas as pd
+from fastapi.params import Body
+from pydantic import BaseModel, Field
 from pythonpancakes import PancakeSwapAPI
-import csv
+
 ps = PancakeSwapAPI()
-import asyncio
-import time
 from web3 import Web3
 
 ps = PancakeSwapAPI()
 
 # Afcash at Binance_Smart_Chain
 afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
-#print(f"started at {time.strftime('%X')}")
-tokens =  ps.tokens()
-#asyncio.sleep(tokens)
-#print(tokens)
-#print(f"started at {time.strftime('%X')}")
-data =tokens["data"] 
+# print(f"started at {time.strftime('%X')}")
+tokens = ps.tokens()
+# asyncio.sleep(tokens)
+# print(tokens)
+# print(f"started at {time.strftime('%X')}")
+data = tokens["data"]
 data2 = json.dumps(data)
 
 
 # networks list
-with open("./networks_id.json",'r') as net_file:
+with open("./networks_id.json", "r") as net_file:
     data_n = net_file.read()
-    #print(net_file.read())
-    
-#df1 = pd.DataFrame(data_n).astype(str) 
-Df1=pd.read_json(data_n)
+    # print(net_file.read())
+
+# df1 = pd.DataFrame(data_n).astype(str)
+Df1 = pd.read_json(data_n)
 
 
 class BNB_network(str, Enum):
     Binance_Smart_Chain = "Binance SmartChain bep20 "
-    Ethereum_Mainnet = "Ethereum Mainnet" 
+    Ethereum_Mainnet = "Ethereum Mainnet"
     Tether = "Tether(USDT_TRC20)"
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
-    
+
+
 class ETH_network(str, Enum):
     Tether = "Tether(USDT_TRC20)"
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
     Binance_Smart_Chain = "Binance SmartChain bep20"
-    Ethereum_Mainnet = "Ethereum Mainnet" 
+    Ethereum_Mainnet = "Ethereum Mainnet"
 
 
 class USDT_network(str, Enum):
-    Binance_Smart_Chain= "Binance Smart Chain bep20 "
+    Binance_Smart_Chain = "Binance Smart Chain bep20 "
     Ethereum_Mainnet = "Ethereum Mainnet erc20"
-    Tether = "Tether(USDT) TRC20 "
-    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
-    
-class BTC_network(str, Enum):
-    BTC_Mainnet = "BTC_Mainnet"
-    Binance_Smart_Chain= "Binance Smart Chain bep20 "
-    Ethereum_Mainnet = "Ethereum Mainnet erc20"
-    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
-    
-    
-class litecoin_network(str, Enum):
-    Binance_Smart_Chain = "Binance SmartChain bep20 "
-    Ethereum_Mainnet = "Ethereum Mainnet" 
     Tether = "Tether(USDT) TRC20 "
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
 
+
+class BTC_network(str, Enum):
+    BTC_Mainnet = "BTC_Mainnet"
+    Binance_Smart_Chain = "Binance Smart Chain bep20 "
+    Ethereum_Mainnet = "Ethereum Mainnet erc20"
+    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
+
+
+class litecoin_network(str, Enum):
+    Binance_Smart_Chain = "Binance SmartChain bep20 "
+    Ethereum_Mainnet = "Ethereum Mainnet"
+    Tether = "Tether(USDT) TRC20 "
+    Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
+
+
 class BUSD_network(str, Enum):
     Binance_Smart_Chain = "Binance SmartChain bep20 "
-    Ethereum_Mainnet = "Ethereum Mainnet" 
+    Ethereum_Mainnet = "Ethereum Mainnet"
     Tether = "Tether(USDT) TRC20 "
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
 
 
 class CUSDT_network(str, Enum):
     Binance_Smart_Chain = "Binance SmartChain bep20 "
-    Ethereum_Mainnet = "Ethereum Mainnet" 
+    Ethereum_Mainnet = "Ethereum Mainnet"
     Tether = "Tether(USDT) TRC20"
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
-    
+
+
 class Ripple_network(str, Enum):
     XRP_client = "XRP client"
     Binance_Smart_Chain = "Binance SmartChain bep20 "
-    Ethereum_Mainnet = "Ethereum Mainnet" 
+    Ethereum_Mainnet = "Ethereum Mainnet"
     Tether = "Tether(USDT) TRC20 "
     Polygon_Mainnet_Matic = "Polygon Mainnet Matic"
 
 
 class Bitcoin_cash_network(str, Enum):
-    Binance_Smart_Chain= "Binance_Smart_Chain_bep20 "
+    Binance_Smart_Chain = "Binance_Smart_Chain_bep20 "
     Ethereum_Mainnet = "Ethereum_Mainnet_erc20"
     Tether = "Tether(USDT) TRC20 "
     Polygon_Mainnet_Matic = "Polygon_Mainnet_Matic_Network"
-    
-    
+
+
 class Dash_network(str, Enum):
-    Binance_Smart_Chain= "Binance_Smart_Chain_bep20 "
+    Binance_Smart_Chain = "Binance_Smart_Chain_bep20 "
     Ethereum_Mainnet = "Ethereum_Mainnet_erc20"
     Tether = "Tether(USDT) TRC20 "
     Polygon_Mainnet_Matic = "Polygon_Mainnet_Matic_Network"
-    
+
 
 class Ltc_network(str, Enum):
-    Binance_Smart_Chain= "Binance_Smart_Chain_bep20 "
+    Binance_Smart_Chain = "Binance_Smart_Chain_bep20 "
     Ethereum_Mainnet = "Ethereum_Mainnet_erc20"
     Tether = "Tether(USDT) TRC20 "
     Polygon_Mainnet_Matic = "Polygon_Mainnet_Matic_Network"
-    
-
-
 
 
 with open("./compiled_code.json") as data_file:
     data = json.load(data_file)
     data_file.close()
 
-   
+
 df = pd.DataFrame(list(data.items()))
-#print(df[0][2])
+# print(df[0][2])
 class Coin_addr(str, Enum):
     coin_addr1 = df[0][0]
     coin_addr2 = df[0][1]
@@ -188,7 +184,7 @@ class Coin_addr(str, Enum):
     coin_addr65 = df[0][63]
     coin_addr66 = df[0][64]
     coin_addr67 = df[0][65]
-    coin_addr68= df[0][66]
+    coin_addr68 = df[0][66]
     coin_addr69 = df[0][67]
     coin_addr70 = df[0][68]
     coin_addr71 = df[0][69]
@@ -211,114 +207,110 @@ class Coin_addr(str, Enum):
     coin_addr88 = df[0][86]
     coin_addr89 = df[0][87]
     coin_addr90 = df[0][89]
-    coin_addr91= df[0][90]
+    coin_addr91 = df[0][90]
 
 
-
-
-#print(df[0][0])
+# print(df[0][0])
 class Coin_symbol(str, Enum):
     coin_smbol00 = "AFCASH"
-    coin_smbol0 = df[1][0]['symbol']
-    coin_smbol1 = df[1][1]['symbol']
-    coin_smbol2 = df[1][2]['symbol']
-    coin_smbol3 = df[1][3]['symbol']
-    coin_smbol4 = df[1][4]['symbol']
-    coin_smbol5 = df[1][5]['symbol']
-    coin_smbol6 = df[1][6]['symbol']
-    coin_smbol7 = df[1][7]['symbol']
-    coin_smbol8 = df[1][8]['symbol']
-    coin_smbol9 = df[1][9]['symbol']
-    coin_smbol10 = df[1][10]['symbol']
-    coin_smbol11 = df[1][11]['symbol']
-    coin_smbol12 = df[1][12]['symbol']
-    coin_smbol13 = df[1][13]['symbol']
-    coin_smbol14 = df[1][14]['symbol']
-    coin_smbol15 = df[1][15]['symbol']
-    coin_smbol16 = df[1][16]['symbol']
-    coin_smbol17 = df[1][17]['symbol']
-    coin_smbol18 = df[1][18]['symbol']
-    coin_smbol19 = df[1][19]['symbol']
-    coin_smbol20 = df[1][20]['symbol']
-    coin_smbol21 = df[1][21]['symbol']
-    coin_smbol22 = df[1][22]['symbol']
-    coin_smbol23 = df[1][23]['symbol']
-    coin_smbol24 = df[1][24]['symbol']
-    coin_smbol25 = df[1][25]['symbol']
-    coin_smbol26 = df[1][26]['symbol']
-    coin_smbol27 = df[1][27]['symbol']
-    coin_smbol28 = df[1][28]['symbol']
-    coin_smbol29 = df[1][29]['symbol']
-    coin_smbol30 = df[1][30]['symbol']
-    coin_smbol31 = df[1][31]['symbol']
-    coin_smbol32 = df[1][32]['symbol']
-    coin_smbol33 = df[1][33]['symbol']
-    coin_smbol34 = df[1][34]['symbol']
-    coin_smbol35 = df[1][35]['symbol']
-    coin_smbol36 = df[1][36]['symbol']
-    coin_smbol37 = df[1][37]['symbol']
-    coin_smbol38 = df[1][38]['symbol']
-    coin_smbol39 = df[1][39]['symbol']
-    coin_smbol40 = df[1][40]['symbol']
-    coin_smbol41 = df[1][41]['symbol']
-    coin_smbol42 = df[1][42]['symbol']
-    coin_smbol43 = df[1][43]['symbol']
-    coin_smbol44 = df[1][44]['symbol']
-    coin_smbol45 = df[1][45]['symbol']
-    coin_smbol46 = df[1][46]['symbol']
-    coin_smbol47 = df[1][47]['symbol']
-    coin_smbol48 = df[1][48]['symbol']
-    coin_smbol49 = df[1][49]['symbol']
-    coin_smbol50 = df[1][50]['symbol']
-    coin_smbol51 = df[1][51]['symbol']
-    coin_smbol52 = df[1][52]['symbol']
-    coin_smbol53 = df[1][53]['symbol']
-    coin_smbol54 = df[1][54]['symbol']
-    coin_smbol55 = df[1][55]['symbol']
-    coin_smbol56 = df[1][56]['symbol']
-    coin_smbol57 = df[1][57]['symbol']
-    coin_smbol58 = df[1][58]['symbol']
-    coin_smbol59 = df[1][59]['symbol']
-    coin_smbol60 = df[1][60]['symbol']
-    coin_smbol61 = df[1][61]['symbol']
-    coin_smbol62 = df[1][62]['symbol']
-    coin_smbol63 = df[1][63]['symbol']
-    coin_smbol64 = df[1][64]['symbol']
-    coin_smbol65 = df[1][65]['symbol']
-    coin_smbol66 = df[1][66]['symbol']
-    coin_smbol67 = df[1][67]['symbol']
-    coin_smbol68 = df[1][68]['symbol']
-    coin_smbol69 = df[1][69]['symbol']
-    coin_smbol70 = df[1][70]['symbol']
-    coin_smbol71 = df[1][71]['symbol']
-    coin_smbol72 = df[1][72]['symbol']
-    coin_smbol73 = df[1][73]['symbol']
-    coin_smbol74 = df[1][74]['symbol']
-    coin_smbol75 = df[1][75]['symbol']
-    coin_smbol76 = df[1][76]['symbol']
-    coin_smbol77 = df[1][77]['symbol']
-    coin_smbol78 = df[1][78]['symbol']
-    coin_smbol79 = df[1][79]['symbol']
-    coin_smbol80 = df[1][80]['symbol']
-    coin_smbol81 = df[1][81]['symbol']
-    coin_smbol82 = df[1][82]['symbol']
-    coin_smbol83 = df[1][83]['symbol']
-    coin_smbol84 = df[1][84]['symbol']
-    coin_smbol85 = df[1][85]['symbol']
-    coin_smbol86 = df[1][86]['symbol']
-    coin_smbol87 = df[1][87]['symbol']
-    coin_smbol88 = df[1][88]['symbol']
-    coin_smbol89 = df[1][89]['symbol']
-    coin_smbol90 = df[1][90]['symbol']
-    
-    
-
+    coin_smbol0 = df[1][0]["symbol"]
+    coin_smbol1 = df[1][1]["symbol"]
+    coin_smbol2 = df[1][2]["symbol"]
+    coin_smbol3 = df[1][3]["symbol"]
+    coin_smbol4 = df[1][4]["symbol"]
+    coin_smbol5 = df[1][5]["symbol"]
+    coin_smbol6 = df[1][6]["symbol"]
+    coin_smbol7 = df[1][7]["symbol"]
+    coin_smbol8 = df[1][8]["symbol"]
+    coin_smbol9 = df[1][9]["symbol"]
+    coin_smbol10 = df[1][10]["symbol"]
+    coin_smbol11 = df[1][11]["symbol"]
+    coin_smbol12 = df[1][12]["symbol"]
+    coin_smbol13 = df[1][13]["symbol"]
+    coin_smbol14 = df[1][14]["symbol"]
+    coin_smbol15 = df[1][15]["symbol"]
+    coin_smbol16 = df[1][16]["symbol"]
+    coin_smbol17 = df[1][17]["symbol"]
+    coin_smbol18 = df[1][18]["symbol"]
+    coin_smbol19 = df[1][19]["symbol"]
+    coin_smbol20 = df[1][20]["symbol"]
+    coin_smbol21 = df[1][21]["symbol"]
+    coin_smbol22 = df[1][22]["symbol"]
+    coin_smbol23 = df[1][23]["symbol"]
+    coin_smbol24 = df[1][24]["symbol"]
+    coin_smbol25 = df[1][25]["symbol"]
+    coin_smbol26 = df[1][26]["symbol"]
+    coin_smbol27 = df[1][27]["symbol"]
+    coin_smbol28 = df[1][28]["symbol"]
+    coin_smbol29 = df[1][29]["symbol"]
+    coin_smbol30 = df[1][30]["symbol"]
+    coin_smbol31 = df[1][31]["symbol"]
+    coin_smbol32 = df[1][32]["symbol"]
+    coin_smbol33 = df[1][33]["symbol"]
+    coin_smbol34 = df[1][34]["symbol"]
+    coin_smbol35 = df[1][35]["symbol"]
+    coin_smbol36 = df[1][36]["symbol"]
+    coin_smbol37 = df[1][37]["symbol"]
+    coin_smbol38 = df[1][38]["symbol"]
+    coin_smbol39 = df[1][39]["symbol"]
+    coin_smbol40 = df[1][40]["symbol"]
+    coin_smbol41 = df[1][41]["symbol"]
+    coin_smbol42 = df[1][42]["symbol"]
+    coin_smbol43 = df[1][43]["symbol"]
+    coin_smbol44 = df[1][44]["symbol"]
+    coin_smbol45 = df[1][45]["symbol"]
+    coin_smbol46 = df[1][46]["symbol"]
+    coin_smbol47 = df[1][47]["symbol"]
+    coin_smbol48 = df[1][48]["symbol"]
+    coin_smbol49 = df[1][49]["symbol"]
+    coin_smbol50 = df[1][50]["symbol"]
+    coin_smbol51 = df[1][51]["symbol"]
+    coin_smbol52 = df[1][52]["symbol"]
+    coin_smbol53 = df[1][53]["symbol"]
+    coin_smbol54 = df[1][54]["symbol"]
+    coin_smbol55 = df[1][55]["symbol"]
+    coin_smbol56 = df[1][56]["symbol"]
+    coin_smbol57 = df[1][57]["symbol"]
+    coin_smbol58 = df[1][58]["symbol"]
+    coin_smbol59 = df[1][59]["symbol"]
+    coin_smbol60 = df[1][60]["symbol"]
+    coin_smbol61 = df[1][61]["symbol"]
+    coin_smbol62 = df[1][62]["symbol"]
+    coin_smbol63 = df[1][63]["symbol"]
+    coin_smbol64 = df[1][64]["symbol"]
+    coin_smbol65 = df[1][65]["symbol"]
+    coin_smbol66 = df[1][66]["symbol"]
+    coin_smbol67 = df[1][67]["symbol"]
+    coin_smbol68 = df[1][68]["symbol"]
+    coin_smbol69 = df[1][69]["symbol"]
+    coin_smbol70 = df[1][70]["symbol"]
+    coin_smbol71 = df[1][71]["symbol"]
+    coin_smbol72 = df[1][72]["symbol"]
+    coin_smbol73 = df[1][73]["symbol"]
+    coin_smbol74 = df[1][74]["symbol"]
+    coin_smbol75 = df[1][75]["symbol"]
+    coin_smbol76 = df[1][76]["symbol"]
+    coin_smbol77 = df[1][77]["symbol"]
+    coin_smbol78 = df[1][78]["symbol"]
+    coin_smbol79 = df[1][79]["symbol"]
+    coin_smbol80 = df[1][80]["symbol"]
+    coin_smbol81 = df[1][81]["symbol"]
+    coin_smbol82 = df[1][82]["symbol"]
+    coin_smbol83 = df[1][83]["symbol"]
+    coin_smbol84 = df[1][84]["symbol"]
+    coin_smbol85 = df[1][85]["symbol"]
+    coin_smbol86 = df[1][86]["symbol"]
+    coin_smbol87 = df[1][87]["symbol"]
+    coin_smbol88 = df[1][88]["symbol"]
+    coin_smbol89 = df[1][89]["symbol"]
+    coin_smbol90 = df[1][90]["symbol"]
 
 
 """
 class web_hook(BaseModel):
     web_url: str = Field( None)
 """
+
 
 class Tx_user(BaseModel):
     account_from: int = Body(None)
@@ -327,5 +319,4 @@ class Tx_user(BaseModel):
     private_key: int = Body(None)
 
 
-
-#print(Coin_symbol)
+# print(Coin_symbol)

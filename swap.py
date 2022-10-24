@@ -1,13 +1,14 @@
-from stellar_sdk.exceptions import NotFoundError, BadResponseError, BadRequestError
-from stellar_sdk import Asset, Keypair, Network, Server, TransactionBuilder
-from fastapi import FastAPI, WebSocket, BackgroundTasks, APIRouter, Depends, status, HTTPException, Form
-import json
-from web3 import Web3
-from time import sleep
 import requests
 from bs4 import BeautifulSoup as BS
+from fastapi import (APIRouter, BackgroundTasks, Depends, FastAPI, Form,
+                     HTTPException, WebSocket, status)
 from requests.adapters import HTTPAdapter
-#from requests.packages.urllib3.util.retry import Retry
+from stellar_sdk import Asset, Keypair, Network, Server, TransactionBuilder
+from stellar_sdk.exceptions import (BadRequestError, BadResponseError,
+                                    NotFoundError)
+from web3 import Web3
+
+# from requests.packages.urllib3.util.retry import Retry
 # w3 = Web3(Web3.HTTPProvider('https://rpc.exlscan.com/'))
 
 
@@ -24,20 +25,20 @@ from requests.adapters import HTTPAdapter
 
 # print(Afcash.functions.name().call())
 
-'''alice = input('addr to reciver: ')#'0x9875adb3f2ab35cb2328c9974292e5711eced73b' 0xB1E6c654Cd79265865b07611CAB04E80d245e92e
+"""alice = input('addr to reciver: ')#'0x9875adb3f2ab35cb2328c9974292e5711eced73b' 0xB1E6c654Cd79265865b07611CAB04E80d245e92e
 Address = w3.toChecksumAddress(alice)
 bals = Afcash.functions.balanceOf(Address).call()
 #bals2 = w3.eth.get_balance(Address)
 bals_ = w3.fromWei(bals, 'ether'),
 #print(bals2)
-print(bals_)'''
+print(bals_)"""
 
 
-'''acct_from = input("acct_from: ")
+"""acct_from = input("acct_from: ")
 value_to_send = input("value: ")
 my_private_key = input("private_key: ")
 tx_hash = Afcash.functions.transferFrom(acct_from, alice, value_to_send).call()
-'''
+"""
 
 # 2. Sign a transaction
 
@@ -45,7 +46,7 @@ tx_hash = Afcash.functions.transferFrom(acct_from, alice, value_to_send).call()
 # working with Contract, you need :
 # Contract Address
 # Contarct ABI
-#AfcashSwap = w3.eth.contract(address=tx_receipt.contractAddress, abi = abi)
+# AfcashSwap = w3.eth.contract(address=tx_receipt.contractAddress, abi = abi)
 
 # Intitial value of favorite number
 
@@ -118,12 +119,14 @@ print(account.privateKey.hex())
 """
 
 
-
 from stellar_sdk import Asset, Keypair, Network, Server, TransactionBuilder
-from stellar_sdk.exceptions import NotFoundError, BadResponseError, BadRequestError
+from stellar_sdk.exceptions import (BadRequestError, BadResponseError,
+                                    NotFoundError)
 
 server = Server(horizon_url="https://horizon-testnet.stellar.org")
-source_key = Keypair.from_secret("8efaf003942ea6d0abacf5113a8d8c014d72942c62da1bff2a42662b70220d41")
+source_key = Keypair.from_secret(
+    "8efaf003942ea6d0abacf5113a8d8c014d72942c62da1bff2a42662b70220d41"
+)
 destination_id = "GAHK7EEG2WWHVKDNT4CEQFZGKF2LGDSW2IVM4S5DP42RBW3K6BTODB4A"
 
 # First, check to make sure that the destination account exists.
@@ -134,13 +137,13 @@ try:
 except NotFoundError:
     # If the account is not found, surface an error message for logging.
     raise Exception("The destination account does not exist!")
-print('geting public_key')
+print("geting public_key")
 # If there was no error, load up-to-date information on your account.
 source_account = server.load_account(source_key.public_key)
 
 # Let's fetch base_fee from network
 base_fee = server.fetch_base_fee()
-print('Start building the transaction')
+print("Start building the transaction")
 # Start building the transaction.
 transaction = (
     TransactionBuilder(
@@ -155,10 +158,9 @@ transaction = (
     # optional and does not affect how Stellar treats the transaction.
     .add_text_memo("Test Transaction")
     # Wait a maximum of three minutes for the transaction
-    .set_timeout(10)
-    .build()
+    .set_timeout(10).build()
 )
-print('Sign the transaction to prove you are actually the person sending it.')
+print("Sign the transaction to prove you are actually the person sending it.")
 # Sign the transaction to prove you are actually the person sending it.
 transaction.sign(source_key)
 

@@ -1,8 +1,9 @@
+import hashlib
 import hmac
 import time
-import hashlib
-import requests
 from urllib.parse import urlencode
+
+import requests
 
 """ This is a very simple script working on Binance API
 - work with USER_DATA endpoint with no third party dependency

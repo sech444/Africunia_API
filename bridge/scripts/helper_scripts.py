@@ -1,5 +1,4 @@
-from brownie import accounts, config ,network
-
+from brownie import accounts, config, network
 
 
 def get_account():
@@ -7,4 +6,4 @@ def get_account():
         return accounts[0]
     else:
         return accounts.add(config["wallets"]["from_key"])
-        #return accounts.load('Excoincial_Chain_Testnet')
+        # return accounts.load('Excoincial_Chain_Testnet')
