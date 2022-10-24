@@ -201,7 +201,7 @@ async def get_network(Network: BNB_network, account_from: str = Form(...), value
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient usdt_bep20 Funds")
         
-    print("sending890 .....................................")
+    #print("sending890 .....................................")
     nonce = bsc_w3.eth.get_transaction_count(account_1)
     value_to = bsc_w3.toWei(value, 'ether')
     try:

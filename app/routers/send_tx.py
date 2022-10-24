@@ -1143,7 +1143,7 @@ def dash_bals(response: Response, token: str = Depends(token_auth_scheme), user_
 
 
 @router.post("/api/v1/exl20_tarnfar", tags=["Transaction"])
-def exl20_afcash(response: Response, token: str = Depends(token_auth_scheme), account_to: str = Form(...), value_to_send: float = Form(...), PRIVATE_KEY=Form(...)):
+def exl20_afcash(response: Response, token: str = Depends(token_auth_scheme), account_to: str = Form(...), value_to_send: float = Form(...), Private_key=Form(...)):
     """A valid access token is required to access this route"""
 
     # result = VerifyToken(token.credentials).verify()  # 👈 updated code
@@ -1154,43 +1154,58 @@ def exl20_afcash(response: Response, token: str = Depends(token_auth_scheme), ac
     #     return result
 
     exl_url = "https://rpc.exlscan.com/"
-    bsc_w3 = Web3(Web3.HTTPProvider(exl_url))
+    bscw3 = Web3(Web3.HTTPProvider(exl_url))
     account_1 = address_key
     account_2 = account_to
     value = value_to_send
-    adr_verify = bsc_w3.isChecksumAddress(address_key)
+    
+    if len(Private_key) == 44:
+        fernet_obj = Fernet(Private_key)
+
+        encrypted_message = b'gAAAAABjPCtaMK7U68jNGPBNKJ8ml5VND9BH3lpofqBGHiwGQWvCE4YNLzG4Mwz2X_KXY_TXZyZ0xZ5T1jFxpsrfTNNH5zinfioYmg-9LVbVt4gmFecuMVtblUtsGsb_nxABE-6RIHP7OL-hbdW9lReGlcINnHls163U536OREM55MMUMMShlMw='
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        #decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = Private_key
+    #if len(decrypted_message) == 66:
+    priv_key = key
+    
+    adr_verify = bscw3.isChecksumAddress(address_key)
     if not adr_verify:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Invaild exl20 wallet")
 
-    if not bsc_w3.isChecksumAddress(account_2):
+    if not bscw3.isChecksumAddress(account_2):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Not a valid exl20 wallet check the wallet and try again")
     #print("building .....tx...2")
     value_2 = int(float(value))
     #print("building .....tx...3", value_2)
-    trans = bsc_w3.eth.get_balance(account_1)
-    _bal2_ = bsc_w3.fromWei(trans, 'ether')
+    trans = bscw3.eth.get_balance(account_1)
+    _bal2_ = bscw3.fromWei(trans, 'ether')
 
     if float(value) >= _bal2_:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Insufficient exl20 Funds")
+    
+    nonce = bscw3.eth.getTransactionCount(account_1, 'pending')
+    nonce + 1    
+    
     try:
-        private_key = PRIVATE_KEY
-        nonce = bsc_w3.eth.getTransactionCount(account_1)
         tx = {
             'nonce': nonce,
             'to': account_2,
-            'value': bsc_w3.toWei(value, 'ether'),
+            'value': bscw3.toWei(value, 'ether'),
             'gas': 200000,
             'chainId': 27082022,
-            'gasPrice': bsc_w3.toWei('1', 'gwei'),
+            'gasPrice': bscw3.toWei('1', 'gwei'),
         }
-        signed_tx = bsc_w3.eth.account.signTransaction(tx, private_key)
-        tx_hash = bsc_w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-        new_data = bsc_w3.toHex(tx_hash)
-        receipt_ = bsc_w3.eth.get_transaction(tx_hash)
-        return {"New_transaction": bsc_w3.toJSON(receipt_)}
-    except:
+        signed_tx = bscw3.eth.account.signTransaction(tx, priv_key)
+        tx_hash = bscw3.eth.send_raw_transaction(signed_tx.rawTransaction)
+        receipt_ = bscw3.eth.get_transaction(tx_hash)
+        return {"New_transaction": bscw3.toJSON(receipt_)}
+    except ValueError as e:
+        print(e)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Transaction error, most have exl20 for gas fee")
