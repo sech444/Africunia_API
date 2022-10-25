@@ -763,18 +763,13 @@ listData = [
         "coin_logo": "assets/img/btc.png",
     },
     {
-        "coin": "BUSD ERC20",
-        "name": "Binance USD",
-        "rate": priceFloat12,
-        "coin_logo": "assets\\/img\\/busd.png",
-    },
-    {
         "coin": "BUSD Polygon",
         "name": "Binance USD",
         "rate": priceFloat12,
         "coin_logo": "assets\\/img\\/busd.png",
     },
 ]
+
 
 
 def exl_afcash():

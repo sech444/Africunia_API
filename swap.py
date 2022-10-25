@@ -119,7 +119,7 @@ print(account.privateKey.hex())
 """
 
 
-from stellar_sdk import Asset, Keypair, Network, Server, TransactionBuilder
+"""from stellar_sdk import Asset, Keypair, Network, Server, TransactionBuilder
 from stellar_sdk.exceptions import (BadRequestError, BadResponseError,
                                     NotFoundError)
 
@@ -170,3 +170,22 @@ try:
     print(f"Response: {response}")
 except (BadRequestError, BadResponseError) as err:
     print(f"Something went wrong!\n{err}")
+"""
+
+
+# web3 library that contains functions to generate Ethereum accounts and sign transactions and data
+#Importing Account from the eth_account module of Web3.py
+from eth_account import Account
+# python module used for generating random numbers
+import secrets
+
+#Generating a random hexadecimal string of 32 bytes / 64 characters and storing it in priv variable
+priv = secrets.token_hex(32)
+
+#Attaching 0x prefix to our 64 character hexadecimal string stored in priv and storing the new string in variable private_key
+private_key = "0x" + priv
+print("SAVE BUT DO NOT SHARE:", private_key)
+
+#Creating a new account using the private_key and storing it in variable acct
+acct = Account.from_key(private_key)
+print("Address:", acct.address)
