@@ -373,7 +373,7 @@ async def get_network(
 async def get_swap(
     swap_tokenA: Coin_symbol,
     swap_tokenB: Coin_symbol,
-    account_to_swap: float = Form(...),
+    amount_to_swap: float = Form(...),
     account_from: str = Form(...),
     account_to: str = Form(...),
     private_key: str = Form(...),
@@ -460,7 +460,7 @@ async def get_swap(
         asyncio.sleep(10)
 
         pswap_contract = web3.eth.contract(address=pswap_router_address, abi=pswap_abi)
-        amountIn = account_to_swap  # (web3.toWei(0.00001, 'ether'))
+        amountIn = amount_to_swap  # (web3.toWei(0.00001, 'ether'))
         amount1 = pswap_contract.functions.getAmountsOut(
             amountIn, [input_address, output_address]
         ).call()

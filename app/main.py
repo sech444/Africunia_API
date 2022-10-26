@@ -3,8 +3,8 @@ from fastapi import (APIRouter, BackgroundTasks, Depends, FastAPI, Form,
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer
 
-from app.routers import (Oracle_feeds, coin_prices, coin_wallets, send_tx,
-                         smart_swap, swap, web_hook)
+from app.routers import Oracle_feeds, coin_prices, coin_wallets, send_tx, smart_swap, swap, web_hook
+                         
 
 from . import models
 
