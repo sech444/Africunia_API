@@ -1,5 +1,5 @@
 
-    ## Part of iq.opengenus.org
+## Part of iq.opengenus.org
 import codecs
 import ecdsa
 import secrets
