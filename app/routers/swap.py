@@ -9,7 +9,7 @@ from fastapi import (APIRouter, BackgroundTasks, Depends, FastAPI, Form,
 #from pythonpancakes import PancakeSwapAPI
 from web3 import EthereumTesterProvider, HTTPProvider, Web3
 
-from app.schemas import BNB_network, Coin_symbol, USDT_network
+from app.schemas import BNB_network, USDT_network
 
 #ps = PancakeSwapAPI()
 import asyncio
