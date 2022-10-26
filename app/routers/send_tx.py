@@ -395,7 +395,7 @@ def usdt_transaction(
             detail=f"Insufficient usdt_bep20 Funds",
         )
 
-    # print("sending890 .....................................")
+
     value_to = bsc_w3.toWei(value, "ether")
     try:
         input_balance = usdt_bep.functions.transfer(
