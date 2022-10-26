@@ -29,7 +29,7 @@ with open("./networks_id.json", "r") as net_file:
 
 #df1 = pd.DataFrame(data_n).astype(str)
 Df1 = pd.read_json(data_n)
-
+Print (Df1)
 
 class BNB_network(str, Enum):
     Binance_Smart_Chain = "Binance SmartChain bep20 "
