@@ -23,12 +23,12 @@ afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
 
 
 # networks list
-#with open("./networks_id.json", "r") as net_file:
- #   data_n = net_file.read()
+with open("./networks_id.json", "r") as net_file:
+    data_n = net_file.read()
     # print(net_file.read())
 
 # df1 = pd.DataFrame(data_n).astype(str)
-#Df1 = pd.read_json(data_n)
+Df1 = pd.read_json(data_n)
 
 
 class BNB_network(str, Enum):
