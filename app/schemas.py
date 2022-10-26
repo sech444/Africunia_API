@@ -27,7 +27,7 @@ with open("./networks_id.json", "r") as net_file:
     data_n = net_file.read()
     # print(net_file.read())
 
-# df1 = pd.DataFrame(data_n).astype(str)
+df1 = pd.DataFrame(data_n).astype(str)
 Df1 = pd.read_json(data_n)
 
 
