@@ -18,8 +18,8 @@ afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
 #syncio.sleep(tokens)
 #print(tokens)
 # print(f"started at {time.strftime('%X')}")
-data = tokens["data"]
-data2 = json.dumps(data)
+#data = tokens["data"]
+#data2 = json.dumps(data)
 
 
 # networks list
