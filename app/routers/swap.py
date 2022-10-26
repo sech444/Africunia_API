@@ -368,7 +368,7 @@ async def get_network(
             detail=f"Transaction error, most have BNB for gas fee",
         )
 
-
+"""
 @router.post("/api/v1/get_swap", tags=["Transaction"])
 async def get_swap(
     swap_tokenA: Coin_symbol,
@@ -499,3 +499,4 @@ async def get_swap(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Transaction error, most have BNB for gas fee",
         )
+"""
