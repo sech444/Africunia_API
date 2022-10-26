@@ -380,7 +380,7 @@ async def get_swap(
 ):
     TokenA = swap_tokenA.value
     TokenB = swap_tokenB.value
-    accountToswap = account_to_swap
+    accountToswap = amount_to_swap
     my_address = account_from
     privatekey = private_key
     myDict = Compiled_code
