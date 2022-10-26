@@ -11,7 +11,7 @@ from web3 import EthereumTesterProvider, HTTPProvider, Web3
 
 from app.schemas import BNB_network, Coin_addr, Coin_symbol, USDT_network
 
-ps = PancakeSwapAPI()
+#ps = PancakeSwapAPI()
 import asyncio
 
 from cryptography.fernet import Fernet
@@ -33,7 +33,7 @@ with open("./networks_id.json", "r") as net_file:
     # print(net_file.read())
 
 # df1 = pd.DataFrame(data_n).astype(str)
-Df1 = pd.read_json(data_n)
+#Df1 = pd.read_json(data_n)
 # print(Df1["USDT"])
 
 
@@ -368,7 +368,7 @@ async def get_network(
             detail=f"Transaction error, most have BNB for gas fee",
         )
 
-
+"""
 @router.post("/api/v1/get_swap", tags=["Transaction"])
 async def get_swap(
     swap_tokenA: Coin_symbol,
@@ -500,3 +500,4 @@ async def get_swap(
             detail=f"Transaction error, most have BNB for gas fee",
         )
 
+"""
