@@ -18,13 +18,13 @@ afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
 # asyncio.sleep(tokens)
 # print(tokens)
 # print(f"started at {time.strftime('%X')}")
-data = tokens["data"]
-data2 = json.dumps(data)
+#data = tokens["data"]
+#data2 = json.dumps(data)
 
 
 # networks list
-with open("./networks_id.json", "r") as net_file:
-    data_n = net_file.read()
+#with open("./networks_id.json", "r") as net_file:
+ #   data_n = net_file.read()
     # print(net_file.read())
 
 # df1 = pd.DataFrame(data_n).astype(str)
