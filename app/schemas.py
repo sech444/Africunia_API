@@ -4,22 +4,22 @@ from enum import Enum
 import pandas as pd
 from fastapi.params import Body
 from pydantic import BaseModel, Field
-from pythonpancakes import PancakeSwapAPI
+#from pythonpancakes import PancakeSwapAPI
 
-ps = PancakeSwapAPI()
+#ps = PancakeSwapAPI()
 from web3 import Web3
 
-ps = PancakeSwapAPI()
+#ps = PancakeSwapAPI()
 
 # Afcash at Binance_Smart_Chain
 afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
 # print(f"started at {time.strftime('%X')}")
-tokens = ps.tokens()
+#tokens = ps.tokens()
 # asyncio.sleep(tokens)
 # print(tokens)
 # print(f"started at {time.strftime('%X')}")
-data = tokens["data"]
-data2 = json.dumps(data)
+#data = tokens["data"]
+#data2 = json.dumps(data)
 
 
 # networks list
@@ -27,9 +27,9 @@ with open("./networks_id.json", "r") as net_file:
     data_n = net_file.read()
     # print(net_file.read())
 
-# df1 = pd.DataFrame(data_n).astype(str)
+#df1 = pd.DataFrame(data_n).astype(str)
 Df1 = pd.read_json(data_n)
-
+print (Df1)
 
 class BNB_network(str, Enum):
     Binance_Smart_Chain = "Binance SmartChain bep20 "
@@ -113,7 +113,7 @@ with open("./compiled_code.json") as data_file:
     data = json.load(data_file)
     data_file.close()
 
-
+"""
 df = pd.DataFrame(list(data.items()))
 # print(df[0][2])
 class Coin_addr(str, Enum):
@@ -306,7 +306,7 @@ class Coin_symbol(str, Enum):
     coin_smbol90 = df[1][90]["symbol"]
 
 
-"""
+
 class web_hook(BaseModel):
     web_url: str = Field( None)
 """

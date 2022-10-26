@@ -6,12 +6,12 @@ import pandas as pd
 import requests
 from fastapi import (APIRouter, BackgroundTasks, Depends, FastAPI, Form,
                      HTTPException, WebSocket, status)
-from pythonpancakes import PancakeSwapAPI
+#from pythonpancakes import PancakeSwapAPI
 from web3 import EthereumTesterProvider, HTTPProvider, Web3
 
 from app.schemas import BNB_network, Coin_addr, Coin_symbol, USDT_network
 
-ps = PancakeSwapAPI()
+#ps = PancakeSwapAPI()
 import asyncio
 
 from cryptography.fernet import Fernet
@@ -368,7 +368,7 @@ async def get_network(
             detail=f"Transaction error, most have BNB for gas fee",
         )
 
-
+"""
 @router.post("/api/v1/get_swap", tags=["Transaction"])
 async def get_swap(
     swap_tokenA: Coin_symbol,
@@ -499,3 +499,4 @@ async def get_swap(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Transaction error, most have BNB for gas fee",
         )
+"""
