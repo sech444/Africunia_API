@@ -82,8 +82,20 @@ async def get_network(
         # print(result)
         # return bsc
     bsc_w3 = eval(bsc)
-    # print(bsc_w3)
+    print(bsc_w3)
 
+    if len(private_key) == 44:
+        fernet_obj = Fernet(private_key)
+
+        encrypted_message = b"gAAAAABjFWoA9dLKDJ-eJHzveb56ka-3X-vJynPR7l1jXPTsC-CKp0Pslpx-S0_qrtLFDUKmDt3Bsf3T-w_UMXXJUDAv6hA5ZOoEJ3kjDiryL05e3bDOAlpF_aMfzYk3jPyZU1ycaIlw2vs0JCuYkW_aBNi87U5HhWOuymXIRcr2NGiUHA9HDQw="
+        decrypted_message = fernet_obj.decrypt(encrypted_message).decode("utf-8")
+        # decrypted_message = bytes(decrypted_mess, 'utf-8')
+        key = decrypted_message
+    else:
+        key = private_key
+    # if len(decrypted_message) == 66:
+    priv_key = key
+    print(priv_key)
     # print(bsc_w3.isConnected())
     account_1 = account_from
     account_2 = account_to
@@ -110,8 +122,6 @@ async def get_network(
         )
     # print("sending567 ...................................................11")
     try:
-        private_key = private_key
-        priv_key = private_key
         nonce = bsc_w3.eth.getTransactionCount(account_1)
 
         tx = {
@@ -173,7 +183,7 @@ async def get_network(
         # print(result)
         # return bsc
     bsc_w3 = eval(bsc)
-    # print(bsc_w3)
+    print(bsc_w3)
 
     # print(bsc_w3.isConnected())
     # print(bsc_w3.isConnected())
@@ -192,7 +202,7 @@ async def get_network(
         key = private_key
     # if len(decrypted_message) == 66:
     priv_key = key
-
+    print(priv_key)
     contract_addr = bsc_w3.toChecksumAddress(
         "0x55d398326f99059fF775485246999027B3197955"
     )
@@ -244,7 +254,7 @@ async def get_network(
             input_balance, private_key=priv_key
         )
         tx = bsc_w3.eth.send_raw_transaction(signed.rawTransaction)
-
+        print(bsc_w3.toHex(tx))
         return {"hash_tx": bsc_w3.toHex(tx)}
     except ValueError as e:
         print(e)
@@ -359,7 +369,7 @@ async def get_network(
             input_balance, private_key=priv_key
         )
         tx = bsc_w3.eth.send_raw_transaction(signed.rawTransaction)
-
+        
         return {"hash_tx": bsc_w3.toHex(tx)}
     except ValueError as e:
         print(e)

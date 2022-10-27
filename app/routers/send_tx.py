@@ -556,7 +556,7 @@ def usdt_transaction(
         signed = w3.eth.account.sign_transaction(input_balance, private_key=priv_key)
         tx = w3.eth.send_raw_transaction(signed.rawTransaction)
         # print(f"Swap tx: {web3.toHex(tx)}")
-        return {"Swap tx": w3.toHex(tx)}
+        return {"tx hash": w3.toHex(tx)}
     except ValueError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
