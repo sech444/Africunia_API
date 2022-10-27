@@ -9,9 +9,9 @@ from fastapi import (APIRouter, BackgroundTasks, Depends, FastAPI, Form,
 from pythonpancakes import PancakeSwapAPI
 from web3 import EthereumTesterProvider, HTTPProvider, Web3
 
-from app.schemas import BNB_network, Coin_addr, Coin_symbol, USDT_network
+from app.schemas import BNB_network, USDT_network
 
-ps = PancakeSwapAPI()
+#ps = PancakeSwapAPI()Coin_addr, Coin_symbol,
 import asyncio
 
 from cryptography.fernet import Fernet
@@ -95,7 +95,7 @@ async def get_network(
         key = private_key
     # if len(decrypted_message) == 66:
     priv_key = key
-    print(priv_key)
+    
     # print(bsc_w3.isConnected())
     account_1 = account_from
     account_2 = account_to
@@ -160,7 +160,7 @@ async def get_network(
         usdt_erc20 = file.read()
 
     TokenA = Network.value
-    print(len(TokenA))
+    #print(len(TokenA))
     if len(TokenA) == 25:
         bsc = Df1["BNB"]["Binance Smart Chain"]
         # result = ast.literal_eval(bsc)
@@ -183,7 +183,7 @@ async def get_network(
         # print(result)
         # return bsc
     bsc_w3 = eval(bsc)
-    print(bsc_w3)
+    #print(bsc_w3)
 
     # print(bsc_w3.isConnected())
     # print(bsc_w3.isConnected())
@@ -202,7 +202,7 @@ async def get_network(
         key = private_key
     # if len(decrypted_message) == 66:
     priv_key = key
-    print(priv_key)
+    #print(priv_key)
     contract_addr = bsc_w3.toChecksumAddress(
         "0x55d398326f99059fF775485246999027B3197955"
     )
@@ -254,7 +254,7 @@ async def get_network(
             input_balance, private_key=priv_key
         )
         tx = bsc_w3.eth.send_raw_transaction(signed.rawTransaction)
-        print(bsc_w3.toHex(tx))
+        #print(bsc_w3.toHex(tx))
         return {"hash_tx": bsc_w3.toHex(tx)}
     except ValueError as e:
         print(e)
@@ -379,7 +379,7 @@ async def get_network(
         )
 
 
-@router.post("/api/v1/get_swap", tags=["Transaction"])
+"""@router.post("/api/v1/get_swap", tags=["Transaction"])
 async def get_swap(
     swap_tokenA: Coin_symbol,
     swap_tokenB: Coin_symbol,
@@ -509,4 +509,4 @@ async def get_swap(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Transaction error, most have BNB for gas fee",
         )
-
+"""
