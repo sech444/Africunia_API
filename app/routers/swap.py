@@ -9,9 +9,9 @@ from fastapi import (APIRouter, BackgroundTasks, Depends, FastAPI, Form,
 from pythonpancakes import PancakeSwapAPI
 from web3 import EthereumTesterProvider, HTTPProvider, Web3
 
-from app.schemas import BNB_network, USDT_network
+from app.schemas import BNB_network, USDT_network , Coin_addr, Coin_symbol
 
-#ps = PancakeSwapAPI()Coin_addr, Coin_symbol,
+ps = PancakeSwapAPI()
 import asyncio
 
 from cryptography.fernet import Fernet
@@ -379,7 +379,7 @@ async def get_network(
         )
 
 
-"""@router.post("/api/v1/get_swap", tags=["Transaction"])
+@router.post("/api/v1/get_swap", tags=["Transaction"])
 async def get_swap(
     swap_tokenA: Coin_symbol,
     swap_tokenB: Coin_symbol,
@@ -442,7 +442,7 @@ async def get_swap(
         )
         input_contract.functions.balanceOf(my_address).call()
 
-        input_quantity_wei = accountToswap
+        input_quantity_wei = amount_to_swap
         out_2 = Web3.toWei(input_quantity_wei, "ether")
         [input_address, output_address]
         # out = input_contract.functions.getAmountOut(input_quantity_wei, swap_path).call()
@@ -451,11 +451,11 @@ async def get_swap(
         bnb_balance = web3.eth.get_balance(my_address)
         human_bnb_balance = web3.fromWei(bnb_balance, "ether")
         print(f"BNB balance: {human_bnb_balance}")
-        # print('Approve ')
+        print('Approve ')
         # Approve input token spend first by PancakeSwap V2 Router
         approve = input_contract.functions.approve(
             pswap_router_address,
-            web3.toWei(Decimal(out_2), "ether"),  # 100000
+            web3.toWei(Decimal(out_2), "ether")  
         ).buildTransaction(
             {
                 "from": my_address,
@@ -466,20 +466,20 @@ async def get_swap(
 
         signed = web3.eth.account.sign_transaction(approve, private_key=privatekey)
         tx = web3.eth.send_raw_transaction(signed.rawTransaction)
-        # print(f"Approve tx: {web3.toHex(tx)}. Waiting 10s for approval")
-        asyncio.sleep(10)
+        print(f"Approve tx: {web3.toHex(tx)}. Waiting 10s for approval")
+        await asyncio.sleep(10)
 
         pswap_contract = web3.eth.contract(address=pswap_router_address, abi=pswap_abi)
-        amountIn = amount_to_swap  # (web3.toWei(0.00001, 'ether'))
+        amountIn = out_2  # (web3.toWei(0.00001, 'ether'))
         amount1 = pswap_contract.functions.getAmountsOut(
             amountIn, [input_address, output_address]
         ).call()
         amountOutMin = amount1[1] * 0.9
         web3.fromWei(amountOutMin, "ether")
-        # print('Minimum recieved:', minAmountPrint)
-        asyncio.sleep(5)
+        print('Minimum recieved:', amountOutMin)
+        await asyncio.sleep(5)
 
-        swap_amount = accountToswap
+        swap_amount = out_2
         # print(f"Swapping {swap_amount} INPUT to OUTPUT")
 
         pswap_txn = pswap_contract.functions.swapExactTokensForTokens(
@@ -504,9 +504,9 @@ async def get_swap(
         tx = web3.eth.send_raw_transaction(signed.rawTransaction)
         # print(f"Swap tx: {web3.toHex(tx)}")
         return {"Swap tx": web3.toHex(tx)}
-    except ValueError:
+    except ValueError as e:
+        print(e)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Transaction error, most have BNB for gas fee",
         )
-"""

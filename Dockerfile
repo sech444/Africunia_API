@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:3.9.2
+FROM python:3.9.15
 
 # set work directory
 WORKDIR /usr/Africunia_API/
@@ -9,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # copy requirements file
-COPY ./requirements.txt /usr/Africunia_API/requirements.txt
+COPY ./requirements.txt /usr/new_app/requirements.txt
 
 # install dependencies
 #RUN set -eux \
@@ -22,11 +22,11 @@ COPY ./requirements.txt /usr/Africunia_API/requirements.txt
 RUN apt-get update -y \
     && apt-get install -y gcc libpq-dev \
     && /usr/local/bin/python -m pip install --upgrade pip \
-    && pip3 install -r /usr/Africunia_API/requirements.txt --no-cache-dir
+    && pip3 install -r /usr/new_app/requirements.txt --no-cache-dir
 
 
 # copy project
 COPY . /usr/Africunia_API/
 
 
-CMD ["uvicorn", "app.main:app", "--workers 4", "--host 0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--workers 4", "--host 0.0.0.0", "--port", "80"]

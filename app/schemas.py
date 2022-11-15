@@ -4,12 +4,12 @@ from enum import Enum
 import pandas as pd
 from fastapi.params import Body
 from pydantic import BaseModel, Field
-#from pythonpancakes import PancakeSwapAPI
+from pythonpancakes import PancakeSwapAPI
 
 #ps = PancakeSwapAPI()
 from web3 import Web3
 
-#ps = PancakeSwapAPI()
+ps = PancakeSwapAPI()
 
 # Afcash at Binance_Smart_Chain
 afcash = "0x8ba1940D299d3fd2d64DEB9BA8c552940A8C5d3b"
@@ -112,7 +112,7 @@ class Ltc_network(str, Enum):
 with open("./compiled_code.json") as data_file:
     data = json.load(data_file)
     data_file.close()
-"""
+
 df = pd.DataFrame(list(data.items()))
 # print(df[0][2])
 class Coin_addr(str, Enum):
@@ -303,7 +303,7 @@ class Coin_symbol(str, Enum):
     coin_smbol88 = df[1][88]["symbol"]
     coin_smbol89 = df[1][89]["symbol"]
     coin_smbol90 = df[1][90]["symbol"]
-
+"""
 
 class web_hook(BaseModel):
     web_url: str = Field( None)

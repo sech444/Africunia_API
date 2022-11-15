@@ -5,8 +5,8 @@ services:
   api:
     build: ./
     restart: always
-    command: uvicorn app.main:app --workers 4 --host 0.0.0.0 --port 8000
+    command: uvicorn app.main:app --workers 4 --host 0.0.0.0 --port 80 --reload
     volumes:
-      - .:/usr/src/app
+      - ./:/usr/src/app:ro
     ports:
-      - 80:8000
+      - 80:80 
