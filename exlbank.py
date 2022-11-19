@@ -1,5 +1,4 @@
 """A stateful event scanner for Ethereum-based blockchains using Web3.py.
-
 With the stateful mechanism, you can do one batch scan or incremental scans,
 where events are added wherever the scanner left off.
 """

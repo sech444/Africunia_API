@@ -1,7 +1,20 @@
-{
-    "wallet_details": [
-        "0x561748A6B1D8b328788dc49C03e0605cc2030953",
-        "0x561748A6B1D8b328788dc49C03e0605cc2030953",
-        "0x7BB746ec9f3E8BBb075750601b7a04b01A55b8E5"
+[
+    [
+        "0x7BB746ec9f3E8BBb075750601b7a04b01A55b8E5",
+        {
+            "webhook_url": "https://webhook.site/efb3f8eb-10c8-4e3b-aa11-05f6f44b6c56"
+        }
+    ],
+    [
+        "0x7BB746ec9f3E8BBb075750601b7a04b01A55b8E5",
+        {
+            "webhook_url": "https://webhook.site/efb3f8eb-10c8-4e3b-aa11-05f6f44b6c56"
+        }
+    ],
+    [
+        "0xB1E6c654Cd79265865b07611CAB04E80d245e92e",
+        {
+            "webhook_url": "https://webhook.site/efb3f8eb-10c8-4e3b-aa11-05f6f44b6c56"
+        }
     ]
-}
+]

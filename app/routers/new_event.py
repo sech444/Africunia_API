@@ -39,7 +39,7 @@ def write_json(new_data, filename='./wallet_id.json'):
         # First we load existing data into a dict.
         file_data = json.load(file)
         # Join new_data with file_data inside emp_details
-        file_data["wallet_details"].append(new_data)
+        file_data.append(new_data)
         # Sets file's current position at offset.
         file.seek(0)
         # convert back to json.
@@ -47,10 +47,10 @@ def write_json(new_data, filename='./wallet_id.json'):
 
 
 @router.post("/api/v1/reg_afcash_wallet")
-def register_wallet(wallet_id: str = Form(...)):
+def register_wallet(wallet_id: str = Form(...), webhook_url: str = Form(...)):
     try:
         # python object to be appended
-        y = wallet_id
+        y = (wallet_id, {"webhook_url": webhook_url })
         write_json(y)
         return {"wallet_id": 'register'}
     except ValueError as e:
@@ -63,7 +63,7 @@ def register_wallet(wallet_id: str = Form(...)):
 
 patients_df = pd.read_json('./wallet_id.json')
 by_t = patients_df.head()
-# print(by_t)
+print(by_t)
 # Loop along dictionary keys
 # printing keys and values
 
@@ -84,6 +84,7 @@ def handle_event(event):
     print(w3.eth.get_block("latest")["number"])
     for i in patients_df:
         value = patients_df[i]
+    print(value)
     temp = json.loads(w3.toJSON(event))
     print(temp)
     try:
