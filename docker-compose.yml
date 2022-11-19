@@ -10,12 +10,12 @@ services:
       - traefik.http.services.app.loadbalancer.server.port=80
       # Make Traefik use this domain in HTTP
       - traefik.http.routers.app-http.entrypoints=http
-      - traefik.http.routers.app-http.rule=Host(`fastapi-with-traefik.example.com`)
+      - traefik.http.routers.app-http.rule=Host(`api.africunia.com`)
       # Use the traefik-public network (declared below)
       - traefik.docker.network=traefik-public
       # Make Traefik use this domain in HTTPS
       - traefik.http.routers.app-https.entrypoints=https
-      - traefik.http.routers.app-https.rule=Host(`fastapi-with-traefik.example.com`)
+      - traefik.http.routers.app-https.rule=Host(`api.africunia.com`)
       - traefik.http.routers.app-https.tls=true
       # Use the "le" (Let's Encrypt) resolver
       - traefik.http.routers.app-https.tls.certresolver=le
@@ -42,12 +42,12 @@ services:
       - traefik.http.services.streamlit.loadbalancer.server.port=80
       # Make Traefik use this domain in HTTP
       - traefik.http.routers.streamlit-http.entrypoints=http
-      - traefik.http.routers.streamlit-http.rule=Host(`streamlit.fastapi-with-traefik.example.com`)
+      - traefik.http.routers.streamlit-http.rule=Host(`streamlit.api.africunia.com`)
       # Use the traefik-public network (declared below)
       - traefik.docker.network=traefik-public
       # Make Traefik use this domain in HTTPS
       - traefik.http.routers.streamlit-https.entrypoints=https
-      - traefik.http.routers.streamlit-https.rule=Host(`streamlit.fastapi-with-traefik.example.com`)
+      - traefik.http.routers.streamlit-https.rule=Host(`streamlit.api.africunia.com`)
       - traefik.http.routers.streamlit-https.tls=true
       # Use the "le" (Let's Encrypt) resolver
       - traefik.http.routers.streamlit-https.tls.certresolver=le
@@ -65,7 +65,7 @@ services:
       dockerfile: ./panel.dockerfile
     restart: always
     environment:
-      - BOKEH_ALLOW_WS_ORIGIN=localhost:8090,panel.fastapi-with-traefik.example.com
+      - BOKEH_ALLOW_WS_ORIGIN=localhost:8090,panel.api.africunia.com
 
     labels:
       # Enable Traefik for this specific "backend" service
@@ -74,7 +74,7 @@ services:
       - traefik.http.services.panel.loadbalancer.server.port=80
       # Make Traefik use this domain in HTTP
       - traefik.http.routers.panel-http.entrypoints=http
-      - traefik.http.routers.panel-http.rule=Host(`panel.fastapi-with-traefik.example.com`)
+      - traefik.http.routers.panel-http.rule=Host(`panel.api.africunia.com`)
       # Use the traefik-public network (declared below)
       - traefik.docker.network=traefik-public
       # Make Traefik use this domain in HTTPS

@@ -3,10 +3,9 @@ from fastapi import (APIRouter, BackgroundTasks, Depends, FastAPI, Form,
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer
 
-from app.routers import Oracle_feeds, coin_prices, coin_wallets, send_tx, smart_swap, swap, web_hook
-                         
-
+from app.routers import Oracle_feeds, coin_prices, coin_wallets, send_tx, smart_swap, swap, web_hook, new_event
 from . import models
+from . routers.new_event import main
 
 app = FastAPI(title="AFRICUNIABNAK API")
 
@@ -35,6 +34,7 @@ def coins(Coin_Price: models.Item):
     deprecated=True,
 )
 def coins(Coin_Price: models.Wallets):
+    
     return
 
 
@@ -60,3 +60,5 @@ app.include_router(web_hook.router)
 app.include_router(swap.router)
 app.include_router(smart_swap.router)
 app.include_router(Oracle_feeds.router)
+app.include_router(new_event.router)
+
