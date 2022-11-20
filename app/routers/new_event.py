@@ -50,6 +50,12 @@ def write_json(new_data, filename='./wallet_id.json'):
 def register_wallet(wallet_id: str = Form(...), webhook_url: str = Form(...)):
     try:
         # python object to be appended
+        adr_verify = w3.isAddress(wallet_id)
+        if not adr_verify:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"check the wallet and try again",
+            )
         y = (wallet_id, {"webhook_url": webhook_url })
         write_json(y)
         return {"wallet_id": 'register'}
@@ -57,13 +63,13 @@ def register_wallet(wallet_id: str = Form(...), webhook_url: str = Form(...)):
         print(e)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"faild to register",
+            detail=f"faild to register wallet"
         )
 
 
 patients_df = pd.read_json('./wallet_id.json')
 by_t = patients_df.head()
-print(by_t)
+#print(by_t)
 # Loop along dictionary keys
 # printing keys and values
 
@@ -81,22 +87,28 @@ def main():
     #return live
 
 def handle_event(event):
-    print(w3.eth.get_block("latest")["number"])
-    for i in patients_df:
-        value = patients_df[i]
-    print(value)
+    #print(w3.eth.get_block("latest")["number"])
+    for i in by_t:
+        value = by_t[i]
+    # print(value[0])
+    # print(by_t[1])
     temp = json.loads(w3.toJSON(event))
-    print(temp)
+    #print(temp)
     try:
-        if (value == temp["args"]["to"]).any():
-            print(temp["args"]["to"])
-            print(temp["args"]['value'] / 10**18)
+        if (by_t[0] == temp["args"]["to"]).any():
+            #print(temp["args"]["to"])
+            #print(temp["args"]['value'] / 10**18)
             to = temp["args"]["to"]
             value = temp["args"]['value'] / 10**18
             data = {'to': to, 'value': value}
-            webhook_url = "https://webhook.site/10aece72-e5a1-4073-a10a-4b91de6771fe"
-            r = requests.post(webhook_url, data=json.dumps(data))
-            #return r 
+        if (by_t[0] == temp["args"]["to"]).any():
+            url = by_t[1][1]
+            r = url["webhook_url"]
+            #print(type(r))
+            webhook_url = str(r) 
+            #print(webhook_url)  
+            requests.post(webhook_url, data=json.dumps(data))
+            #return r #"https://webhook.site/10aece72-e5a1-4073-a10a-4b91de6771fe"
     except ValueError as e:
         print(e)
         main()
@@ -104,7 +116,7 @@ def handle_event(event):
 async def log_loop(event_filter, poll_interval):
     while True:
         for Transfer in event_filter.get_new_entries():
-            print("I'm here")
+            #print("I'm here")
             handle_event(Transfer)
         await asyncio.sleep(poll_interval)
 
@@ -112,7 +124,6 @@ async def log_loop(event_filter, poll_interval):
 
 
 
-#app = FastAPI()
 
 
 STREAM_DELAY = 5# second
@@ -125,19 +136,19 @@ async def message_stream(request: Request):
         main()
         yield main()
     async def event_generator():
-        # while True:
-        #     # If client closes connection, stop sending events
-        #     if await request.is_disconnected():
-        #         pass#break 
+        while True:
+            # If client closes connection, stop sending events
+            if await request.is_disconnected():
+                pass#break 
             
                 # Checks for new messages and return them to client if any
-        if new_messages():
-            yield {
-                    "event": main(),
-                    "id": "message_id",
-                    "retry": RETRY_TIMEOUT,
-                    "data": "message_content"
-                    }
+            if new_messages():
+                yield {
+                        "event": main(),
+                        "id": "message_id",
+                        "retry": RETRY_TIMEOUT,
+                        "data": "message_content"
+                        }
 
             await asyncio.sleep(STREAM_DELAY)
 
