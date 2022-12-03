@@ -566,7 +566,7 @@ def main_exl():
             last_price = price
         return last_price
 
-
+"""
 try:
     base_url = "https://api.binance.com"
     path = "/api/v3/ticker/price"
@@ -578,7 +578,7 @@ try:
 except:
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail=f"price update soon"
-    )
+    )"""
 
 try:
     base_url = "https://api.binance.com"
