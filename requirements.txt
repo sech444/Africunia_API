@@ -84,10 +84,10 @@ eth-abi-lite==3.0.3
 eth-account
 eth-event
 eth-hash==0.3.3
-eth-keyfile==0.5.1
-eth-keys==0.3.4
-eth-rlp==0.2.1
-eth-typing==2.3.0
+eth-keyfile
+eth-keys
+eth-rlp
+eth-typing
 eth-utils
 exceptiongroup==1.0.4
 execnet==1.9.0
@@ -254,7 +254,7 @@ repoze.lru==0.7
 requests==2.28.1
 requests-toolbelt==0.10.1
 rfc3986==1.5.0
-rlp==2.0.1
+rlp
 Routes==2.5.1
 rsa==4.9
 Rx==3.2.0
