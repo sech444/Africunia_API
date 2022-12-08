@@ -63,6 +63,7 @@ dash-core-components==2.0.0
 dash-html-components==2.0.0
 dash-table==5.0.0
 dataclassy==0.11.1
+dateutils
 dateparser
 Deprecated==1.2.13
 distlib==0.3.6
@@ -92,7 +93,7 @@ eth-utils
 exceptiongroup==1.0.4
 execnet==1.9.0
 ez-setup==0.9
-fastapi
+fastapi==0.88.0
 fastecdsa==2.2.3
 filelock==3.8.2
 flake8==6.0.0
@@ -134,7 +135,7 @@ jeepney==0.8.0
 Jinja2==3.1.2
 jsonrpcclient==4.0.2
 jsonrpcserver==5.0.9
-jsonschema==4.17.3
+jsonschema
 keyring==23.11.0
 lazy-object-proxy==1.8.0
 lockfile==0.12.2
@@ -278,7 +279,7 @@ soupsieve==2.3.2.post1
 SQLAlchemy==1.4.44
 sqlparse==0.4.3
 sse-starlette==1.2.1
-starlette==0.20.4
+starlette==0.22.0
 stellar-base-sseclient==0.0.21
 stellar-model==0.5.2
 stellar-sdk==7.0.0
