@@ -88,7 +88,7 @@ eth-keyfile==0.5.1
 eth-keys==0.3.4
 eth-rlp==0.2.1
 eth-typing==2.3.0
-eth-utils==1.10.0
+eth-utils
 exceptiongroup==1.0.4
 execnet==1.9.0
 ez-setup==0.9
