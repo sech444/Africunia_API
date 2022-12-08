@@ -292,7 +292,7 @@ tomlkit==0.11.6
 toolz==0.12.0
 tqdm==4.64.1
 tronpy
-trx-utils==1.0.4
+trx-utils
 Twisted==22.10.0
 txaio==22.2.1
 typeguard==2.13.3
