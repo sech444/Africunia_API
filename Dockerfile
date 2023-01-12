@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:3.9.15
+FROM python:3.11.1
 
 # set work directory
 WORKDIR /usr/Africunia_API/
