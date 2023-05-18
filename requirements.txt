@@ -279,7 +279,7 @@ soupsieve==2.3.2.post1
 SQLAlchemy==1.4.44
 sqlparse==0.4.3
 sse-starlette==1.2.1
-starlette==0.22.0
+starlette==0.27.0
 stellar-base-sseclient==0.0.21
 stellar-model==0.5.2
 stellar-sdk==7.0.0
