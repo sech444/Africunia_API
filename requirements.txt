@@ -53,7 +53,7 @@ coverage==6.5.0
 crashtest==0.4.1
 crc16==0.1.1
 crcmod==1.7
-cryptography==38.0.4
+cryptography==41.0.0
 cryptos==1.36
 Cython==0.29.32
 cytoolz==0.12.0
