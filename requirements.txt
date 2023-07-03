@@ -211,7 +211,7 @@ pycryptodome==3.16.0
 pycryptodomex==3.16.0
 pydantic
 pyflakes==3.0.1
-Pygments==2.13.0
+Pygments==2.15.0
 pygments-lexer-solidity==0.7.0
 PyJWT==2.6.0
 pylev==1.4.0
