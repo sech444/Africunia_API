@@ -302,7 +302,7 @@ typing-extensions
 tzdata==2022.7
 tzlocal==4.2
 ujson==5.6.0
-urllib3==1.26.13
+urllib3==1.26.18
 uvicorn==0.20.0
 uvloop==0.17.0
 varint==1.0.2
