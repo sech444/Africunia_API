@@ -52,7 +52,7 @@ coverage==6.5.0
 crashtest==0.4.1
 crc16==0.1.1
 crcmod==1.7
-cryptography==38.0.4
+cryptography==41.0.5
 cryptos==1.36
 Cython==0.29.32
 cytoolz==0.12.0
@@ -138,7 +138,7 @@ tenacity==8.1.0
 threadpoolctl==3.1.0
 tomli==2.0.1
 toolz==0.12.0
-Twisted==22.10.0
+Twisted==23.10.0rc1
 twisted-iocpsupport==1.0.2
 txaio==22.2.1
 typing_extensions==4.4.0
@@ -148,6 +148,6 @@ urllib3==1.26.13
 virtualenv==20.17.0
 virtualenv-clone==0.5.7
 websocket-client==1.4.2
-Werkzeug==2.2.2
+Werkzeug==3.0.1
 yarl==1.8.2
 zope.interface==5.5.2
