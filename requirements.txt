@@ -53,7 +53,7 @@ coverage==6.5.0
 crashtest==0.4.1
 crc16==0.1.1
 crcmod==1.7
-cryptography==38.0.4
+cryptography==41.0.5
 cryptos==1.36
 Cython==0.29.32
 cytoolz==0.12.0
@@ -294,7 +294,7 @@ toolz==0.12.0
 tqdm==4.64.1
 tronpy
 trx-utils
-Twisted==22.10.0
+Twisted==23.10.0rc1
 txaio==22.2.1
 typeguard==2.13.3
 types-Deprecated==1.2.9
@@ -316,7 +316,7 @@ web3
 webencodings==0.5.1
 websocket-client==1.4.2
 websockets==9.1
-Werkzeug==2.2.2
+Werkzeug==3.0.1
 wrapt==1.14.1
 xarray==2022.12.0
 xdg==5.1.1
