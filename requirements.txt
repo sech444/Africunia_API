@@ -207,8 +207,8 @@ pycairo==1.23.0
 pycodestyle==2.10.0
 pycountry==22.3.5
 pycparser==2.21
-pycryptodome==3.16.0
-pycryptodomex==3.16.0
+pycryptodome==3.19.1
+pycryptodomex==3.19.1
 pydantic
 pyflakes==3.0.1
 Pygments==2.13.0
