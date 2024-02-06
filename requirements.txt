@@ -93,7 +93,7 @@ eth-utils
 exceptiongroup==1.0.4
 execnet==1.9.0
 ez-setup==0.9
-fastapi==0.88.0
+fastapi==0.109.1
 fastecdsa==2.2.3
 filelock==3.8.2
 flake8==6.0.0
