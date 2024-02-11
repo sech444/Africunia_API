@@ -70,7 +70,7 @@ distlib==0.3.6
 distro==1.8.0
 distro-info==1.0
 Django==4.1.3
-dnspython==2.2.1
+dnspython==2.6.0rc1
 docker-py==1.10.6
 docker-pycreds==0.4.0
 ecdsa
