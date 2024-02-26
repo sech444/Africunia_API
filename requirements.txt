@@ -162,7 +162,7 @@ numpy==1.23.5
 nyx==2.1.0
 olefile==0.46
 orderedset==2.0.3
-orjson==3.8.3
+orjson==3.9.15
 OSlash
 packaging==21.3
 pandas==1.5.2
