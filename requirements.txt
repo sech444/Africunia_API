@@ -26,7 +26,7 @@ bitarray==2.6.0
 bitcoin==1.1.39
 bitcoin-explorer==1.2.17
 bitstring==4.0.1
-black==22.10.0
+black==24.3.0
 blinker==1.5
 blockchain==1.4.4
 blockcypher
