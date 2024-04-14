@@ -122,7 +122,7 @@ httpx
 hyperframe==6.0.1
 hyperlink==21.0.0
 hypothesis==6.60.0
-idna==3.4
+idna==3.7
 importlib-metadata==5.1.0
 incremental==22.10.0
 inflection==0.5.1
