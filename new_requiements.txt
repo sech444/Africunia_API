@@ -1,4 +1,4 @@
-aiohttp==3.8.3
+aiohttp==3.9.4
 aiohttp-socks==0.7.1     
 aiohttp-sse-client==0.2.1
 aiorpcX==0.22.1
@@ -52,7 +52,7 @@ coverage==6.5.0
 crashtest==0.4.1
 crc16==0.1.1
 crcmod==1.7
-cryptography==38.0.4
+cryptography==42.0.6
 cryptos==1.36
 Cython==0.29.32
 cytoolz==0.12.0
