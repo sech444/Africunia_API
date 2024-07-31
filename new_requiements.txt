@@ -138,7 +138,7 @@ tenacity==8.1.0
 threadpoolctl==3.1.0
 tomli==2.0.1
 toolz==0.12.0
-Twisted==22.10.0
+Twisted==24.7.0rc1
 twisted-iocpsupport==1.0.2
 txaio==22.2.1
 typing_extensions==4.4.0
