@@ -47,7 +47,7 @@ clikit
 coincurve==17.0.0
 coinpaprika==0.1.0
 colorama==0.4.6
-configobj==5.0.6
+configobj==5.0.9
 constantly==15.1.0
 coverage==6.5.0
 crashtest==0.4.1
