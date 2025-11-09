@@ -31,7 +31,7 @@ blinker==1.5
 blockchain==1.4.4
 blockcypher==1.0.93
 broadcaster==0.2.0
-Brotli==1.0.9
+Brotli==1.2.0
 CacheControl==0.12.11
 cachy==0.3.0
 cbor2==5.4.5
